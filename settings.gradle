@@ -1,0 +1,3 @@
+rootProject.name = "DLDateUtil"
+include ':app'
+include ':Datelib'
