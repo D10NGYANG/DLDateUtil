@@ -14,7 +14,7 @@ allprojects {
 2 Add the dependency
 ```xml
 dependencies {
-        implementation 'com.github.D10NGYANG:DLDateUtil:1.0'
+    implementation 'com.github.D10NGYANG:DLDateUtil:1.1'
 }
 ```
 3 混淆
