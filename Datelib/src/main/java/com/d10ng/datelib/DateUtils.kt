@@ -1,6 +1,5 @@
 package com.d10ng.datelib
 
-import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -118,7 +117,6 @@ fun Long.getDateSecond(): Int {
  * @param pattern 时间样式 yyyy-MM-dd HH:mm:ss
  * @return [String] 时间字符串
  */
-@SuppressLint("SimpleDateFormat")
 fun Long.toDateStr(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     val date = Date(this)
     val format = SimpleDateFormat(pattern)
@@ -131,7 +129,6 @@ fun Long.toDateStr(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
  * @return [String] 时间字符串
  */
 fun String.toDateLong(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
-    @SuppressLint("SimpleDateFormat")
     val dateFormat = SimpleDateFormat(pattern)
     var date: Date? = Date()
     try {
@@ -208,7 +205,6 @@ fun Long.getNextDay(offset: Int): Long {
  * @param month 月
  * @return [Int] 天数
  */
-@SuppressLint("SimpleDateFormat")
 fun getDaysOfMonth(year: Int, month: Int): Int {
     val calendar = Calendar.getInstance()
     calendar.set(Calendar.YEAR, year)
@@ -273,7 +269,6 @@ fun Long.toUTCDate(): Long {
  * @receiver Long
  * @return Long
  */
-@SuppressLint("SimpleDateFormat")
 fun Long.toLocalDate(): Long {
     val pattern = "yyyyMMddHHmmssSSS"
     val utcSdf = SimpleDateFormat(pattern).apply {
@@ -293,7 +288,6 @@ fun Long.toLocalDate(): Long {
  * @param timeZoneInt Int
  * @return Long
  */
-@SuppressLint("SimpleDateFormat")
 fun Long.toCustomDate(timeZoneInt: Int): Long {
     val pattern = "yyyyMMddHHmmssSSS"
     val utcSdf = SimpleDateFormat(pattern).apply {
