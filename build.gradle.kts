@@ -20,14 +20,18 @@ kotlin {
             useJUnit()
         }
     }
-    // jitpack 不支持JS打包
+    // jitpack 不支持JVM以外的打包环境
     /*js(LEGACY) {
         browser {
             commonWebpackConfig {
                 cssSupport.enabled = true
             }
         }
-    }*/
+    }
+    macosX64()
+    ios()
+    mingwX64()
+    linuxX64()*/
     sourceSets {
         val commonMain by getting {
             dependencies {
