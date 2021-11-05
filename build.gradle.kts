@@ -20,13 +20,14 @@ kotlin {
             useJUnit()
         }
     }
-    js(LEGACY) {
+    // jitpack 不支持JS打包
+    /*js(LEGACY) {
         browser {
             commonWebpackConfig {
                 cssSupport.enabled = true
             }
         }
-    }
+    }*/
     sourceSets {
         val commonMain by getting {
             dependencies {

@@ -4,7 +4,8 @@
 ![](https://camo.githubusercontent.com/700f5dcd442fd835875568c038ae5cd53518c80ae5a0cf12c7c5cf4743b5225b/687474703a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d6a766d2d4442343133442e7376673f7374796c653d666c6174)
 ![](https://camo.githubusercontent.com/3e0a143e39915184b54b60a2ecedec75e801f396d34b5b366c94ec3604f7e6bd/687474703a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d6a732d4638444235442e7376673f7374796c653d666c6174)
 
-> 版本1.2开始，本库已经改造成kotlin跨平台项目，目前支持JVM、JS，后续将支持native
+> 版本1.2开始，本库已经改造成kotlin跨平台项目，目前支持JVM、JS，后续将支持native，
+> 但是由于一直在用的 jitpack.io 不支持JS打包，暂时没有JS的库生成，只能自己下载项目下来然后执行build。
 > > Kotlin multiplatform 1.5.31
 
 ## 使用
@@ -20,7 +21,7 @@ allprojects {
 2 Add the dependency
 ```xml
 dependencies {
-    implementation 'com.github.D10NGYANG:DLDateUtil:1.2'
+    implementation 'com.github.D10NGYANG:DLDateUtil:1.3'
 }
 ```
 3 混淆
