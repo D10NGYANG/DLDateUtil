@@ -32,7 +32,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib"))
                 // 时间工具
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
             }
         }
         val commonTest by getting {
