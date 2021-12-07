@@ -24,8 +24,20 @@ allprojects {
 ```
 2 Add the dependency
 ```xml
+android {
+
+    defaultConfig {
+    
+        multiDexEnabled true
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+    }
+}
 dependencies {
     implementation 'com.github.D10NGYANG:DLDateUtil:1.3'
+    // 日期工具兼容Android8.0以下设备
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }
 ```
 3 混淆
@@ -169,4 +181,9 @@ data class CalendarInfo(
     val isTerm: Boolean,    // 是否是节气
     val Term: String? = null// 节气
 )
+```
+## 混淆
+```properties
+-keep class com.d10ng.datelib.** {*;}
+-dontwarn com.d10ng.datelib.**
 ```
