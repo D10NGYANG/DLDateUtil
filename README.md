@@ -35,7 +35,7 @@ android {
     }
 }
 dependencies {
-    implementation 'com.github.D10NGYANG:DLDateUtil:1.3'
+    implementation 'com.github.D10NGYANG:DLDateUtil:1.4'
     // 日期工具兼容Android8.0以下设备
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

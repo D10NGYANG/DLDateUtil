@@ -73,7 +73,7 @@ fun Long.getDateYear(): Int = this.toLocalDateTime().year
  * @return [Long]
  */
 fun Long.setDateYear(value: Int): Long =
-    getDateBy(value, getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
+    getDateBy(value.coerceAtLeast(0).coerceAtMost(9999), getDateMonth(), getDateDay().coerceAtMost(getDaysOfMonth(value, getDateMonth())), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的月份
@@ -89,7 +89,7 @@ fun Long.getDateMonth(): Int = this.toLocalDateTime().month.number
  * @return [Long]
  */
 fun Long.setDateMonth(value: Int): Long =
-    getDateBy(getDateYear(), value, getDateDay(), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
+    getDateBy(getDateYear(), value.coerceAtLeast(1).coerceAtMost(12), getDateDay().coerceAtMost(getDaysOfMonth(getDateYear(), value)), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的日
@@ -105,7 +105,7 @@ fun Long.getDateDay(): Int = this.toLocalDateTime().dayOfMonth
  * @return [Long]
  */
 fun Long.setDateDay(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), value, getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
+    getDateBy(getDateYear(), getDateMonth(), value.coerceAtLeast(1).coerceAtMost(getDaysOfMonth(getDateYear(), getDateMonth())), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的小时 24小时
@@ -121,7 +121,7 @@ fun Long.getDateHour(): Int = this.toLocalDateTime().hour
  * @return [Long]
  */
 fun Long.setDateHour(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), getDateDay(), value, getDateMinute(), getDateSecond(), getDateMillisecond())
+    getDateBy(getDateYear(), getDateMonth(), getDateDay(), value.coerceAtLeast(0).coerceAtMost(23), getDateMinute(), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的分钟
@@ -137,7 +137,7 @@ fun Long.getDateMinute(): Int = this.toLocalDateTime().minute
  * @return [Long]
  */
 fun Long.setDateMinute(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), value, getDateSecond(), getDateMillisecond())
+    getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), value.coerceAtLeast(0).coerceAtMost(59), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的秒钟
@@ -153,7 +153,7 @@ fun Long.getDateSecond(): Int = this.toLocalDateTime().second
  * @return [Long]
  */
 fun Long.setDateSecond(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), value, getDateMillisecond())
+    getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), value.coerceAtLeast(0).coerceAtMost(59), getDateMillisecond())
 
 /**
  * 获取时间戳中的毫秒
@@ -169,7 +169,7 @@ fun Long.getDateMillisecond(): Int = this.toLocalDateTime().nanosecond / 1000000
  * @return [Long]
  */
 fun Long.setDateMillisecond(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), getDateSecond(), value)
+    getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), getDateSecond(), value.coerceAtLeast(0).coerceAtMost(999))
 
 /**
  * 获取时间戳中的年中的周数
