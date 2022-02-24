@@ -3,7 +3,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "com.d10ng"
+group = "com.github.D10NGYANG"
 version = "1.5"
 
 repositories {
