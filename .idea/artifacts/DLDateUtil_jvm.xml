@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="DLDateUtil-jvm">
-    <output-path>$PROJECT_DIR$/build/libs</output-path>
-    <root id="archive" name="DLDateUtil-jvm.jar">
-      <element id="module-output" name="DLDateUtil.jvmMain" />
-    </root>
-  </artifact>
-</component>

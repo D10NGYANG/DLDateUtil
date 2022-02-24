@@ -1,10 +1,10 @@
 plugins {
-    kotlin("multiplatform") version "1.5.31"
-    id("maven")
+    kotlin("multiplatform") version "1.6.10"
     id("maven-publish")
 }
 
 group = "com.d10ng"
+version = "1.5"
 
 repositories {
     mavenCentral()
@@ -37,7 +37,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib"))
                 // 时间工具
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
             }
         }
         val commonTest by getting {

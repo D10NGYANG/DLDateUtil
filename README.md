@@ -10,11 +10,12 @@
 
 > 版本1.2开始，本库已经改造成kotlin跨平台项目，目前支持JVM、JS，native，
 > 但是由于一直在用的 jitpack.io 不支持JVM以外的打包环境，暂时没有其他的在线库生成，只能自己下载项目下来然后执行build。
-> > Kotlin multiplatform 1.5.31
+> > Kotlin multiplatform 1.6.10
 
 ## 使用
 1 Add it in your root build.gradle at the end of repositories:
-```xml
+groovy:
+```groovy
 allprojects {
   repositories {
     ...
@@ -22,22 +23,54 @@ allprojects {
   }
 }
 ```
+kotlin:
+```kotlin
+allprojects {
+  repositories {
+    ...
+    maven("https://jitpack.io" )
+  }
+}
+```
 2 Add the dependency
-```xml
+groovy:
+```groovy
 android {
 
     defaultConfig {
-    
+        // 将minSdkVersion设置为20或更低时需要
         multiDexEnabled true
     }
     compileOptions {
         coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 dependencies {
-    implementation 'com.github.D10NGYANG:DLDateUtil:1.4'
-    // 日期工具兼容Android8.0以下设备
+    implementation 'com.github.D10NGYANG:DLDateUtil:1.5'
+    // Java 8 及更高版本 API 脱糖支持 https://developer.android.com/studio/write/java8-support#library-desugaring
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+}
+```
+kotlin:
+```kotlin
+android {
+
+    defaultConfig {
+        // 将minSdkVersion设置为20或更低时需要
+        multiDexEnabled = true
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+dependencies {
+    implementation("com.github.D10NGYANG:DLDateUtil:1.5")
+    // Java 8 及更高版本 API 脱糖支持 https://developer.android.com/studio/write/java8-support#library-desugaring
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }
 ```
 3 混淆
