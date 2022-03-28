@@ -48,7 +48,7 @@ android {
     }
 }
 dependencies {
-    implementation 'com.github.D10NGYANG:DLDateUtil:1.5'
+    implementation 'com.github.D10NGYANG:DLDateUtil:1.6'
     // Java 8 及更高版本 API 脱糖支持 https://developer.android.com/studio/write/java8-support#library-desugaring
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

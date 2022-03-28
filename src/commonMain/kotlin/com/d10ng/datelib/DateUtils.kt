@@ -332,11 +332,13 @@ fun String.toDateLong(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
     val day = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curDay else 1
     // 将 H 转换成小时 24小时制
     reg = "H+".toRegex().findAll(string).toList()
-    var hour = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curHour else 0
-    // 将 h 转换成小时 12小时制
-    reg = "h+".toRegex().findAll(string).toList()
-    val halfHour = if (hour > 12) hour - 12 else hour
-    hour = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: halfHour else halfHour
+    var hour = if (reg.isNotEmpty())
+        this.substring(reg[0].range).toIntOrNull()?: curHour
+    else {
+        // 将 h 转换成小时 12小时制
+        val regh = "h+".toRegex().findAll(string).toList()
+        if (regh.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curHour else 0
+    }
     reg = "a+".toRegex().findAll(string).toList()
     val isAM = if (reg.isNotEmpty()) this.substring(reg[0].range).contains("AM") else true
     if (!isAM) hour = (hour + 12).coerceAtMost(23)
