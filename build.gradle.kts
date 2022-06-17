@@ -8,7 +8,6 @@ version = "1.6"
 
 repositories {
     mavenCentral()
-    maven("https://jitpack.io" )
 }
 
 kotlin {
@@ -20,30 +19,33 @@ kotlin {
             useJUnit()
         }
     }
-    // jitpack 不支持JVM以外的打包环境
-    /*js(LEGACY) {
-        browser {
-            commonWebpackConfig {
-                cssSupport.enabled = true
-            }
-        }
+    js {
+        browser {}
+        binaries.executable()
     }
     macosX64()
     ios()
     mingwX64()
-    linuxX64()*/
+    linuxX64()
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(kotlin("stdlib"))
                 // 时间工具
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
             }
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("/Users/d10ng/project/kotlin/maven-repo/repository")
         }
     }
 }
