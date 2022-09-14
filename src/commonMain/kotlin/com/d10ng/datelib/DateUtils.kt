@@ -1,6 +1,8 @@
 package com.d10ng.datelib
 
 import kotlinx.datetime.*
+import kotlin.math.abs
+import kotlin.math.floor
 
 /**
  * 时间工具
@@ -52,7 +54,7 @@ val curDayLunar: CalendarInfo
 /**
  * 将毫秒时间戳转换成 LocalDateTime
  * @receiver [Long] 毫秒时间戳
- * @param [timeZone] TimeZone 时区
+ * @param timeZone [TimeZone] 时区
  * @return LocalDateTime
  */
 private fun Long.toLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime {
@@ -61,119 +63,119 @@ private fun Long.toLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefa
 }
 /**
  * 获取时间戳中的年份
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 年份
  */
 fun Long.getDateYear(): Int = this.toLocalDateTime().year
 
 /**
  * 修改时间戳中的年份
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @param value [Int] 年份
- * @return [Long]
+ * @return [Long] 毫秒时间戳
  */
 fun Long.setDateYear(value: Int): Long =
     getDateBy(value.coerceAtLeast(0).coerceAtMost(9999), getDateMonth(), getDateDay().coerceAtMost(getDaysOfMonth(value, getDateMonth())), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的月份
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 月份
  */
 fun Long.getDateMonth(): Int = this.toLocalDateTime().month.number
 
 /**
  * 修改时间戳中的月份
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @param value [Int] 月份
- * @return [Long]
+ * @return [Long] 毫秒时间戳
  */
 fun Long.setDateMonth(value: Int): Long =
     getDateBy(getDateYear(), value.coerceAtLeast(1).coerceAtMost(12), getDateDay().coerceAtMost(getDaysOfMonth(getDateYear(), value)), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的日
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 日
  */
 fun Long.getDateDay(): Int = this.toLocalDateTime().dayOfMonth
 
 /**
  * 修改时间戳中的日
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @param value [Int] 日
- * @return [Long]
+ * @return [Long] 毫秒时间戳
  */
 fun Long.setDateDay(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), value.coerceAtLeast(1).coerceAtMost(getDaysOfMonth(getDateYear(), getDateMonth())), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的小时 24小时
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 小时
  */
 fun Long.getDateHour(): Int = this.toLocalDateTime().hour
 
 /**
  * 修改时间戳中的小时 24小时
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @param value [Int] 小时 24小时
- * @return [Long]
+ * @return [Long] 毫秒时间戳
  */
 fun Long.setDateHour(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), getDateDay(), value.coerceAtLeast(0).coerceAtMost(23), getDateMinute(), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的分钟
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 分钟
  */
 fun Long.getDateMinute(): Int = this.toLocalDateTime().minute
 
 /**
  * 修改时间戳中的分钟
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @param value [Int] 分钟
- * @return [Long]
+ * @return [Long] 毫秒时间戳
  */
 fun Long.setDateMinute(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), value.coerceAtLeast(0).coerceAtMost(59), getDateSecond(), getDateMillisecond())
 
 /**
  * 获取时间戳中的秒钟
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 秒钟
  */
 fun Long.getDateSecond(): Int = this.toLocalDateTime().second
 
 /**
  * 修改时间戳的中秒钟
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @param value [Int] 秒钟
- * @return [Long]
+ * @return [Long] 毫秒时间戳
  */
 fun Long.setDateSecond(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), value.coerceAtLeast(0).coerceAtMost(59), getDateMillisecond())
 
 /**
  * 获取时间戳中的毫秒
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 毫秒
  */
 fun Long.getDateMillisecond(): Int = this.toLocalDateTime().nanosecond / 1000000
 
 /**
  * 修改时间戳中的毫秒
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @param value [Int] 毫秒
- * @return [Long]
+ * @return [Long] 毫秒时间戳
  */
 fun Long.setDateMillisecond(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), getDateSecond(), value.coerceAtLeast(0).coerceAtMost(999))
 
 /**
  * 获取时间戳中的年中的周数
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 年中的周数
  */
 fun Long.getDateWeekOfYear(): Int {
@@ -185,7 +187,7 @@ fun Long.getDateWeekOfYear(): Int {
 
 /**
  * 获取时间戳中的月中的周数
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 月中的周数
  */
 fun Long.getDateWeekOfMonth(): Int {
@@ -197,47 +199,61 @@ fun Long.getDateWeekOfMonth(): Int {
 
 /**
  * 获取时间戳中的年中的天数
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Int] 日
  */
 fun Long.getDateDayOfYear(): Int = this.toLocalDateTime().dayOfYear
 
 /**
  * 获取时间戳中的星期几
- * @receiver [Long]
- * @return [Int] 星期几
+ * @receiver [Long] 毫秒时间戳
+ * @return [Int] 星期几，1～7
  */
 fun Long.getDateDayOfWeek(): Int = this.toLocalDateTime().dayOfWeek.isoDayNumber
 
 /**
  * 获取时间戳中的星期几的文本
- * @receiver [Long]
- * @param type [WeekTextType]
- * @return [String]
+ * @receiver [Long] 毫秒时间戳
+ * @param type [WeekTextType] 星期几文本类型
+ * @return [String] 文本，如"星期一"，"周一"，"一"，"MONDAY"，"MON"
  */
 fun Long.getDateDayOfWeekText(type: WeekTextType): String =
     type.list[getDateDayOfWeek() - 1]
 
 /**
  * 获取时间戳中的月份的文本
- * @receiver Long
- * @param type MonthTextType
- * @return String
+ * @receiver [Long] 毫秒时间戳
+ * @param type [MonthTextType] 月份文本类型
+ * @return [String] 文本，如"一月"，"JANUARY"，"JAN"
  */
 fun Long.getDateMonthText(type: MonthTextType): String =
     type.list[getDateMonth() -1]
 
 /**
  * 获取时间戳的农历信息
- * @receiver [Long]
- * @return [CalendarInfo]?
+ * @receiver [Long] 毫秒时间戳
+ * @return [CalendarInfo]? 农历信息
  */
 fun Long.getDateDayLunar(): CalendarInfo? = LunarDateUtil.solar2lunar(getDateYear(), getDateMonth(), getDateDay())
 
 /**
  * 时间戳转换成字符窜
- * @param pattern 时间样式 yyyy-MM-dd HH:mm:ss
- * @return [String] 时间字符串
+ * @receiver [Long] 毫秒时间戳
+ * @param pattern [String] 时间样式 yyyy-MM-dd HH:mm:ss
+ * * y\Y：表示年份
+ * * M：表示月份
+ * * d：表示日期
+ * * H：表示小时，24小时制
+ * * h：表示小时，12小时制
+ * * m：表示分钟
+ * * s：表示秒
+ * * S：表示毫秒
+ * * w：年中的周数
+ * * W：月中的周数
+ * * D：年中的天数
+ * * E：星期几，如1
+ * * a: AM/PM（上午、下午）
+ * @return [String] 时间字符串，如2022-09-14 16:16:55
  */
 fun Long.toDateStr(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
     var string = pattern
@@ -311,8 +327,22 @@ fun Long.toDateStr(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
 
 /**
  * 将字符串转为时间戳
- * @param pattern 时间样式 yyyy-MM-dd HH:mm:ss
- * @return [String] 时间字符串
+ * @receiver [String] 时间字符串
+ * @param pattern [String] 时间样式 yyyy-MM-dd HH:mm:ss
+ * * y\Y：表示年份
+ * * M：表示月份
+ * * d：表示日期
+ * * H：表示小时，24小时制
+ * * h：表示小时，12小时制
+ * * m：表示分钟
+ * * s：表示秒
+ * * S：表示毫秒
+ * * w：年中的周数，不解析，传递进来不处理
+ * * W：月中的周数，不解析，传递进来不处理
+ * * D：年中的天数，不解析，传递进来不处理
+ * * E：星期几，不解析，传递进来不处理
+ * * a: AM/PM（上午、下午）
+ * @return [Long] 毫秒时间戳
  */
 fun String.toDateLong(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
     var string = pattern
@@ -355,11 +385,82 @@ fun String.toDateLong(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
 }
 
 /**
+ * 判断字符串是否为时间字符串
+ * @receiver [String] 字符串
+ * @param pattern [String] 时间格式 yyyy-MM-dd HH:mm:ss
+ * * y\Y：表示年份
+ * * M：表示月份
+ * * d：表示日期
+ * * H：表示小时，24小时制
+ * * h：表示小时，12小时制
+ * * m：表示分钟
+ * * s：表示秒
+ * * S：表示毫秒
+ * * w：年中的周数，不解析，传递进来不处理
+ * * W：月中的周数，不解析，传递进来不处理
+ * * D：年中的天数，不解析，传递进来不处理
+ * * E：星期几，不解析，传递进来不处理
+ * * a: AM/PM（上午、下午）
+ * @return [Boolean] 是否为时间格式字符串
+ */
+fun String.isDatetimeString(pattern: String = "yyyy-MM-dd HH:mm:ss"): Boolean {
+    var string = pattern.replace("\\s".toRegex(), "")
+    // 将 d 转换成(?:0[1-9]|[1-2]\d|30|31)
+    var reg = "d+".toRegex().findAll(string).toList()
+    for (item in reg) {
+        string = string.replaceRange(item.range, "(?:0[1-9]|[1-2]\\d|30|31)")
+    }
+    // 将 y、Y 转换成\d{length}
+    reg = "[yY]+".toRegex().findAll(string).toList()
+    for (item in reg) {
+        string = string.replaceRange(item.range, "\\d{${item.value.length}}")
+    }
+    // 将 M 转换成(?:1[0-2]|0[1-9])
+    reg = "M+".toRegex().findAll(string).toList()
+    for (item in reg) {
+        string = string.replaceRange(item.range, "(?:1[0-2]|0[1-9])")
+    }
+    // 将 H 转换成(?:[01]\d|2[0-3])
+    reg = "H+".toRegex().findAll(string).toList()
+    for (item in reg) {
+        string = string.replaceRange(item.range, "(?:[01]\\d|2[0-3])")
+    }
+    // 将 h 转换成(?:1[0-2]|0[1-9])
+    reg = "h+".toRegex().findAll(string).toList()
+    for (item in reg) {
+        string = string.replaceRange(item.range, "(?:1[0-2]|0[1-9])")
+    }
+    // 将 m 转换成[0-5]\d
+    reg = "m+".toRegex().findAll(string).toList()
+    for (item in reg) {
+        string = string.replaceRange(item.range, "[0-5]\\d")
+    }
+    // 将 s 转换成[0-5]\d
+    reg = "s+".toRegex().findAll(string).toList()
+    for (item in reg) {
+        string = string.replaceRange(item.range, "[0-5]\\d")
+    }
+    // 将 S 转换成\d{3}
+    reg = "S+".toRegex().findAll(string).toList()
+    for (item in reg) {
+        string = string.replaceRange(item.range, "\\d{3}")
+    }
+    // 将 a 转换成(?:AM|PM)
+    reg = "a+".toRegex().findAll(string).toList()
+    for (item in reg) {
+        string = string.replaceRange(item.range, "(?:AM|PM)")
+    }
+    string = "^(${string})$"
+    val thisStr = this.replace("\\s".toRegex(), "")
+    return string.toRegex().matches(thisStr)
+}
+
+/**
  * 根据年月日获取时间戳
- * @param year 年
- * @param month 月
- * @param day 日
- * @return [Long] 时间戳
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @return [Long] 毫秒时间戳
  */
 @Deprecated(
     message = "请更换更标准的另一个方法",
@@ -376,10 +477,10 @@ fun getDateFromYMD(
 
 /**
  * 根据年月日获取时间戳
- * @param year [Int]
- * @param month [Int]
- * @param day [Int]
- * @return [Long]
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @return [Long] 毫秒时间戳
  */
 fun getDateBy(
     year: Int,
@@ -397,7 +498,7 @@ fun getDateBy(
  * @param hour [Int] 时
  * @param minute [Int] 分
  * @param second [Int] 秒
- * @return [Long] 时间戳
+ * @return [Long] 毫秒时间戳
  */
 @Deprecated(
     message = "请更换更标准的另一个方法",
@@ -417,13 +518,13 @@ fun getDateFromYMDHMS(
 
 /**
  * 根据年月日时分秒获取时间戳
- * @param year Int 年
- * @param month Int 月
- * @param day Int 日
- * @param hour Int 时
- * @param minute Int 分
- * @param second Int 秒
- * @return [Long] 时间戳
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @param hour [Int] 时
+ * @param minute [Int] 分
+ * @param second [Int] 秒
+ * @return [Long] 毫秒时间戳
  */
 fun getDateBy(
     year: Int,
@@ -438,14 +539,14 @@ fun getDateBy(
 
 /**
  * 根据参数获取时间戳
- * @param year Int
- * @param month Int
- * @param day Int
- * @param hour Int
- * @param minute Int
- * @param second Int
- * @param millisecond Int
- * @return Long
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @param hour [Int] 时
+ * @param minute [Int] 分
+ * @param second [Int] 秒
+ * @param millisecond [Int] 毫秒
+ * @return [Long] 毫秒时间戳
  */
 fun getDateBy(
     year: Int = curYear,
@@ -461,9 +562,9 @@ fun getDateBy(
 }
 
 /**
- * 获取第n天的时间戳
- * @param offset [Int] n
- * @return [Long] 时间戳
+ * 获取距离当前第n天的时间戳
+ * @param offset [Int] n，正数时表示向后增加天数，负数时表示往前减天数，例如n=1，表示获取明天的时间戳，n=-1表示获取昨天的时间戳
+ * @return [Long] 毫秒时间戳
  */
 fun getNextDate(offset: Int = 1): Long {
     return curTime.getNextDay(offset)
@@ -471,9 +572,9 @@ fun getNextDate(offset: Int = 1): Long {
 
 /**
  * 获取某个日子为标点的附近的日子时间戳
- * @receiver [Long] 标点
- * @param offset [Int] n
- * @return [Long] 时间戳
+ * @receiver [Long] 标点毫秒时间戳
+ * @param offset [Int] n，正数时表示向后增加天数，负数时表示往前减天数，例如n=1，表示获取明天的时间戳，n=-1表示获取昨天的时间戳
+ * @return [Long] 毫秒时间戳
  */
 fun Long.getNextDay(offset: Int = 1): Long {
     val instant = Instant.fromEpochMilliseconds(this)
@@ -496,7 +597,7 @@ fun getDaysOfMonth(year: Int = curYear, month: Int = curMonth): Int {
 
 /**
  * 获取今天星期几
- * @return [Int]
+ * @return [Int] 星期几，1～7
  */
 @Deprecated(
     message = "请更换更标准的另一个方法",
@@ -509,7 +610,8 @@ fun getCurWeek(): Int {
 
 /**
  * 获取时间戳是星期几
- * @return [Int]
+ * @receiver [Long] 毫秒时间戳
+ * @return [Int] 星期几，1～7
  */
 @Deprecated(
     message = "请更换更标准的另一个方法",
@@ -522,22 +624,22 @@ fun Long.getDateWeek(): Int {
 
 /**
  * 时间戳是否为今天的
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Boolean]
  */
 fun Long.isToday(): Boolean = isNextDay(0)
 
 /**
  * 时间戳是否为昨天的
- * @receiver [Long]
+ * @receiver [Long] 毫秒时间戳
  * @return [Boolean]
  */
 fun Long.isYesterday(): Boolean = isNextDay(-1)
 
 /**
- * 时间戳是否为今天的某一天偏移
- * @receiver [Long]
- * @param offset [Int]
+ * 时间戳是否为今天的某n天偏移
+ * @receiver [Long] 毫秒时间戳
+ * @param offset [Int] n，正数时表示向后增加天数，负数时表示往前减天数，例如n=1，表示对比明天的时间戳，n=-1表示对比昨天的时间戳
  * @return [Boolean]
  */
 fun Long.isNextDay(offset: Int = 1): Boolean {
@@ -554,8 +656,8 @@ fun Long.isNextDay(offset: Int = 1): Boolean {
 
 /**
  * 本地时间转化为UTC时间
- * @receiver [Long]
- * @return [Long]
+ * @receiver [Long] 毫秒时间戳
+ * @return [Long] 毫秒时间戳
  */
 fun Long.toUTCDate(): Long {
     return toLocalDateTime(TimeZone.UTC).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
@@ -563,8 +665,8 @@ fun Long.toUTCDate(): Long {
 
 /**
  * UTC时间转化为本地时间
- * @receiver [Long]
- * @return [Long]
+ * @receiver [Long] 毫秒时间戳
+ * @return [Long] 毫秒时间戳
  */
 fun Long.toLocalDate(): Long {
     return toLocalDateTime(TimeZone.currentSystemDefault()).toInstant(TimeZone.UTC).toEpochMilliseconds()
@@ -572,12 +674,38 @@ fun Long.toLocalDate(): Long {
 
 /**
  * UTC时间转化为指定timeZone时间
- * @receiver [Long]
- * @param timeZoneInt [Int]
- * @return [Long]
+ * @receiver [Long] 毫秒时间戳
+ * @param timeZoneInt [Int] 时区值，如东8区时赋值为8
+ * @return [Long] 毫秒时间戳
  */
 fun Long.toCustomDate(timeZoneInt: Int): Long {
     val instant = Instant.fromEpochMilliseconds(this)
     val end = instant.plus(timeZoneInt, DateTimeUnit.HOUR)
     return end.toEpochMilliseconds()
+}
+
+/**
+ * 将两个毫秒时间戳之间的间隔转换成时间文本
+ * @param start [Long] 开始时间戳，毫秒
+ * @param end [Long] 结束时间戳，毫秒
+ * @param hasDay [Boolean] 是否将天数独立出来，如 25:20:38 -> 1天 01:20:38，如果不够一天，那就只显示时分秒，如03:18:25
+ * @return [String] 时间文本，eg: 13:20:38、1天 01:20:38
+ */
+fun dateDiffToString(start: Long, end: Long, hasDay: Boolean = false): String {
+    val diffTimeSecond = floor(abs(end - start) / 1000.0)
+    val day = (diffTimeSecond / 86400).toInt()
+    var hour = (diffTimeSecond / 3600).toInt()
+    if (hasDay && day > 0) {
+        hour -= (day * 24)
+    }
+    val hourStr = "$hour".up2Length(2)
+    val minute = ((diffTimeSecond % 3600) / 60).toInt()
+    val minuteStr = "$minute".up2Length(2)
+    val second = ((diffTimeSecond % 3600) % 60).toInt()
+    val secondStr = "$second".up2Length(2)
+    return if (hasDay && day > 0) {
+        "${day}天 ${hourStr}:${minuteStr}:${secondStr}"
+    } else {
+        "${hourStr}:${minuteStr}:${secondStr}"
+    }
 }
