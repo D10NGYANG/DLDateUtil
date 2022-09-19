@@ -3,6 +3,13 @@ package com.d10ng.datelib
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
+// 普通时间戳 2022-09-14 18:00:21
+const val timestamp = 1663149621238
+// 闰年时间戳 2020-02-29 00:00:00
+const val timestampLeap = 1582905600000
+// 31号测试 2020-03-31 00:00:00
+const val timestamp31 = 1585584000000
+
 class Test {
 
     @Test
@@ -72,15 +79,19 @@ class Test {
             // 获取时间戳中的年中的天数 304
             println("获取时间戳中的星期几 ${time.getDateDayOfWeek()}")
             // 获取时间戳中的星期几 7
-            println("获取时间戳中的星期几的文本 ${time.getDateDayOfWeekText(WeekTextType.CN)} " +
-                    "${time.getDateDayOfWeekText(WeekTextType.CN_SHORT)} " +
-                    "${time.getDateDayOfWeekText(WeekTextType.CN_MINI)} " +
-                    "${time.getDateDayOfWeekText(WeekTextType.EN)} " +
-                    "${time.getDateDayOfWeekText(WeekTextType.EN_SHORT)} ")
+            println(
+                "获取时间戳中的星期几的文本 ${time.getDateDayOfWeekText(WeekTextType.CN)} " +
+                        "${time.getDateDayOfWeekText(WeekTextType.CN_SHORT)} " +
+                        "${time.getDateDayOfWeekText(WeekTextType.CN_MINI)} " +
+                        "${time.getDateDayOfWeekText(WeekTextType.EN)} " +
+                        "${time.getDateDayOfWeekText(WeekTextType.EN_SHORT)} "
+            )
             // 获取时间戳中的星期几的文本 星期日 周日 日 SUNDAY SUN
-            println("获取时间戳中的月份的文本 ${time.getDateMonthText(MonthTextType.CN)} " +
-                    "${time.getDateMonthText(MonthTextType.EN)} " +
-                    "${time.getDateMonthText(MonthTextType.EN_SHORT)} ")
+            println(
+                "获取时间戳中的月份的文本 ${time.getDateMonthText(MonthTextType.CN)} " +
+                        "${time.getDateMonthText(MonthTextType.EN)} " +
+                        "${time.getDateMonthText(MonthTextType.EN_SHORT)} "
+            )
             // 获取时间戳中的月份的文本 十月 October Oct
             println("获取时间戳的农历信息 ${time.getDateDayLunar()}")
             // 获取时间戳的农历信息 CalendarInfo(lYear=2021, lMonth=9, lDay=26, Animal=牛, IMonthCn=九月, IDayCn=廿六, cYear=2021, cMonth=10, cDay=31, gzYear=辛丑, gzMonth=戊戌, gzDay=壬子, isToday=false, isLeap=false, nWeek=7, ncWeek=星期日, isTerm=false, Term=null)
@@ -121,6 +132,7 @@ class Test {
             println("农历转新历 ${LunarDateUtil.lunar2solar(2020, 10, 23)}")
             // 农历转新历 CalendarInfo(lYear=2020, lMonth=10, lDay=23, Animal=鼠, IMonthCn=十月, IDayCn=廿三, cYear=2020, cMonth=12, cDay=7, gzYear=庚子, gzMonth=戊子, gzDay=甲申, isToday=false, isLeap=false, nWeek=1, ncWeek=星期一, isTerm=true, Term=大雪)
             println("将两个毫秒时间戳之间的间隔转换成时间文本 ${dateDiffToString(1663147515120, 1663009513430, true)}")
+            // 将两个毫秒时间戳之间的间隔转换成时间文本 1天 14:20:01
             true
         }
     }

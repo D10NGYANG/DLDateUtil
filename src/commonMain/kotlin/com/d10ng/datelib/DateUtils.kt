@@ -70,8 +70,9 @@ fun Long.getDateYear(): Int = this.toLocalDateTime().year
 
 /**
  * 修改时间戳中的年份
+ * > 如果输入时间戳的年份为闰年，月日刚好是2月29，修改年份不是闰年则回退一天，举例：输入时间=2020-02-29，修改年份为2021，输出时间=2021-02-28
  * @receiver [Long] 毫秒时间戳
- * @param value [Int] 年份
+ * @param value [Int] 年份，0～9999
  * @return [Long] 毫秒时间戳
  */
 fun Long.setDateYear(value: Int): Long =
@@ -86,8 +87,9 @@ fun Long.getDateMonth(): Int = this.toLocalDateTime().month.number
 
 /**
  * 修改时间戳中的月份
+ * > 如果输入时间戳的月份的总天数与修改月份的总天数不一致，且刚好时间戳的日期在不一致的位置，则退到修改月份的最后一天，举例：输入时间=2020-03-31，修改月份为4月，输出时间=2022-04-30
  * @receiver [Long] 毫秒时间戳
- * @param value [Int] 月份
+ * @param value [Int] 月份 1~12
  * @return [Long] 毫秒时间戳
  */
 fun Long.setDateMonth(value: Int): Long =
@@ -103,7 +105,7 @@ fun Long.getDateDay(): Int = this.toLocalDateTime().dayOfMonth
 /**
  * 修改时间戳中的日
  * @receiver [Long] 毫秒时间戳
- * @param value [Int] 日
+ * @param value [Int] 日 1～月最大天数，输入值不在允许范围时，将矫正到允许范围区间内。如：0 -> 1，32 -> 31
  * @return [Long] 毫秒时间戳
  */
 fun Long.setDateDay(value: Int): Long =
@@ -119,7 +121,7 @@ fun Long.getDateHour(): Int = this.toLocalDateTime().hour
 /**
  * 修改时间戳中的小时 24小时
  * @receiver [Long] 毫秒时间戳
- * @param value [Int] 小时 24小时
+ * @param value [Int] 小时 24小时，0～24，输入值不在允许范围时，将矫正到允许范围区间内
  * @return [Long] 毫秒时间戳
  */
 fun Long.setDateHour(value: Int): Long =
@@ -135,7 +137,7 @@ fun Long.getDateMinute(): Int = this.toLocalDateTime().minute
 /**
  * 修改时间戳中的分钟
  * @receiver [Long] 毫秒时间戳
- * @param value [Int] 分钟
+ * @param value [Int] 分钟，0～59，输入值不在允许范围时，将矫正到允许范围区间内
  * @return [Long] 毫秒时间戳
  */
 fun Long.setDateMinute(value: Int): Long =
@@ -151,7 +153,7 @@ fun Long.getDateSecond(): Int = this.toLocalDateTime().second
 /**
  * 修改时间戳的中秒钟
  * @receiver [Long] 毫秒时间戳
- * @param value [Int] 秒钟
+ * @param value [Int] 秒钟，0～59，输入值不在允许范围时，将矫正到允许范围区间内
  * @return [Long] 毫秒时间戳
  */
 fun Long.setDateSecond(value: Int): Long =
@@ -167,7 +169,7 @@ fun Long.getDateMillisecond(): Int = this.toLocalDateTime().nanosecond / 1000000
 /**
  * 修改时间戳中的毫秒
  * @receiver [Long] 毫秒时间戳
- * @param value [Int] 毫秒
+ * @param value [Int] 毫秒，0～999，输入值不在允许范围时，将矫正到允许范围区间内
  * @return [Long] 毫秒时间戳
  */
 fun Long.setDateMillisecond(value: Int): Long =
@@ -179,22 +181,38 @@ fun Long.setDateMillisecond(value: Int): Long =
  * @return [Int] 年中的周数
  */
 fun Long.getDateWeekOfYear(): Int {
-    val start = LocalDateTime(getDateYear(), 1, 1, 0, 0, 0)
-        .toInstant(TimeZone.currentSystemDefault())
-    val end = Instant.fromEpochMilliseconds(this)
-    return start.until(end, DateTimeUnit.WEEK, TimeZone.currentSystemDefault()).toInt() + 1
+    val startDayOfWeek = getDateBy(this.getDateYear(), 1, 1).getDateDayOfWeek()
+    val endDayOfYear = this.getDateDayOfYear()
+    var offsetDay = 8 - startDayOfWeek
+    var offsetWeek = 1
+    if (startDayOfWeek == 1) {
+        offsetDay = 0
+        offsetWeek = 0
+    }
+    return if (endDayOfYear <= offsetDay) 1
+    else (endDayOfYear - offsetDay) / 7 + 1 + offsetWeek
 }
 
 /**
  * 获取时间戳中的月中的周数
  * @receiver [Long] 毫秒时间戳
+ * @param isFirstMondayAsFirstWeek [Boolean] true: 取月中的第一个周一开始算周数，false: 取月的1号作为第一周
  * @return [Int] 月中的周数
  */
-fun Long.getDateWeekOfMonth(): Int {
-    val start = LocalDateTime(getDateYear(), getDateMonth(), 1, 0, 0, 0)
-        .toInstant(TimeZone.currentSystemDefault())
-    val end = Instant.fromEpochMilliseconds(this)
-    return start.until(end, DateTimeUnit.WEEK, TimeZone.currentSystemDefault()).toInt() + 1
+fun Long.getDateWeekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
+    val start = getDateBy(getDateYear(), getDateMonth(), 1)
+    val startWeekOfDay = start.getDateDayOfWeek()
+    if (isFirstMondayAsFirstWeek) {
+        var firstMonday = start
+        if (startWeekOfDay != 1) {
+            firstMonday = start.getNextDay(8 - startWeekOfDay)
+        }
+        return (this.getDateDay() - firstMonday.getDateDay()) / 7 + 1
+    } else {
+        val firstWeekOffset = 8 - startWeekOfDay
+        if (this.getDateDay() <= firstWeekOffset) return 1
+        return (this.getDateDay() - firstWeekOffset) / 7 + 2
+    }
 }
 
 /**
@@ -362,16 +380,18 @@ fun String.toDateLong(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
     val day = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curDay else 1
     // 将 H 转换成小时 24小时制
     reg = "H+".toRegex().findAll(string).toList()
-    var hour = if (reg.isNotEmpty())
+    var isH = false
+    var hour = if (reg.isNotEmpty()) {
+        isH = true
         this.substring(reg[0].range).toIntOrNull()?: curHour
-    else {
+    } else {
         // 将 h 转换成小时 12小时制
         val regh = "h+".toRegex().findAll(string).toList()
         if (regh.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curHour else 0
     }
     reg = "a+".toRegex().findAll(string).toList()
     val isAM = if (reg.isNotEmpty()) this.substring(reg[0].range).contains("AM") else true
-    if (!isAM) hour = (hour + 12).coerceAtMost(23)
+    if (!isAM && !isH) hour = (hour + 12).coerceAtMost(23)
     // 将 m 转换成分钟
     reg = "m+".toRegex().findAll(string).toList()
     val minute = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curMinute else 0
@@ -462,58 +482,12 @@ fun String.isDatetimeString(pattern: String = "yyyy-MM-dd HH:mm:ss"): Boolean {
  * @param day [Int] 日
  * @return [Long] 毫秒时间戳
  */
-@Deprecated(
-    message = "请更换更标准的另一个方法",
-    replaceWith = ReplaceWith("getDateBy(year, month, day)"),
-    level = DeprecationLevel.WARNING
-)
-fun getDateFromYMD(
-    year: Int = curYear,
-    month: Int = curMonth,
-    day: Int = curDay
-): Long {
-    return getDateBy(year, month, day, 0, 0, 0, 0)
-}
-
-/**
- * 根据年月日获取时间戳
- * @param year [Int] 年
- * @param month [Int] 月
- * @param day [Int] 日
- * @return [Long] 毫秒时间戳
- */
 fun getDateBy(
     year: Int,
     month: Int,
     day: Int
 ): Long {
     return getDateBy(year, month, day, 0, 0, 0, 0)
-}
-
-/**
- * 根据年月日时分秒获取时间戳
- * @param year [Int] 年
- * @param month [Int] 月
- * @param day [Int] 日
- * @param hour [Int] 时
- * @param minute [Int] 分
- * @param second [Int] 秒
- * @return [Long] 毫秒时间戳
- */
-@Deprecated(
-    message = "请更换更标准的另一个方法",
-    replaceWith = ReplaceWith("getDateBy(year, month, day, hour, minute, second)"),
-    level = DeprecationLevel.WARNING
-)
-fun getDateFromYMDHMS(
-    year: Int = curYear,
-    month: Int = curMonth,
-    day: Int = curDay,
-    hour: Int = curHour,
-    minute: Int = curMinute,
-    second: Int = curSecond
-): Long {
-    return getDateBy(year, month, day, hour, minute, second, 0)
 }
 
 /**
@@ -593,33 +567,6 @@ fun getDaysOfMonth(year: Int = curYear, month: Int = curMonth): Int {
     val start = ldt.toInstant(TimeZone.currentSystemDefault())
     val end = start.plus(1, DateTimeUnit.MONTH, TimeZone.currentSystemDefault())
     return start.until(end, DateTimeUnit.DAY, TimeZone.currentSystemDefault()).toInt()
-}
-
-/**
- * 获取今天星期几
- * @return [Int] 星期几，1～7
- */
-@Deprecated(
-    message = "请更换更标准的另一个方法",
-    replaceWith = ReplaceWith("curDayOfWeek"),
-    level = DeprecationLevel.WARNING
-)
-fun getCurWeek(): Int {
-    return curDayOfWeek
-}
-
-/**
- * 获取时间戳是星期几
- * @receiver [Long] 毫秒时间戳
- * @return [Int] 星期几，1～7
- */
-@Deprecated(
-    message = "请更换更标准的另一个方法",
-    replaceWith = ReplaceWith("getDateDayOfWeek()"),
-    level = DeprecationLevel.WARNING
-)
-fun Long.getDateWeek(): Int {
-    return getDateDayOfWeek()
 }
 
 /**
