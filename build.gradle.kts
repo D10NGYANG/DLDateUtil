@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.6"
+version = "1.7"
 
 repositories {
     mavenCentral()

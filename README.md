@@ -12,7 +12,7 @@
 ![](https://camo.githubusercontent.com/a2c518ecf30b2c88dd6af8bbc5281b6014686b916368e6197ef2a5e1dda7adb4/687474703a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d6c696e75782d3244334636432e7376673f7374796c653d666c6174)
 
 > 版本1.2开始，本库已经改造成kotlin跨平台项目，目前支持JVM、JS，native，
-> > Kotlin multiplatform 1.6.10
+> > Kotlin multiplatform 1.7.0
 
 ## 使用
 1 Add it in your root build.gradle at the end of repositories:
@@ -52,12 +52,10 @@ android {
     }
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 dependencies {
-    implementation 'com.github.D10NGYANG:DLDateUtil:1.6'
+    implementation 'com.github.D10NGYANG:DLDateUtil:1.7'
     // Java 8 及更高版本 API 脱糖支持 https://developer.android.com/studio/write/java8-support#library-desugaring
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }
@@ -72,23 +70,16 @@ android {
     }
     compileOptions {
         coreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 dependencies {
-    implementation("com.github.D10NGYANG:DLDateUtil:1.5")
+    implementation("com.github.D10NGYANG:DLDateUtil:1.7")
     // Java 8 及更高版本 API 脱糖支持 https://developer.android.com/studio/write/java8-support#library-desugaring
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }
 ```
-3 混淆
-```xml
--keep class com.d10ng.datelib.** {*;}
--dontwarn com.d10ng.datelib.**
-```
 
-4 举例
+3 举例
 ```kotlin
 println("获取当前时间戳（毫秒）$curTime")
 // 获取当前时间戳（毫秒）1636097830332
@@ -154,15 +145,19 @@ println("获取时间戳中的年中的天数 ${time.getDateDayOfYear()}")
 // 获取时间戳中的年中的天数 304
 println("获取时间戳中的星期几 ${time.getDateDayOfWeek()}")
 // 获取时间戳中的星期几 7
-println("获取时间戳中的星期几的文本 ${time.getDateDayOfWeekText(WeekTextType.CN)} " +
-        "${time.getDateDayOfWeekText(WeekTextType.CN_SHORT)} " +
-        "${time.getDateDayOfWeekText(WeekTextType.CN_MINI)} " +
-        "${time.getDateDayOfWeekText(WeekTextType.EN)} " +
-        "${time.getDateDayOfWeekText(WeekTextType.EN_SHORT)} ")
+println(
+    "获取时间戳中的星期几的文本 ${time.getDateDayOfWeekText(WeekTextType.CN)} " +
+            "${time.getDateDayOfWeekText(WeekTextType.CN_SHORT)} " +
+            "${time.getDateDayOfWeekText(WeekTextType.CN_MINI)} " +
+            "${time.getDateDayOfWeekText(WeekTextType.EN)} " +
+            "${time.getDateDayOfWeekText(WeekTextType.EN_SHORT)} "
+)
 // 获取时间戳中的星期几的文本 星期日 周日 日 SUNDAY SUN
-println("获取时间戳中的月份的文本 ${time.getDateMonthText(MonthTextType.CN)} " +
-        "${time.getDateMonthText(MonthTextType.EN)} " +
-        "${time.getDateMonthText(MonthTextType.EN_SHORT)} ")
+println(
+    "获取时间戳中的月份的文本 ${time.getDateMonthText(MonthTextType.CN)} " +
+            "${time.getDateMonthText(MonthTextType.EN)} " +
+            "${time.getDateMonthText(MonthTextType.EN_SHORT)} "
+)
 // 获取时间戳中的月份的文本 十月 October Oct
 println("获取时间戳的农历信息 ${time.getDateDayLunar()}")
 // 获取时间戳的农历信息 CalendarInfo(lYear=2021, lMonth=9, lDay=26, Animal=牛, IMonthCn=九月, IDayCn=廿六, cYear=2021, cMonth=10, cDay=31, gzYear=辛丑, gzMonth=戊戌, gzDay=壬子, isToday=false, isLeap=false, nWeek=7, ncWeek=星期日, isTerm=false, Term=null)
@@ -172,6 +167,10 @@ println("时间戳转换成字符窜 ${curTime.toDateStr(pattern)}")
 // 时间戳转换成字符窜 2021年11月05日 15时37分10秒384毫秒 今年的第45周 当前月的第1周 今年的第309天 星期5 PM 03
 println("将字符串转为时间戳 ${curTime.toDateStr(pattern).toDateLong(pattern)}")
 // 将字符串转为时间戳 1636097830410
+println("将字符串转为时间戳2 ${"2021-11-05 15:37:10".toDateLong()}")
+// 将字符串转为时间戳 1636097830410
+println("判断字符串(2021-11-05 15:37:10)是否为时间字符串 ${"2021-11-05 15:37:10".isDatetimeString()}")
+// 判断字符串(2021-11-05 15:37:10)是否为时间字符串 true
 println("根据年月日获取时间戳 ${getDateBy(2020, 2, 20).toDateStr()}")
 // 根据年月日获取时间戳 2020-02-20 00:00:00
 println("根据年月日时分秒获取时间戳 ${getDateBy(2020, 2, 20, 12, 30, 45).toDateStr()}")
@@ -198,6 +197,8 @@ println("UTC时间转化为指定timeZone时间 ${curTime.toUTCDate().toCustomDa
 // UTC时间转化为指定timeZone时间 2021-11-05 15:54:33
 println("农历转新历 ${LunarDateUtil.lunar2solar(2020, 10, 23)}")
 // 农历转新历 CalendarInfo(lYear=2020, lMonth=10, lDay=23, Animal=鼠, IMonthCn=十月, IDayCn=廿三, cYear=2020, cMonth=12, cDay=7, gzYear=庚子, gzMonth=戊子, gzDay=甲申, isToday=false, isLeap=false, nWeek=1, ncWeek=星期一, isTerm=true, Term=大雪)
+println("将两个毫秒时间戳之间的间隔转换成时间文本 ${dateDiffToString(1663147515120, 1663009513430, true)}")
+// 将两个毫秒时间戳之间的间隔转换成时间文本 1天 14:20:01
 
 ```
 
