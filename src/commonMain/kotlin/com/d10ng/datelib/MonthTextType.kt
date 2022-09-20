@@ -1,11 +1,14 @@
 package com.d10ng.datelib
 
-enum class MonthTextType (val list: List<String>) {
+import kotlin.js.JsExport
+
+@JsExport
+enum class MonthTextType (val list: Array<String>) {
 
     // 一月
-    CN (listOf("一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月")),
+    CN (arrayOf("一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月")),
     // JANUARY
-    EN (listOf("JANUARY", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")),
+    EN (arrayOf("JANUARY", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")),
     // JAN
-    EN_SHORT (listOf("JAN", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")),
+    EN_SHORT (arrayOf("JAN", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")),
 }

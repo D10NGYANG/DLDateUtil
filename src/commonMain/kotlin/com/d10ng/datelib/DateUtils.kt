@@ -1,6 +1,9 @@
+@file:JsExport
 package com.d10ng.datelib
 
 import kotlinx.datetime.*
+import kotlin.js.JsExport
+import kotlin.js.JsName
 import kotlin.math.abs
 import kotlin.math.floor
 
@@ -12,6 +15,7 @@ import kotlin.math.floor
  */
 
 /** 获取当前系统时间戳，单位毫秒 */
+@Suppress("NON_EXPORTABLE_TYPE")
 val curTime: Long
     get() = Clock.System.now().toEpochMilliseconds()
 /** 获取当前年份 */
@@ -75,6 +79,7 @@ fun Long.getDateYear(): Int = this.toLocalDateTime().year
  * @param value [Int] 年份，0～9999
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.setDateYear(value: Int): Long =
     getDateBy(value.coerceAtLeast(0).coerceAtMost(9999), getDateMonth(), getDateDay().coerceAtMost(getDaysOfMonth(value, getDateMonth())), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
 
@@ -92,6 +97,7 @@ fun Long.getDateMonth(): Int = this.toLocalDateTime().month.number
  * @param value [Int] 月份 1~12
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.setDateMonth(value: Int): Long =
     getDateBy(getDateYear(), value.coerceAtLeast(1).coerceAtMost(12), getDateDay().coerceAtMost(getDaysOfMonth(getDateYear(), value)), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
 
@@ -108,6 +114,7 @@ fun Long.getDateDay(): Int = this.toLocalDateTime().dayOfMonth
  * @param value [Int] 日 1～月最大天数，输入值不在允许范围时，将矫正到允许范围区间内。如：0 -> 1，32 -> 31
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.setDateDay(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), value.coerceAtLeast(1).coerceAtMost(getDaysOfMonth(getDateYear(), getDateMonth())), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
 
@@ -124,6 +131,7 @@ fun Long.getDateHour(): Int = this.toLocalDateTime().hour
  * @param value [Int] 小时 24小时，0～24，输入值不在允许范围时，将矫正到允许范围区间内
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.setDateHour(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), getDateDay(), value.coerceAtLeast(0).coerceAtMost(23), getDateMinute(), getDateSecond(), getDateMillisecond())
 
@@ -140,6 +148,7 @@ fun Long.getDateMinute(): Int = this.toLocalDateTime().minute
  * @param value [Int] 分钟，0～59，输入值不在允许范围时，将矫正到允许范围区间内
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.setDateMinute(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), value.coerceAtLeast(0).coerceAtMost(59), getDateSecond(), getDateMillisecond())
 
@@ -156,6 +165,7 @@ fun Long.getDateSecond(): Int = this.toLocalDateTime().second
  * @param value [Int] 秒钟，0～59，输入值不在允许范围时，将矫正到允许范围区间内
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.setDateSecond(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), value.coerceAtLeast(0).coerceAtMost(59), getDateMillisecond())
 
@@ -172,6 +182,7 @@ fun Long.getDateMillisecond(): Int = this.toLocalDateTime().nanosecond / 1000000
  * @param value [Int] 毫秒，0～999，输入值不在允许范围时，将矫正到允许范围区间内
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.setDateMillisecond(value: Int): Long =
     getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), getDateSecond(), value.coerceAtLeast(0).coerceAtMost(999))
 
@@ -250,7 +261,7 @@ fun Long.getDateMonthText(type: MonthTextType): String =
 /**
  * 获取时间戳的农历信息
  * @receiver [Long] 毫秒时间戳
- * @return [CalendarInfo]? 农历信息
+ * @return [CalendarInfo] 农历信息
  */
 fun Long.getDateDayLunar(): CalendarInfo? = LunarDateUtil.solar2lunar(getDateYear(), getDateMonth(), getDateDay())
 
@@ -362,6 +373,7 @@ fun Long.toDateStr(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
  * * a: AM/PM（上午、下午）
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun String.toDateLong(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
     var string = pattern
     var reg = "a+".toRegex().findAll(string).toList()
@@ -482,6 +494,8 @@ fun String.isDatetimeString(pattern: String = "yyyy-MM-dd HH:mm:ss"): Boolean {
  * @param day [Int] 日
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
+@JsName("getDateByYMD")
 fun getDateBy(
     year: Int,
     month: Int,
@@ -500,6 +514,8 @@ fun getDateBy(
  * @param second [Int] 秒
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
+@JsName("getDateByYMDHms")
 fun getDateBy(
     year: Int,
     month: Int,
@@ -522,6 +538,7 @@ fun getDateBy(
  * @param millisecond [Int] 毫秒
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun getDateBy(
     year: Int = curYear,
     month: Int = curMonth,
@@ -540,6 +557,7 @@ fun getDateBy(
  * @param offset [Int] n，正数时表示向后增加天数，负数时表示往前减天数，例如n=1，表示获取明天的时间戳，n=-1表示获取昨天的时间戳
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun getNextDate(offset: Int = 1): Long {
     return curTime.getNextDay(offset)
 }
@@ -550,6 +568,7 @@ fun getNextDate(offset: Int = 1): Long {
  * @param offset [Int] n，正数时表示向后增加天数，负数时表示往前减天数，例如n=1，表示获取明天的时间戳，n=-1表示获取昨天的时间戳
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.getNextDay(offset: Int = 1): Long {
     val instant = Instant.fromEpochMilliseconds(this)
     val offsetInstant = instant.plus(offset, DateTimeUnit.DAY, TimeZone.currentSystemDefault())
@@ -606,6 +625,7 @@ fun Long.isNextDay(offset: Int = 1): Boolean {
  * @receiver [Long] 毫秒时间戳
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.toUTCDate(): Long {
     return toLocalDateTime(TimeZone.UTC).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
 }
@@ -615,6 +635,7 @@ fun Long.toUTCDate(): Long {
  * @receiver [Long] 毫秒时间戳
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.toLocalDate(): Long {
     return toLocalDateTime(TimeZone.currentSystemDefault()).toInstant(TimeZone.UTC).toEpochMilliseconds()
 }
@@ -625,6 +646,7 @@ fun Long.toLocalDate(): Long {
  * @param timeZoneInt [Int] 时区值，如东8区时赋值为8
  * @return [Long] 毫秒时间戳
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun Long.toCustomDate(timeZoneInt: Int): Long {
     val instant = Instant.fromEpochMilliseconds(this)
     val end = instant.plus(timeZoneInt, DateTimeUnit.HOUR)
@@ -638,6 +660,7 @@ fun Long.toCustomDate(timeZoneInt: Int): Long {
  * @param hasDay [Boolean] 是否将天数独立出来，如 25:20:38 -> 1天 01:20:38，如果不够一天，那就只显示时分秒，如03:18:25
  * @return [String] 时间文本，eg: 13:20:38、1天 01:20:38
  */
+@Suppress("NON_EXPORTABLE_TYPE")
 fun dateDiffToString(start: Long, end: Long, hasDay: Boolean = false): String {
     val diffTimeSecond = floor(abs(end - start) / 1000.0)
     val day = (diffTimeSecond / 86400).toInt()

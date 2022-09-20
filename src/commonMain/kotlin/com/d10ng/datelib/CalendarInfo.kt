@@ -1,5 +1,8 @@
 package com.d10ng.datelib
 
+import kotlin.js.JsExport
+
+@JsExport
 data class CalendarInfo(
     // 农历年
     val lYear: Int,
