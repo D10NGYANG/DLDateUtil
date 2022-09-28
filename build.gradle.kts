@@ -1,5 +1,3 @@
-import dev.petuska.npm.publish.extension.domain.NpmAccess
-
 plugins {
     kotlin("multiplatform") version "1.7.0"
     id("maven-publish")
@@ -67,6 +65,10 @@ npmPublish {
     registries {
         register("npm-hosted") {
             uri.set("https://nexus.bds100.com/repository/npm-hosted")
+        }
+        register("npm-repo") {
+            uri.set("/Users/d10ng/project/kotlin/maven-repo/repository")
+            uri.au
         }
     }
 }
