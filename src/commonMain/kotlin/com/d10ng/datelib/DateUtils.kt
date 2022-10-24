@@ -14,6 +14,9 @@ import kotlin.math.floor
  * @date on 2019-10-08 11:28
  */
 
+// 默认格式
+private const val DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss"
+
 /** 获取当前系统时间戳，单位毫秒 */
 @Suppress("NON_EXPORTABLE_TYPE")
 val curTime: Long
@@ -284,7 +287,7 @@ fun Long.getDateDayLunar(): CalendarInfo? = LunarDateUtil.solar2lunar(getDateYea
  * * a: AM/PM（上午、下午）
  * @return [String] 时间字符串，如2022-09-14 16:16:55
  */
-fun Long.toDateStr(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
+fun Long.toDateStr(pattern: String = DEFAULT_PATTERN): String {
     var string = pattern
     // 将 y、Y 转换成年份
     var reg = "[yY]+".toRegex().findAll(string).toList()
@@ -374,7 +377,7 @@ fun Long.toDateStr(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
-fun String.toDateLong(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
+fun String.toDateLong(pattern: String = DEFAULT_PATTERN): Long {
     var string = pattern
     var reg = "a+".toRegex().findAll(string).toList()
     for (item in reg) {
@@ -402,7 +405,7 @@ fun String.toDateLong(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
         if (regh.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curHour else 0
     }
     reg = "a+".toRegex().findAll(string).toList()
-    val isAM = if (reg.isNotEmpty()) this.substring(reg[0].range).contains("AM") else true
+    val isAM = reg.isEmpty() || this.substring(reg[0].range).contains("AM")
     if (!isAM && !isH) hour = (hour + 12).coerceAtMost(23)
     // 将 m 转换成分钟
     reg = "m+".toRegex().findAll(string).toList()
@@ -435,7 +438,7 @@ fun String.toDateLong(pattern: String = "yyyy-MM-dd HH:mm:ss"): Long {
  * * a: AM/PM（上午、下午）
  * @return [Boolean] 是否为时间格式字符串
  */
-fun String.isDatetimeString(pattern: String = "yyyy-MM-dd HH:mm:ss"): Boolean {
+fun String.isDatetimeString(pattern: String = DEFAULT_PATTERN): Boolean {
     var string = pattern.replace("\\s".toRegex(), "")
     // 将 d 转换成(?:0[1-9]|[1-2]\d|30|31)
     var reg = "d+".toRegex().findAll(string).toList()

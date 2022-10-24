@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform") version "1.7.0"
     id("maven-publish")
     id("dev.petuska.npm.publish") version "3.0.3"
+    id("org.sonarqube") version "3.0"
 }
 
 group = "com.github.D10NGYANG"
@@ -10,6 +11,9 @@ version = "1.7.0"
 repositories {
     mavenCentral()
 }
+
+//java.sourceCompatibility = JavaVersion.VERSION_11
+//java.targetCompatibility = JavaVersion.VERSION_11
 
 kotlin {
     jvm {
@@ -22,7 +26,7 @@ kotlin {
         }
     }
     js(IR) {
-        moduleName = "dl-date-util"
+        moduleName = "@hailiao/dl-date-util"
         browser()
         binaries.library()
         binaries.executable()
@@ -58,6 +62,13 @@ publishing {
         maven {
             url = uri("/Users/d10ng/project/kotlin/maven-repo/repository")
         }
+        maven {
+            credentials {
+                username = "ydl"
+                password = "hailiao123"
+            }
+            setUrl("https://nexus.bds100.com/repository/maven-releases/")
+        }
     }
 }
 
@@ -68,7 +79,6 @@ npmPublish {
         }
         register("npm-repo") {
             uri.set("/Users/d10ng/project/kotlin/maven-repo/repository")
-            uri.au
         }
     }
 }

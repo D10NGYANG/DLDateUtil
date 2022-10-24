@@ -11,11 +11,11 @@ data class CalendarInfo(
     // 农历日
     val lDay: Int,
     // 生肖
-    val Animal: String,
+    val animal: String,
     // 中文农历月
-    val IMonthCn: String,
+    val lMonthCn: String,
     // 中文农历日
-    val IDayCn: String,
+    val lDayCn: String,
     // 公历年
     val cYear: Int,
     // 公历月
@@ -39,5 +39,5 @@ data class CalendarInfo(
     // 是否是节气
     val isTerm: Boolean,
     // 节气
-    val Term: String? = null
+    val term: String? = null
 )

@@ -130,7 +130,7 @@ class Test {
             println("UTC时间转化为指定timeZone时间 ${curTime.toUTCDate().toCustomDate(+8).toDateStr()}")
             // UTC时间转化为指定timeZone时间 2021-11-05 15:54:33
             println("农历转新历 ${LunarDateUtil.lunar2solar(2020, 10, 23)}")
-            // 农历转新历 CalendarInfo(lYear=2020, lMonth=10, lDay=23, Animal=鼠, IMonthCn=十月, IDayCn=廿三, cYear=2020, cMonth=12, cDay=7, gzYear=庚子, gzMonth=戊子, gzDay=甲申, isToday=false, isLeap=false, nWeek=1, ncWeek=星期一, isTerm=true, Term=大雪)
+            // 农历转新历 CalendarInfo(lYear=2020, lMonth=10, lDay=23, animal=鼠, lMonthCn=十月, lDayCn=廿三, cYear=2020, cMonth=12, cDay=7, gzYear=庚子, gzMonth=戊子, gzDay=甲申, isToday=false, isLeap=false, nWeek=1, ncWeek=星期一, isTerm=true, term=大雪)
             println("将两个毫秒时间戳之间的间隔转换成时间文本 ${dateDiffToString(1663147515120, 1663009513430, true)}")
             // 将两个毫秒时间戳之间的间隔转换成时间文本 1天 14:20:01
             true
