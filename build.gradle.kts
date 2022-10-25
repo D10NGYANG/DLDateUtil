@@ -12,9 +12,6 @@ repositories {
     mavenCentral()
 }
 
-//java.sourceCompatibility = JavaVersion.VERSION_11
-//java.targetCompatibility = JavaVersion.VERSION_11
-
 kotlin {
     jvm {
         compilations.all {
@@ -26,7 +23,8 @@ kotlin {
         }
     }
     js(IR) {
-        moduleName = "@hailiao/dl-date-util"
+
+        moduleName = "dl-date-util"
         browser()
         binaries.library()
         binaries.executable()
@@ -79,6 +77,15 @@ npmPublish {
         }
         register("npm-repo") {
             uri.set("/Users/d10ng/project/kotlin/maven-repo/repository")
+        }
+    }
+    packages {
+        named("js") {
+            scope.set("hailiao")
+            packageName.set("dl-date-util")
+            dependencies {
+                normal("@js-joda/core", "*")
+            }
         }
     }
 }
