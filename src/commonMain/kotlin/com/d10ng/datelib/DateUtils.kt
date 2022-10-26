@@ -131,7 +131,7 @@ fun Long.getDateHour(): Int = this.toLocalDateTime().hour
 /**
  * 修改时间戳中的小时 24小时
  * @receiver [Long] 毫秒时间戳
- * @param value [Int] 小时 24小时，0～24，输入值不在允许范围时，将矫正到允许范围区间内
+ * @param value [Int] 小时 24小时，0～23，输入值不在允许范围时，将矫正到允许范围区间内
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
