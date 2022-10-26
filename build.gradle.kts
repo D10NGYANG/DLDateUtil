@@ -1,3 +1,6 @@
+val bds100MavenUsername: String by project
+val bds100MavenPassword: String by project
+
 plugins {
     kotlin("multiplatform") version "1.7.0"
     id("maven-publish")
@@ -6,7 +9,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.7.0"
+version = "1.7.1"
 
 repositories {
     mavenCentral()
@@ -23,7 +26,6 @@ kotlin {
         }
     }
     js(IR) {
-
         moduleName = "dl-date-util"
         browser()
         binaries.library()
@@ -62,8 +64,8 @@ publishing {
         }
         maven {
             credentials {
-                username = "ydl"
-                password = "hailiao123"
+                username = bds100MavenUsername
+                password = bds100MavenPassword
             }
             setUrl("https://nexus.bds100.com/repository/maven-releases/")
         }
