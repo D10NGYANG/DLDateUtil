@@ -2,14 +2,14 @@ val bds100MavenUsername: String by project
 val bds100MavenPassword: String by project
 
 plugins {
-    kotlin("multiplatform") version "1.7.0"
+    kotlin("multiplatform") version "1.8.10"
     id("maven-publish")
-    id("dev.petuska.npm.publish") version "3.0.3"
-    id("org.sonarqube") version "3.0"
+    id("dev.petuska.npm.publish") version "3.2.1"
+    id("org.sonarqube") version "4.0.0.2929"
 }
 
 group = "com.github.D10NGYANG"
-version = "1.7.1"
+version = "1.7.2"
 
 repositories {
     mavenCentral()
@@ -18,7 +18,7 @@ repositories {
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "11"
         }
         withJava()
         testRuns["test"].executionTask.configure {
