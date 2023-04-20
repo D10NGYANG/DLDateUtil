@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.7.2"
+version = "1.8.0"
 
 repositories {
     mavenCentral()
@@ -18,8 +18,9 @@ repositories {
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = "1.8"
         }
+        jvmToolchain(8)
         withJava()
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
