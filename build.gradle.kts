@@ -1,15 +1,16 @@
 val bds100MavenUsername: String by project
 val bds100MavenPassword: String by project
+val bds100NpmToken: String by project
 
 plugins {
-    kotlin("multiplatform") version "1.8.10"
+    kotlin("multiplatform") version "1.8.21"
     id("maven-publish")
-    id("dev.petuska.npm.publish") version "3.2.1"
-    id("org.sonarqube") version "4.0.0.2929"
+    id("dev.petuska.npm.publish") version "3.3.1"
+    id("org.sonarqube") version "4.2.0.3129"
 }
 
 group = "com.github.D10NGYANG"
-version = "1.8.0"
+version = "1.8.1"
 
 repositories {
     mavenCentral()
@@ -17,20 +18,12 @@ repositories {
 
 kotlin {
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
         jvmToolchain(8)
         withJava()
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
     }
     js(IR) {
-        moduleName = "dl-date-util"
-        browser()
         binaries.library()
-        binaries.executable()
+        nodejs()
     }
     ios {
         binaries {
@@ -75,17 +68,17 @@ publishing {
 
 npmPublish {
     registries {
-        register("npm-hosted") {
-            uri.set("https://nexus.bds100.com/repository/npm-hosted")
+        register("npmjs") {
+            uri.set("https://registry.npmjs.org")
+        }
+        register("npm-releases") {
+            uri.set("https://nexus.bds100.com/repository/npm-releases/")
+            authToken.set(bds100NpmToken)
         }
     }
     packages {
         named("js") {
-            scope.set("hailiao")
             packageName.set("dl-date-util")
-            dependencies {
-                normal("@js-joda/core", "*")
-            }
         }
     }
 }
