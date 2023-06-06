@@ -1,6 +1,6 @@
 val bds100MavenUsername: String by project
 val bds100MavenPassword: String by project
-val bds100NpmToken: String by project
+val npmJsToken: String by project
 
 plugins {
     kotlin("multiplatform") version "1.8.21"
@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.8.1"
+version = "1.8.2"
 
 repositories {
     mavenCentral()
@@ -22,8 +22,11 @@ kotlin {
         withJava()
     }
     js(IR) {
+        moduleName = "dl-date-util"
         binaries.library()
+        binaries.executable()
         nodejs()
+        generateTypeScriptDefinitions()
     }
     ios {
         binaries {
@@ -70,10 +73,7 @@ npmPublish {
     registries {
         register("npmjs") {
             uri.set("https://registry.npmjs.org")
-        }
-        register("npm-releases") {
-            uri.set("https://nexus.bds100.com/repository/npm-releases/")
-            authToken.set(bds100NpmToken)
+            authToken.set(npmJsToken)
         }
     }
     packages {
