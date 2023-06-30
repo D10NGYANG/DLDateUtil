@@ -3,14 +3,14 @@ val bds100MavenPassword: String by project
 val npmJsToken: String by project
 
 plugins {
-    kotlin("multiplatform") version "1.8.21"
+    kotlin("multiplatform") version "1.8.22"
     id("maven-publish")
     id("dev.petuska.npm.publish") version "3.3.1"
-    id("org.sonarqube") version "4.2.0.3129"
+    id("org.sonarqube") version "4.2.1.3168"
 }
 
 group = "com.github.D10NGYANG"
-version = "1.8.2"
+version = "1.8.3"
 
 repositories {
     mavenCentral()
