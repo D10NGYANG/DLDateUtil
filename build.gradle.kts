@@ -3,7 +3,7 @@ val bds100MavenPassword: String by project
 val npmJsToken: String by project
 
 plugins {
-    kotlin("multiplatform") version "1.9.0"
+    kotlin("multiplatform") version "1.9.10"
     id("maven-publish")
     id("dev.petuska.npm.publish") version "3.4.1"
     id("org.sonarqube") version "4.3.0.3225"
@@ -95,4 +95,9 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
     rejectVersionIf {
         isNonStable(candidate.version)
     }
+}
+
+// TODO 修复gradle 8.0以后出现任务依赖不声明导致的问题，待后续修复了再移除
+tasks.named("jsNodeProductionLibraryPrepare") {
+    dependsOn("jsProductionExecutableCompileSync")
 }
