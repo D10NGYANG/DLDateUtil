@@ -389,10 +389,10 @@ fun String.toDateLong(pattern: String = DEFAULT_PATTERN): Long {
     val year = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curYear else curYear
     // 将 M 转换成月份
     reg = "M+".toRegex().findAll(string).toList()
-    val month = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curMonth else 1
+    val month = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curMonth else curMonth
     // 将 d 转换成日期
     reg = "d+".toRegex().findAll(string).toList()
-    val day = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curDay else 1
+    val day = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curDay else curDay
     // 将 H 转换成小时 24小时制
     reg = "H+".toRegex().findAll(string).toList()
     var isH = false
