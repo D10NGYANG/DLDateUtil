@@ -3,15 +3,15 @@ val bds100MavenPassword: String by project
 val npmJsToken: String by project
 
 plugins {
-    kotlin("multiplatform") version "1.9.10"
+    kotlin("multiplatform") version "1.9.20"
     id("maven-publish")
     id("dev.petuska.npm.publish") version "3.4.1"
-    id("org.sonarqube") version "4.3.0.3225"
-    id("com.github.ben-manes.versions") version "0.47.0"
+    id("org.sonarqube") version "4.4.1.3373"
+    id("com.github.ben-manes.versions") version "0.49.0"
 }
 
 group = "com.github.D10NGYANG"
-version = "1.8.6"
+version = "1.8.7"
 
 repositories {
     mavenCentral()
@@ -29,11 +29,8 @@ kotlin {
         nodejs()
         generateTypeScriptDefinitions()
     }
-    ios {
-        binaries {
-            framework {}
-        }
-    }
+    iosArm64()
+    iosSimulatorArm64()
 
     sourceSets {
         all {
@@ -41,13 +38,13 @@ kotlin {
                 optIn("kotlin.js.ExperimentalJsExport")
             }
         }
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 // 时间工具
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
             }
