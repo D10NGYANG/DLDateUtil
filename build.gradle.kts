@@ -3,15 +3,15 @@ val bds100MavenPassword: String by project
 val npmJsToken: String by project
 
 plugins {
-    kotlin("multiplatform") version "1.9.20"
+    kotlin("multiplatform") version "1.9.21"
     id("maven-publish")
     id("dev.petuska.npm.publish") version "3.4.1"
     id("org.sonarqube") version "4.4.1.3373"
-    id("com.github.ben-manes.versions") version "0.49.0"
+    id("com.github.ben-manes.versions") version "0.50.0"
 }
 
 group = "com.github.D10NGYANG"
-version = "1.8.7"
+version = "1.9.0"
 
 repositories {
     mavenCentral()
@@ -41,7 +41,7 @@ kotlin {
         commonMain {
             dependencies {
                 // 时间工具
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
             }
         }
         commonTest {
