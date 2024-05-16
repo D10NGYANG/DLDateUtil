@@ -24,4 +24,10 @@ class FormatTest {
         val pattern3 = "yyyy-MM-ddTHH:mm:ss.SSSZ"
         assertEquals("2022-09-14T18:00:21.238Z".toDateLong(pattern3), timestamp)
     }
+
+    @Test
+    fun testTime2String() {
+        assertEquals((1 * 3600000 + 25 * 60000 + 10 * 1000).toLong().time2String(), "01:25:10")
+        assertEquals((15 * 3600 + 3 * 60 + 42).timeSecond2String(), "15:03:42")
+    }
 }

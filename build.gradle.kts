@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "1.9.2"
+version = "1.9.3"
 
 repositories {
     mavenCentral()
@@ -41,7 +41,7 @@ kotlin {
         commonMain {
             dependencies {
                 // 时间工具
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
             }
         }
         commonTest {
