@@ -292,62 +292,62 @@ fun Long.toDateStr(pattern: String = DEFAULT_PATTERN): String {
     // 将 y、Y 转换成年份
     var reg = "[yY]+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateYear().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateYear().toString().padStartForce(item.value.length, '0'))
     }
     // 将 M 转换成月份
     reg = "M+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateMonth().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateMonth().toString().padStartForce(item.value.length, '0'))
     }
     // 将 d 转换成日期
     reg = "d+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateDay().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateDay().toString().padStartForce(item.value.length, '0'))
     }
     // 将 H 转换成小时 24小时制
     reg = "H+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateHour().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateHour().toString().padStartForce(item.value.length, '0'))
     }
     // 将 h 转换成小时 12小时制
     reg = "h+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, (if (getDateHour() > 12) getDateHour() - 12 else getDateHour()).toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, (if (getDateHour() > 12) getDateHour() - 12 else getDateHour()).toString().padStartForce(item.value.length, '0'))
     }
     // 将 m 转换成分钟
     reg = "m+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateMinute().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateMinute().toString().padStartForce(item.value.length, '0'))
     }
     // 将 s 转换成秒钟
     reg = "s+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateSecond().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateSecond().toString().padStartForce(item.value.length, '0'))
     }
     // 将 S 转换成毫秒
     reg = "S+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateMillisecond().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateMillisecond().toString().padStartForce(item.value.length, '0'))
     }
     // 将 w 转换成年中的周数
     reg = "w+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateWeekOfYear().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateWeekOfYear().toString().padStartForce(item.value.length, '0'))
     }
     // 将 W 转换成月中的周数
     reg = "W+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateWeekOfMonth().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateWeekOfMonth().toString().padStartForce(item.value.length, '0'))
     }
     // 将 D 转换成年中的天数
     reg = "D+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateDayOfYear().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateDayOfYear().toString().padStartForce(item.value.length, '0'))
     }
     // 将 E 转换成星期几
     reg = "E+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateDayOfWeek().toString().padStart(item.value.length, '0'))
+        string = string.replaceRange(item.range, getDateDayOfWeek().toString().padStartForce(item.value.length, '0'))
     }
     // 将 a 转换成 AM/PM
     reg = "a+".toRegex().findAll(string).toList()
@@ -671,11 +671,11 @@ fun dateDiffToString(start: Long, end: Long, hasDay: Boolean = false): String {
     if (hasDay && day > 0) {
         hour -= (day * 24)
     }
-    val hourStr = "$hour".padStart(2, '0')
+    val hourStr = "$hour".padStartForce(2, '0')
     val minute = ((diffTimeSecond % 3600) / 60).toInt()
-    val minuteStr = "$minute".padStart(2, '0')
+    val minuteStr = "$minute".padStartForce(2, '0')
     val second = ((diffTimeSecond % 3600) % 60).toInt()
-    val secondStr = "$second".padStart(2, '0')
+    val secondStr = "$second".padStartForce(2, '0')
     return if (hasDay && day > 0) {
         "${day}天 ${hourStr}:${minuteStr}:${secondStr}"
     } else {

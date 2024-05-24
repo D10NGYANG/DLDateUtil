@@ -13,6 +13,8 @@ class FormatTest {
         assertEquals(timestamp.toDateStr(pattern2), "2022-09-14 18:00:21.238")
         val pattern3 = "yyyy-MM-ddTHH:mm:ss.SSSZ"
         assertEquals(timestamp.toDateStr(pattern3), "2022-09-14T18:00:21.238Z")
+        val pattern4 = "HH:mm:ss.SS"
+        assertEquals(timestamp.toDateStr(pattern4), "18:00:21.23")
     }
 
     @Test

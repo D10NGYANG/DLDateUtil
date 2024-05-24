@@ -25,8 +25,8 @@ fun Int.timeSecond2String(): String {
     val minute = (this - hour * 60 * 60) / 60
     val second = this - hour * 60 * 60 - minute * 60
     val builder = StringBuilder()
-        .append(hour.toString().padStart(2, '0')).append(":")
-        .append(minute.toString().padStart(2, '0')).append(":")
-        .append(second.toString().padStart(2, '0'))
+        .append(hour.toString().padStartForce(2, '0')).append(":")
+        .append(minute.toString().padStartForce(2, '0')).append(":")
+        .append(second.toString().padStartForce(2, '0'))
     return builder.toString()
 }
