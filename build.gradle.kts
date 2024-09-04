@@ -3,24 +3,31 @@ val bds100MavenPassword: String by project
 val npmJsToken: String by project
 
 plugins {
-    kotlin("multiplatform") version "1.9.24"
+    kotlin("multiplatform") version "2.0.20"
+    id("com.android.library")
     id("maven-publish")
-    id("dev.petuska.npm.publish") version "3.4.2"
-    id("org.sonarqube") version "5.0.0.4638"
+    id("dev.petuska.npm.publish") version "3.4.3"
+    id("org.sonarqube") version "5.1.0.4882"
     id("com.github.ben-manes.versions") version "0.51.0"
 }
 
 group = "com.github.D10NGYANG"
-version = "1.9.4"
+version = "2.0.0"
 
 repositories {
+    google()
     mavenCentral()
 }
 
 kotlin {
+    jvmToolchain(8)
+    androidTarget {
+        publishLibraryVariants("release")
+    }
     jvm {
-        jvmToolchain(8)
-        withJava()
+        testRuns["test"].executionTask.configure {
+            useJUnit()
+        }
     }
     js(IR) {
         moduleName = "dl-date-util"
@@ -31,6 +38,10 @@ kotlin {
     }
     iosArm64()
     iosSimulatorArm64()
+    macosArm64()
+    macosX64()
+    linuxArm64()
+    linuxX64()
 
     sourceSets {
         all {
@@ -41,7 +52,7 @@ kotlin {
         commonMain {
             dependencies {
                 // 时间工具
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
             }
         }
         commonTest {
@@ -52,7 +63,29 @@ kotlin {
     }
 }
 
+android {
+    compileSdk = 34
+    namespace = "$group.${rootProject.name}"
+
+    defaultConfig {
+        minSdk = 24
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
 publishing {
+    publications.withType(MavenPublication::class) {
+        artifact(tasks["javadocJar"])
+    }
     repositories {
         maven {
             url = uri("/Users/d10ng/project/kotlin/maven-repo/repository")
@@ -92,9 +125,4 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
     rejectVersionIf {
         isNonStable(candidate.version)
     }
-}
-
-// TODO 修复gradle 8.0以后出现任务依赖不声明导致的问题，待后续修复了再移除
-tasks.named("jsNodeProductionLibraryPrepare") {
-    dependsOn("jsProductionExecutableCompileSync")
 }
