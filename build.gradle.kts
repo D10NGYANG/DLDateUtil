@@ -3,19 +3,25 @@ val bds100MavenPassword: String by project
 val npmJsToken: String by project
 
 plugins {
-    kotlin("multiplatform") version "2.0.20"
+    id("dev.petuska.npm.publish") version "3.5.3"
+    kotlin("multiplatform") version "2.1.10"
     id("com.android.library")
     id("maven-publish")
-    id("dev.petuska.npm.publish") version "3.4.3"
-    id("org.sonarqube") version "5.1.0.4882"
-    id("com.github.ben-manes.versions") version "0.51.0"
+    id("org.sonarqube") version "6.0.1.5171"
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 group = "com.github.D10NGYANG"
 version = "2.0.0"
 
 repositories {
-    google()
+    google {
+        mavenContent {
+            includeGroupAndSubgroups("androidx")
+            includeGroupAndSubgroups("com.android")
+            includeGroupAndSubgroups("com.google")
+        }
+    }
     mavenCentral()
 }
 
@@ -38,6 +44,7 @@ kotlin {
     }
     iosArm64()
     iosSimulatorArm64()
+    iosX64()
     macosArm64()
     macosX64()
     linuxArm64()
@@ -52,7 +59,7 @@ kotlin {
         commonMain {
             dependencies {
                 // 时间工具
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
             }
         }
         commonTest {
@@ -125,4 +132,9 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
     rejectVersionIf {
         isNonStable(candidate.version)
     }
+}
+
+tasks.named<Copy>("jsNodeProductionLibraryDistribution") {
+    // 显式声明依赖，确保先执行 jsProductionExecutableCompileSync 任务
+    dependsOn("jsProductionExecutableCompileSync")
 }
