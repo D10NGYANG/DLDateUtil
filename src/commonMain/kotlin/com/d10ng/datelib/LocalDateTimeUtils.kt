@@ -3,6 +3,7 @@ package com.d10ng.datelib
 
 import kotlinx.datetime.*
 import kotlin.js.JsExport
+import kotlin.js.JsName
 
 /**
  * 创建本地时间
@@ -29,6 +30,7 @@ fun createSystemLocalDateTime(milliseconds: Long): LocalDateTime =
  * @param timeZone [TimeZone] 时区
  * @return [LocalDateTime]
  */
+@JsName("createLocalDateTimeBySeconds")
 fun createLocalDateTime(seconds: Int, timeZone: TimeZone): LocalDateTime {
     val instant = Instant.fromEpochSeconds(seconds.toLong())
     return instant.toLocalDateTime(timeZone)
@@ -39,6 +41,7 @@ fun createLocalDateTime(seconds: Int, timeZone: TimeZone): LocalDateTime {
  * @param seconds [Int] 秒
  * @return [LocalDateTime]
  */
+@JsName("createSystemLocalDateTimeBySeconds")
 fun createSystemLocalDateTime(seconds: Int): LocalDateTime =
     createLocalDateTime(seconds, TimeZone.currentSystemDefault())
 
@@ -47,6 +50,7 @@ fun createSystemLocalDateTime(seconds: Int): LocalDateTime =
  * @receiver [LocalDateTime]
  * @return [Instant]
  */
+@JsName("localDateTimeToSystemInstant")
 fun LocalDateTime.toSystemInstant(): Instant =
     toInstant(TimeZone.currentSystemDefault())
 
@@ -55,6 +59,7 @@ fun LocalDateTime.toSystemInstant(): Instant =
  * @receiver [LocalDateTime]
  * @return [Int]
  */
+@JsName("localDateTimeToEpochMilliseconds")
 fun LocalDateTime.toEpochMilliseconds(): Long =
     toSystemInstant().toEpochMilliseconds()
 
@@ -63,6 +68,7 @@ fun LocalDateTime.toEpochMilliseconds(): Long =
  * @receiver [LocalDateTime]
  * @return [Int]
  */
+@JsName("localDateTimeToEpochSeconds")
 fun LocalDateTime.toEpochSeconds(): Int =
     toSystemInstant().epochSeconds.toInt()
 
@@ -71,6 +77,7 @@ fun LocalDateTime.toEpochSeconds(): Int =
  * @receiver [LocalDateTime]
  * @return [Int]
  */
+@JsName("localDateTimeMillisecond")
 fun LocalDateTime.millisecond(): Int =
     nanosecond / 1000000
 
@@ -79,6 +86,7 @@ fun LocalDateTime.millisecond(): Int =
  * @receiver [LocalDateTime]
  * @return [Int]
  */
+@JsName("localDateTimeWeekOfYear")
 fun LocalDateTime.weekOfYear(): Int =
     date.weekOfYear()
 
@@ -88,6 +96,7 @@ fun LocalDateTime.weekOfYear(): Int =
  * @param isFirstMondayAsFirstWeek [Boolean] true: 取月中的第一个周一开始算周数；false: 取月的1号作为第一周
  * @return [Int]
  */
+@JsName("localDateTimeWeekOfMonth")
 fun LocalDateTime.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int =
     date.weekOfMonth(isFirstMondayAsFirstWeek)
 
@@ -96,6 +105,7 @@ fun LocalDateTime.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int =
  * @receiver [LocalDateTime]
  * @return [CalendarInfo]
  */
+@JsName("localDateTimeLunarCalendar")
 fun LocalDateTime.lunarCalendar(): CalendarInfo = date.lunarCalendar()
 
 /**
@@ -110,6 +120,7 @@ fun LocalDateTime.lunarCalendar(): CalendarInfo = date.lunarCalendar()
  * @param nanosecond [Int] 纳秒
  * @return [LocalDateTime]
  */
+@JsName("copyLocalDateTime")
 fun LocalDateTime.copy(
     year: Int = this.year,
     month: Int = this.monthNumber,
@@ -127,6 +138,7 @@ fun LocalDateTime.copy(
  * @receiver [LocalDateTime]
  * @return [Boolean]
  */
+@JsName("localDateTimeIsToday")
 fun LocalDateTime.isToday(): Boolean =
     date.isToday()
 
@@ -135,6 +147,7 @@ fun LocalDateTime.isToday(): Boolean =
  * @receiver [LocalDateTime]
  * @return [Boolean]
  */
+@JsName("localDateTimeIsYesterday")
 fun LocalDateTime.isYesterday(): Boolean =
     date.isYesterday()
 
@@ -143,6 +156,7 @@ fun LocalDateTime.isYesterday(): Boolean =
  * @receiver [LocalDateTime]
  * @return [Boolean]
  */
+@JsName("localDateTimeIsTomorrow")
 fun LocalDateTime.isTomorrow(): Boolean =
     date.isTomorrow()
 
@@ -151,5 +165,6 @@ fun LocalDateTime.isTomorrow(): Boolean =
  * @receiver [LocalDateTime]
  * @return [Boolean]
  */
+@JsName("localDateTimeIsBeforeYesterday")
 fun LocalDateTime.isBeforeYesterday(): Boolean =
     date.isBeforeYesterday()

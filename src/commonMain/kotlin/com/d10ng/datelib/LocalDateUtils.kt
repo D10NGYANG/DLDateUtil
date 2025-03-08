@@ -3,12 +3,14 @@ package com.d10ng.datelib
 
 import kotlinx.datetime.*
 import kotlin.js.JsExport
+import kotlin.js.JsName
 
 /**
  * 将LocalDate转换为LocalDateTime
  * @receiver [LocalDate]
  * @return [LocalDateTime]
  */
+@JsName("localDateToLocalDateTime")
 fun LocalDate.toLocalDateTime(): LocalDateTime =
     LocalDateTime(this, LocalTime(0, 0))
 
@@ -17,6 +19,7 @@ fun LocalDate.toLocalDateTime(): LocalDateTime =
  * @receiver [LocalDate]
  * @return [Instant]
  */
+@JsName("localDateToSystemInstant")
 fun LocalDate.toSystemInstant(): Instant =
     toLocalDateTime().toSystemInstant()
 
@@ -25,6 +28,7 @@ fun LocalDate.toSystemInstant(): Instant =
  * @receiver [LocalDate]
  * @return [Long]
  */
+@JsName("localDateToEpochMilliseconds")
 fun LocalDate.toEpochMilliseconds(): Long =
     toSystemInstant().toEpochMilliseconds()
 
@@ -33,6 +37,7 @@ fun LocalDate.toEpochMilliseconds(): Long =
  * @receiver [LocalDate]
  * @return [Int]
  */
+@JsName("localDateToEpochSeconds")
 fun LocalDate.toEpochSeconds(): Int =
     toSystemInstant().epochSeconds.toInt()
 
@@ -41,6 +46,7 @@ fun LocalDate.toEpochSeconds(): Int =
  * @receiver [LocalDate]
  * @return [Int]
  */
+@JsName("localDateWeekOfYear")
 fun LocalDate.weekOfYear(): Int {
     // 获取对应年份的第一天是星期几
     val startDayOfWeek = LocalDate(year, 1, 1).dayOfWeek.isoDayNumber
@@ -62,6 +68,7 @@ fun LocalDate.weekOfYear(): Int {
  * @param isFirstMondayAsFirstWeek [Boolean] true: 取月中的第一个周一开始算周数；false: 取月的1号作为第一周
  * @return [Int]
  */
+@JsName("localDateWeekOfMonth")
 fun LocalDate.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
     val start = LocalDate(year, monthNumber, 1)
     val startWeekOfDay = start.dayOfWeek.isoDayNumber
@@ -83,6 +90,7 @@ fun LocalDate.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
  * @receiver [LocalDate]
  * @return [CalendarInfo]
  */
+@JsName("localDateLunarCalendar")
 fun LocalDate.lunarCalendar(): CalendarInfo =
     LunarDateUtil.solar2lunar(year, monthNumber, dayOfMonth)!!
 
@@ -94,6 +102,7 @@ fun LocalDate.lunarCalendar(): CalendarInfo =
  * @param day [Int] 日
  * @return [LocalDate]
  */
+@JsName("copyLocalDate")
 fun LocalDate.copy(year: Int = this.year, month: Int = this.monthNumber, day: Int = this.dayOfMonth): LocalDate {
     return LocalDate(year, month, day)
 }
@@ -103,6 +112,7 @@ fun LocalDate.copy(year: Int = this.year, month: Int = this.monthNumber, day: In
  * @receiver [LocalDate]
  * @return [Boolean]
  */
+@JsName("localDateIsToday")
 fun LocalDate.isToday(): Boolean =
     minus(nowSystemLocalDate()).days == 0
 
@@ -111,6 +121,7 @@ fun LocalDate.isToday(): Boolean =
  * @receiver [LocalDate]
  * @return [Boolean]
  */
+@JsName("localDateIsYesterday")
 fun LocalDate.isYesterday(): Boolean =
     minus(nowSystemLocalDate()).days == 1
 
@@ -119,6 +130,7 @@ fun LocalDate.isYesterday(): Boolean =
  * @receiver [LocalDate]
  * @return [Boolean]
  */
+@JsName("localDateIsTomorrow")
 fun LocalDate.isTomorrow(): Boolean =
     minus(nowSystemLocalDate()).days == -1
 
@@ -127,5 +139,6 @@ fun LocalDate.isTomorrow(): Boolean =
  * @receiver [LocalDate]
  * @return [Boolean]
  */
+@JsName("localDateIsBeforeYesterday")
 fun LocalDate.isBeforeYesterday(): Boolean =
     minus(nowSystemLocalDate()).days == 2

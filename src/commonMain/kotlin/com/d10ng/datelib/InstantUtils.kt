@@ -6,12 +6,14 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.js.JsExport
+import kotlin.js.JsName
 
 /**
  * 将Instant转换为系统默认时区的LocalDateTime
  * @receiver [Instant]
  * @return [LocalDateTime]
  */
+@JsName("instantToSystemLocalDateTime")
 fun Instant.toSystemLocalDateTime(): LocalDateTime =
     toLocalDateTime(TimeZone.currentSystemDefault())
 
@@ -20,4 +22,5 @@ fun Instant.toSystemLocalDateTime(): LocalDateTime =
  * @receiver [Instant]
  * @return [Int]
  */
+@JsName("instantEpochSecondsInt")
 fun Instant.epochSecondsInt(): Int = epochSeconds.toInt()

@@ -3,12 +3,14 @@ package com.d10ng.datelib
 
 import kotlinx.datetime.*
 import kotlin.js.JsExport
+import kotlin.js.JsName
 
 /**
  * 获取月份的中文名，如：一月
  * @receiver [Month]
  * @return [String]
  */
+@JsName("monthChineseName")
 fun Month.chineseName(): String {
     return MonthTextType.CN.list[ordinal]
 }
@@ -18,6 +20,7 @@ fun Month.chineseName(): String {
  * @receiver [Month]
  * @return [String]
  */
+@JsName("monthEnglishName")
 fun Month.englishName(): String {
     return MonthTextType.EN.list[ordinal]
 }
@@ -27,6 +30,7 @@ fun Month.englishName(): String {
  * @receiver [Month]
  * @return [String]
  */
+@JsName("monthEnglishShortName")
 fun Month.englishShortName(): String {
     return MonthTextType.EN_SHORT.list[ordinal]
 }

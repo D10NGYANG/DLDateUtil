@@ -4,6 +4,7 @@ package com.d10ng.datelib
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.format
 import kotlin.js.JsExport
+import kotlin.js.JsName
 
 /**
  * 复制一个新的LocalTime对象
@@ -14,6 +15,7 @@ import kotlin.js.JsExport
  * @param nanosecond Int
  * @return [LocalTime]
  */
+@JsName("copyLocalTime")
 fun LocalTime.copy(
     hour: Int = this.hour,
     minute: Int = this.minute,
@@ -28,6 +30,6 @@ fun LocalTime.copy(
  * @receiver [LocalTime]
  * @return [String]
  */
-fun LocalTime.toISOString(): String {
-    return format(LocalTime.Formats.ISO)
-}
+@JsName("localTimeToISOString")
+fun LocalTime.toISOString(): String =
+    format(LocalTime.Formats.ISO)
