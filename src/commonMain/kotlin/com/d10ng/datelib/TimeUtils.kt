@@ -1,6 +1,7 @@
 @file:JsExport
 package com.d10ng.datelib
 
+import kotlinx.datetime.LocalTime
 import kotlin.js.JsExport
 
 /**
@@ -8,8 +9,9 @@ import kotlin.js.JsExport
  * @receiver Long
  * @return String
  */
+@Deprecated("请使用LocalTime.fromMillisecondOfDay(this.toInt()).toISOString()", ReplaceWith("LocalTime.fromMillisecondOfDay(this.toInt()).toISOString()"), DeprecationLevel.WARNING)
 fun Long.time2String(): String {
-    return (this / 1000).toInt().timeSecond2String()
+    return LocalTime.fromMillisecondOfDay(this.toInt()).toISOString()
 }
 
 /**
@@ -17,16 +19,7 @@ fun Long.time2String(): String {
  * @receiver Int
  * @return String
  */
+@Deprecated("请使用LocalTime.fromSecondOfDay(this).toISOString()", ReplaceWith("LocalTime.fromSecondOfDay(this).toISOString()"), DeprecationLevel.WARNING)
 fun Int.timeSecond2String(): String {
-    if (this <= 0) {
-        return "00:00:00"
-    }
-    val hour = this / (60 * 60)
-    val minute = (this - hour * 60 * 60) / 60
-    val second = this - hour * 60 * 60 - minute * 60
-    val builder = StringBuilder()
-        .append(hour.toString().padStartForce(2, '0')).append(":")
-        .append(minute.toString().padStartForce(2, '0')).append(":")
-        .append(second.toString().padStartForce(2, '0'))
-    return builder.toString()
+    return LocalTime.fromSecondOfDay(this).toISOString()
 }

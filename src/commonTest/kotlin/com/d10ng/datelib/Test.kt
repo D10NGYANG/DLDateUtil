@@ -1,5 +1,11 @@
 package com.d10ng.datelib
 
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.format
+import kotlinx.datetime.format.char
+import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.number
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -135,5 +141,55 @@ class Test {
             // 将两个毫秒时间戳之间的间隔转换成时间文本 1天 14:20:01
             true
         }
+    }
+
+    @Test
+    fun testNew() {
+        val now = now()
+        println("获取当前时间戳（毫秒）${now.toEpochMilliseconds()}")
+        // 获取当前时间戳（毫秒）1741248954881
+        println("获取当前时间戳（秒） ${now.epochSeconds}")
+        // 获取当前时间戳（秒） 1741248954
+        val dateTime = now.toSystemLocalDateTime()
+        println("获取当前年份 ${dateTime.year}")
+        // 获取当前年份 2022
+        println("获取当前月份 ${dateTime.month} ${dateTime.month.number}")
+        // 获取当前月份 MARCH 3
+        println("获取当前日 ${dateTime.dayOfMonth}")
+        // 获取当前日 6
+        println("获取当前小时 ${dateTime.hour}")
+        // 获取当前小时 16
+        println("获取当前分钟 ${dateTime.minute}")
+        // 获取当前分钟 18
+        println("获取当前秒 ${dateTime.second}")
+        // 获取当前秒 55
+        println("获取当前毫秒 ${dateTime.millisecond()}")
+        // 获取当前毫秒 364
+        println("获取当前年中的天数 ${dateTime.dayOfYear}")
+        // 获取当前年中的天数 65
+        println("获取当前年中的周数 ${dateTime.weekOfYear()}")
+        // 获取当前年中的周数 10
+        println("获取当前月中的周数 ${dateTime.weekOfMonth()}")
+        // 获取当前月中的周数 1
+        println("获取当前星期几 ${dateTime.dayOfWeek} ${dateTime.dayOfWeek.isoDayNumber}")
+        // 获取当前星期几 THURSDAY 4
+        println("获取当天的农历信息 ${dateTime.lunarCalendar()}")
+        // 获取当天的农历信息 CalendarInfo(lYear=2025, lMonth=2, lDay=8, animal=蛇, lMonthCn=二月, lDayCn=初八, cYear=2025, cMonth=3, cDay=7, gzYear=乙巳, gzMonth=己卯, gzDay=乙亥, isToday=true, isLeap=false, nWeek=5, ncWeek=星期五, isTerm=false, term=null)
+    }
+
+    @Test
+    fun testDaysOfMonth() {
+        println(daysOfMonth(2024, 2)) // 29
+    }
+
+    @Test
+    fun testStringFormat() {
+        val now = now()
+        println(now.toEpochMilliseconds())
+        println(LocalDateTime.Format {
+            year(); char('-'); monthNumber(); char('-'); dayOfMonth(); char(' '); hour(); char(':'); minute(); char(':'); second(); char('.'); secondFraction(3)
+        }.format(now.toSystemLocalDateTime()))
+        val time = 21 * 3600000 + 5 * 60000 + 1 * 1000
+        println(LocalTime.fromMillisecondOfDay(time).format(LocalTime.Formats.ISO))
     }
 }

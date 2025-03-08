@@ -19,44 +19,57 @@ private const val DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss"
 
 /** 获取当前系统时间戳，单位毫秒 */
 @Suppress("NON_EXPORTABLE_TYPE")
+@Deprecated("请使用nowTimestamp()", ReplaceWith("nowTimestamp()"), DeprecationLevel.WARNING)
 val curTime: Long
-    get() = Clock.System.now().toEpochMilliseconds()
+    get() = nowTimestamp()
 /** 获取当前年份 */
+@Deprecated("请使用nowSystemLocalDateTime().year", ReplaceWith("nowSystemLocalDateTime().year"), DeprecationLevel.WARNING)
 val curYear: Int
-    get() = curTime.getDateYear()
+    get() = nowSystemLocalDateTime().year
 /** 获取当前月份 */
+@Deprecated("请使用nowSystemLocalDateTime().monthNumber", ReplaceWith("nowSystemLocalDateTime().monthNumber"), DeprecationLevel.WARNING)
 val curMonth: Int
-    get() = curTime.getDateMonth()
+    get() = nowSystemLocalDateTime().monthNumber
 /** 获取当前日 */
+@Deprecated("请使用nowSystemLocalDateTime().dayOfMonth", ReplaceWith("nowSystemLocalDateTime().dayOfMonth"), DeprecationLevel.WARNING)
 val curDay: Int
-    get() = curTime.getDateDay()
+    get() = nowSystemLocalDateTime().dayOfMonth
 /** 获取当前小时 */
+@Deprecated("请使用nowSystemLocalDateTime().hour", ReplaceWith("nowSystemLocalDateTime().hour"), DeprecationLevel.WARNING)
 val curHour: Int
-    get() = curTime.getDateHour()
+    get() = nowSystemLocalDateTime().hour
 /** 获取当前分钟 */
+@Deprecated("请使用nowSystemLocalDateTime().minute", ReplaceWith("nowSystemLocalDateTime().minute"), DeprecationLevel.WARNING)
 val curMinute: Int
-    get() = curTime.getDateMinute()
+    get() = nowSystemLocalDateTime().minute
 /** 获取当前秒钟 */
+@Deprecated("请使用nowSystemLocalDateTime().second", ReplaceWith("nowSystemLocalDateTime().second"), DeprecationLevel.WARNING)
 val curSecond: Int
-    get() = curTime.getDateSecond()
+    get() = nowSystemLocalDateTime().second
 /** 获取当前毫秒 */
+@Deprecated("请使用nowSystemLocalDateTime().millisecond()", ReplaceWith("nowSystemLocalDateTime().millisecond()"), DeprecationLevel.WARNING)
 val curMillisecond: Int
-    get() = curTime.getDateMillisecond()
+    get() = nowSystemLocalDateTime().millisecond()
 /** 获取当前年中的周数 */
+@Deprecated("请使用nowSystemLocalDateTime().weekOfYear()", ReplaceWith("nowSystemLocalDateTime().weekOfYear()"), DeprecationLevel.WARNING)
 val curWeekOfYear: Int
-    get() = curTime.getDateWeekOfYear()
+    get() = nowSystemLocalDateTime().weekOfYear()
 /** 获取当前月中的周数 */
+@Deprecated("请使用nowSystemLocalDateTime().weekOfMonth()", ReplaceWith("nowSystemLocalDateTime().weekOfMonth()"), DeprecationLevel.WARNING)
 val curWeekOfMonth: Int
-    get() = curTime.getDateWeekOfMonth()
+    get() = nowSystemLocalDateTime().weekOfMonth()
 /** 获取当前年中的天数 */
+@Deprecated("请使用nowSystemLocalDateTime().dayOfYear", ReplaceWith("nowSystemLocalDateTime().dayOfYear"), DeprecationLevel.WARNING)
 val curDayOfYear: Int
-    get() = curTime.getDateDayOfYear()
+    get() = nowSystemLocalDateTime().dayOfYear
 /** 获取当前星期几 */
+@Deprecated("请使用nowSystemLocalDateTime().dayOfWeek.isoDayNumber", ReplaceWith("nowSystemLocalDateTime().dayOfWeek.isoDayNumber"), DeprecationLevel.WARNING)
 val curDayOfWeek: Int
-    get() = curTime.getDateDayOfWeek()
+    get() = nowSystemLocalDateTime().dayOfWeek.isoDayNumber
 /** 今天的农历信息 */
+@Deprecated("请使用nowSystemLocalDateTime().lunarCalendar()", ReplaceWith("nowSystemLocalDateTime().lunarCalendar()"), DeprecationLevel.WARNING)
 val curDayLunar: CalendarInfo
-    get() = curTime.getDateDayLunar()!!
+    get() = nowSystemLocalDateTime().lunarCalendar()
 
 /**
  * 将毫秒时间戳转换成 LocalDateTime
@@ -73,7 +86,8 @@ private fun Long.toLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefa
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 年份
  */
-fun Long.getDateYear(): Int = this.toLocalDateTime().year
+@Deprecated("请使用createSystemLocalDateTime(this).year", ReplaceWith("createSystemLocalDateTime(this).year"), DeprecationLevel.WARNING)
+fun Long.getDateYear(): Int = createSystemLocalDateTime(this).year
 
 /**
  * 修改时间戳中的年份
@@ -91,7 +105,8 @@ fun Long.setDateYear(value: Int): Long =
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 月份
  */
-fun Long.getDateMonth(): Int = this.toLocalDateTime().month.number
+@Deprecated("请使用createSystemLocalDateTime(this).monthNumber", ReplaceWith("createSystemLocalDateTime(this).monthNumber"), DeprecationLevel.WARNING)
+fun Long.getDateMonth(): Int = createSystemLocalDateTime(this).monthNumber
 
 /**
  * 修改时间戳中的月份
@@ -109,7 +124,8 @@ fun Long.setDateMonth(value: Int): Long =
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 日
  */
-fun Long.getDateDay(): Int = this.toLocalDateTime().dayOfMonth
+@Deprecated("请使用createSystemLocalDateTime(this).dayOfMonth", ReplaceWith("createSystemLocalDateTime(this).dayOfMonth"), DeprecationLevel.WARNING)
+fun Long.getDateDay(): Int = createSystemLocalDateTime(this).dayOfMonth
 
 /**
  * 修改时间戳中的日
@@ -126,7 +142,8 @@ fun Long.setDateDay(value: Int): Long =
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 小时
  */
-fun Long.getDateHour(): Int = this.toLocalDateTime().hour
+@Deprecated("请使用createSystemLocalDateTime(this).hour", ReplaceWith("createSystemLocalDateTime(this).hour"), DeprecationLevel.WARNING)
+fun Long.getDateHour(): Int = createSystemLocalDateTime(this).hour
 
 /**
  * 修改时间戳中的小时 24小时
@@ -143,7 +160,8 @@ fun Long.setDateHour(value: Int): Long =
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 分钟
  */
-fun Long.getDateMinute(): Int = this.toLocalDateTime().minute
+@Deprecated("请使用createSystemLocalDateTime(this).minute", ReplaceWith("createSystemLocalDateTime(this).minute"), DeprecationLevel.WARNING)
+fun Long.getDateMinute(): Int = createSystemLocalDateTime(this).minute
 
 /**
  * 修改时间戳中的分钟
@@ -160,7 +178,8 @@ fun Long.setDateMinute(value: Int): Long =
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 秒钟
  */
-fun Long.getDateSecond(): Int = this.toLocalDateTime().second
+@Deprecated("请使用createSystemLocalDateTime(this).second", ReplaceWith("createSystemLocalDateTime(this).second"), DeprecationLevel.WARNING)
+fun Long.getDateSecond(): Int = createSystemLocalDateTime(this).second
 
 /**
  * 修改时间戳的中秒钟
@@ -177,7 +196,8 @@ fun Long.setDateSecond(value: Int): Long =
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 毫秒
  */
-fun Long.getDateMillisecond(): Int = this.toLocalDateTime().nanosecond / 1000000
+@Deprecated("请使用createSystemLocalDateTime(this).millisecond()", ReplaceWith("createSystemLocalDateTime(this).millisecond()"), DeprecationLevel.WARNING)
+fun Long.getDateMillisecond(): Int = createSystemLocalDateTime(this).millisecond()
 
 /**
  * 修改时间戳中的毫秒
@@ -194,17 +214,9 @@ fun Long.setDateMillisecond(value: Int): Long =
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 年中的周数
  */
+@Deprecated("请使用createSystemLocalDateTime(this).weekOfYear()", ReplaceWith("createSystemLocalDateTime(this).weekOfYear()"), DeprecationLevel.WARNING)
 fun Long.getDateWeekOfYear(): Int {
-    val startDayOfWeek = getDateBy(this.getDateYear(), 1, 1).getDateDayOfWeek()
-    val endDayOfYear = this.getDateDayOfYear()
-    var offsetDay = 8 - startDayOfWeek
-    var offsetWeek = 1
-    if (startDayOfWeek == 1) {
-        offsetDay = 0
-        offsetWeek = 0
-    }
-    return if (endDayOfYear <= offsetDay) 1
-    else (endDayOfYear - offsetDay) / 7 + 1 + offsetWeek
+    return createSystemLocalDateTime(this).weekOfYear()
 }
 
 /**
@@ -213,20 +225,9 @@ fun Long.getDateWeekOfYear(): Int {
  * @param isFirstMondayAsFirstWeek [Boolean] true: 取月中的第一个周一开始算周数，false: 取月的1号作为第一周
  * @return [Int] 月中的周数
  */
+@Deprecated("请使用createSystemLocalDateTime(this).weekOfMonth(isFirstMondayAsFirstWeek)", ReplaceWith("createSystemLocalDateTime(this).weekOfMonth(isFirstMondayAsFirstWeek)"), DeprecationLevel.WARNING)
 fun Long.getDateWeekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
-    val start = getDateBy(getDateYear(), getDateMonth(), 1)
-    val startWeekOfDay = start.getDateDayOfWeek()
-    if (isFirstMondayAsFirstWeek) {
-        var firstMonday = start
-        if (startWeekOfDay != 1) {
-            firstMonday = start.getNextDay(8 - startWeekOfDay)
-        }
-        return (this.getDateDay() - firstMonday.getDateDay()) / 7 + 1
-    } else {
-        val firstWeekOffset = 8 - startWeekOfDay
-        if (this.getDateDay() <= firstWeekOffset) return 1
-        return (this.getDateDay() - firstWeekOffset) / 7 + 2
-    }
+    return createSystemLocalDateTime(this).weekOfMonth(isFirstMondayAsFirstWeek)
 }
 
 /**
@@ -234,14 +235,16 @@ fun Long.getDateWeekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 日
  */
-fun Long.getDateDayOfYear(): Int = this.toLocalDateTime().dayOfYear
+@Deprecated("请使用createSystemLocalDateTime(this).dayOfYear", ReplaceWith("createSystemLocalDateTime(this).dayOfYear"), DeprecationLevel.WARNING)
+fun Long.getDateDayOfYear(): Int = createSystemLocalDateTime(this).dayOfYear
 
 /**
  * 获取时间戳中的星期几
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 星期几，1～7
  */
-fun Long.getDateDayOfWeek(): Int = this.toLocalDateTime().dayOfWeek.isoDayNumber
+@Deprecated("请使用createSystemLocalDateTime(this).dayOfWeek.isoDayNumber", ReplaceWith("createSystemLocalDateTime(this).dayOfWeek.isoDayNumber"), DeprecationLevel.WARNING)
+fun Long.getDateDayOfWeek(): Int = createSystemLocalDateTime(this).dayOfWeek.isoDayNumber
 
 /**
  * 获取时间戳中的星期几的文本
@@ -266,7 +269,8 @@ fun Long.getDateMonthText(type: MonthTextType): String =
  * @receiver [Long] 毫秒时间戳
  * @return [CalendarInfo] 农历信息
  */
-fun Long.getDateDayLunar(): CalendarInfo? = LunarDateUtil.solar2lunar(getDateYear(), getDateMonth(), getDateDay())
+@Deprecated("请使用createSystemLocalDateTime(this).lunarCalendar()", ReplaceWith("createSystemLocalDateTime(this).lunarCalendar()"), DeprecationLevel.WARNING)
+fun Long.getDateDayLunar(): CalendarInfo? = createSystemLocalDateTime(this).lunarCalendar()
 
 /**
  * 时间戳转换成字符窜
@@ -499,12 +503,13 @@ fun String.isDatetimeString(pattern: String = DEFAULT_PATTERN): Boolean {
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 @JsName("getDateByYMD")
+@Deprecated("请使用LocalDate(year, month, day).toEpochMilliseconds()", ReplaceWith("LocalDate(year, month, day).toEpochMilliseconds()"), DeprecationLevel.WARNING)
 fun getDateBy(
     year: Int,
     month: Int,
     day: Int
 ): Long {
-    return getDateBy(year, month, day, 0, 0, 0, 0)
+    return LocalDate(year, month, day).toEpochMilliseconds()
 }
 
 /**
@@ -519,6 +524,7 @@ fun getDateBy(
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 @JsName("getDateByYMDHms")
+@Deprecated("请使用LocalDateTime(year, month, day, hour, minute, second).toEpochMilliseconds()", ReplaceWith("LocalDateTime(year, month, day, hour, minute, second).toEpochMilliseconds()"), DeprecationLevel.WARNING)
 fun getDateBy(
     year: Int,
     month: Int,
@@ -527,7 +533,7 @@ fun getDateBy(
     minute: Int,
     second: Int
 ): Long {
-    return getDateBy(year, month, day, hour, minute, second, 0)
+    return LocalDateTime(year, month, day, hour, minute, second).toEpochMilliseconds()
 }
 
 /**
@@ -542,6 +548,7 @@ fun getDateBy(
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
+@Deprecated("请使用LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toEpochMilliseconds()", ReplaceWith("LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toEpochMilliseconds()"), DeprecationLevel.WARNING)
 fun getDateBy(
     year: Int = curYear,
     month: Int = curMonth,
@@ -551,8 +558,7 @@ fun getDateBy(
     second: Int = curSecond,
     millisecond: Int = curMillisecond
 ): Long {
-    return LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000)
-        .toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+    return LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toEpochMilliseconds()
 }
 
 /**
@@ -584,6 +590,7 @@ fun Long.getNextDay(offset: Int = 1): Long {
  * @param month [Int] 月
  * @return [Int] 天数
  */
+@Deprecated("请使用daysOfMonth(year, month)", ReplaceWith("daysOfMonth(year, month)"), DeprecationLevel.WARNING)
 fun getDaysOfMonth(year: Int = curYear, month: Int = curMonth): Int {
     val ldt = LocalDateTime(year, month, 1, 0, 0, 0)
     val start = ldt.toInstant(TimeZone.currentSystemDefault())
