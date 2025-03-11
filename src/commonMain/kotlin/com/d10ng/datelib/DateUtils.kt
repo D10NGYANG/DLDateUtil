@@ -332,7 +332,7 @@ fun Long.toDateStr(pattern: String = DEFAULT_PATTERN): String {
     reg = "S+".toRegex().findAll(string).toList()
     for (item in reg) {
         string = string.replaceRange(item.range,
-            getDateMillisecond().toString().padStart(item.value.length, '0').substring(0, item.value.length)
+            getDateMillisecond().toString().padStart(3, '0').substring(0, item.value.length)
         )
     }
     // 将 w 转换成年中的周数
@@ -421,7 +421,7 @@ fun String.toDateLong(pattern: String = DEFAULT_PATTERN): Long {
     val second  = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curSecond else 0
     // 将 S 转换成毫秒
     reg = "S+".toRegex().findAll(string).toList()
-    val millisecond  = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curMillisecond else 0
+    val millisecond  = if (reg.isNotEmpty()) this.substring(reg[0].range).padEnd(3, '0').toIntOrNull()?: curMillisecond else 0
     return getDateBy(year, month, day, hour, minute, second, millisecond)
 }
 

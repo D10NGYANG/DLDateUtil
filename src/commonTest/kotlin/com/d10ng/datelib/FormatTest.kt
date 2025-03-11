@@ -17,6 +17,8 @@ class FormatTest {
         assertEquals(timestamp.toDateStr(pattern4), "18:00:21.23")
         val pattern5 = "yyMMdd"
         assertEquals(timestamp.toDateStr(pattern5), "220914")
+        val pattern6 = "HHmmss.SS"
+        assertEquals(1663092834010L.toDateStr(pattern6), "021354.01")
     }
 
     @Test
@@ -29,6 +31,8 @@ class FormatTest {
         assertEquals("2022-09-14T18:00:21.238Z".toDateLong(pattern3), timestamp)
         val pattern4 = "yyyyMMdd"
         assertEquals("20220914".toDateLong(pattern4), 1663084800000)
+        val pattern5 = "yyyyMMddHHmmss.SS"
+        assertEquals("20220914021354.01".toDateLong(pattern5), 1663092834010)
     }
 
     @Test

@@ -1,6 +1,6 @@
 # DLDateUtil 📅
 
-[![最新版本](https://img.shields.io/badge/版本-2.1.1-blue.svg)](https://github.com/D10NGYANG/DLDateUtil/releases)
+[![最新版本](https://img.shields.io/badge/版本-2.1.2-blue.svg)](https://github.com/D10NGYANG/DLDateUtil/releases)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1.10-purple.svg)](https://kotlinlang.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](License)
 
@@ -78,7 +78,7 @@ kotlinx-datetime 是 Kotlin 官方提供的跨平台日期时间处理库，它�
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.github.D10NGYANG:DLDateUtil:2.1.1")
+    implementation("com.github.D10NGYANG:DLDateUtil:2.1.2")
 }
 ```
 

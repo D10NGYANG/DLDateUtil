@@ -199,12 +199,12 @@ class Test {
     @Test
     fun testFormat() {
         var now = nowTimestamp()
-        println((1663149621 * 1000L).toDateStr("yyMMddHHmmss"))
+        println((1663149621238).toDateStr("HHmmss.SS"))
         println(nowTimestamp() - now)
         now = nowTimestamp()
-        println(createSystemLocalDateTime(1663149621).format(LocalDateTime.Format {
-            year(); monthNumber(); dayOfMonth(); hour(); minute(); second();
-        }).substring(2))
+        println(createSystemLocalDateTime(1663149621238).format(LocalDateTime.Format {
+            hour(); minute(); second(); char('.'); secondFraction(2)
+        }))
         println(nowTimestamp() - now)
     }
 }
