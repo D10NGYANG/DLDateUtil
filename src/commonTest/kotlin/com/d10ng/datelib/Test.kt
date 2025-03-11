@@ -1,8 +1,10 @@
 package com.d10ng.datelib
 
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.format
+import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.char
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.number
@@ -185,11 +187,24 @@ class Test {
     @Test
     fun testStringFormat() {
         val now = now()
+        println(now)
         println(now.toEpochMilliseconds())
         println(LocalDateTime.Format {
             year(); char('-'); monthNumber(); char('-'); dayOfMonth(); char(' '); hour(); char(':'); minute(); char(':'); second(); char('.'); secondFraction(3)
         }.format(now.toSystemLocalDateTime()))
         val time = 21 * 3600000 + 5 * 60000 + 1 * 1000
         println(LocalTime.fromMillisecondOfDay(time).format(LocalTime.Formats.ISO))
+    }
+
+    @Test
+    fun testFormat() {
+        var now = nowTimestamp()
+        println((1663149621 * 1000L).toDateStr("yyMMddHHmmss"))
+        println(nowTimestamp() - now)
+        now = nowTimestamp()
+        println(createSystemLocalDateTime(1663149621).format(LocalDateTime.Format {
+            year(); monthNumber(); dayOfMonth(); hour(); minute(); second();
+        }).substring(2))
+        println(nowTimestamp() - now)
     }
 }

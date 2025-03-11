@@ -331,7 +331,9 @@ fun Long.toDateStr(pattern: String = DEFAULT_PATTERN): String {
     // 将 S 转换成毫秒
     reg = "S+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateMillisecond().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range,
+            getDateMillisecond().toString().padStart(item.value.length, '0').substring(0, item.value.length)
+        )
     }
     // 将 w 转换成年中的周数
     reg = "w+".toRegex().findAll(string).toList()
@@ -678,11 +680,11 @@ fun dateDiffToString(start: Long, end: Long, hasDay: Boolean = false): String {
     if (hasDay && day > 0) {
         hour -= (day * 24)
     }
-    val hourStr = "$hour".padStartForce(2, '0')
+    val hourStr = "$hour".padStart(2, '0')
     val minute = ((diffTimeSecond % 3600) / 60).toInt()
-    val minuteStr = "$minute".padStartForce(2, '0')
+    val minuteStr = "$minute".padStart(2, '0')
     val second = ((diffTimeSecond % 3600) % 60).toInt()
-    val secondStr = "$second".padStartForce(2, '0')
+    val secondStr = "$second".padStart(2, '0')
     return if (hasDay && day > 0) {
         "${day}天 ${hourStr}:${minuteStr}:${secondStr}"
     } else {
