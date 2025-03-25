@@ -130,7 +130,17 @@ fun LocalDateTime.copy(
     second: Int = this.second,
     nanosecond: Int = this.nanosecond
 ): LocalDateTime {
-    return LocalDateTime(year, month, day, hour, minute, second, nanosecond)
+    val y = year.coerceIn(1970, 9999)
+    val m = month.coerceIn(1, 12)
+    return LocalDateTime(
+        year = y,
+        monthNumber = m,
+        dayOfMonth = day.coerceIn(1, daysOfMonth(y, m)),
+        hour = hour.coerceIn(0, 23),
+        minute = minute.coerceIn(0, 59),
+        second = second.coerceIn(0, 59),
+        nanosecond = nanosecond.coerceIn(0, 999999999)
+    )
 }
 
 /**

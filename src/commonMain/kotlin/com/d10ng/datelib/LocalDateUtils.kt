@@ -103,8 +103,15 @@ fun LocalDate.lunarCalendar(): CalendarInfo =
  * @return [LocalDate]
  */
 @JsName("copyLocalDate")
-fun LocalDate.copy(year: Int = this.year, month: Int = this.monthNumber, day: Int = this.dayOfMonth): LocalDate {
-    return LocalDate(year, month, day)
+fun LocalDate.copy(
+    year: Int = this.year,
+    month: Int = this.monthNumber,
+    day: Int = this.dayOfMonth
+): LocalDate {
+    val y = year.coerceIn(1970, 9999)
+    val m = month.coerceIn(1, 12)
+    val d = day.coerceIn(1, daysOfMonth(y, m))
+    return LocalDate(y, m, d)
 }
 
 /**

@@ -22,7 +22,12 @@ fun LocalTime.copy(
     second: Int = this.second,
     nanosecond: Int = this.nanosecond
 ): LocalTime {
-    return LocalTime(hour, minute, second, nanosecond)
+    return LocalTime(
+        hour = hour.coerceIn(0, 23),
+        minute = minute.coerceIn(0, 59),
+        second = second.coerceIn(0, 59),
+        nanosecond = nanosecond.coerceIn(0, 999999999)
+    )
 }
 
 /**
