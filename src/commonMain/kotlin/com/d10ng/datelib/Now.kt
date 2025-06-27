@@ -34,6 +34,13 @@ fun nowLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): Loca
     now().toLocalDateTime(timeZone)
 
 /**
+ * 获取当前UTC时间
+ * @return [LocalDateTime]
+ */
+fun nowUTCDateTime(): LocalDateTime =
+    nowLocalDateTime(TimeZone.UTC)
+
+/**
  * 获取当前系统时间
  * @return [LocalDateTime]
  */
@@ -49,6 +56,13 @@ fun nowLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDat
     nowLocalDateTime(timeZone).date
 
 /**
+ * 获取当前UTC时间
+ * @return [LocalDate]
+ */
+fun nowUTCDate(): LocalDate =
+    nowLocalDate(TimeZone.UTC)
+
+/**
  * 获取当前系统时间
  * @return [LocalDate]
  */
@@ -62,6 +76,13 @@ fun nowSystemLocalDate(): LocalDate =
  */
 fun nowLocalTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalTime =
     nowLocalDateTime(timeZone).time
+
+/**
+ * 获取当前UTC时间
+ * @return [LocalTime]
+ */
+fun nowUTCTime(): LocalTime =
+    nowLocalTime(TimeZone.UTC)
 
 /**
  * 获取当前系统时间
