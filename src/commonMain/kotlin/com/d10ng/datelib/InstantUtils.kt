@@ -9,6 +9,15 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 
 /**
+ * 将Instant转换为UTC时区的LocalDateTime
+ * @receiver [Instant]
+ * @return [LocalDateTime]
+ */
+@JsName("instantToUTCDateTime")
+fun Instant.toUTCDateTime(): LocalDateTime =
+    toLocalDateTime(TimeZone.UTC)
+
+/**
  * 将Instant转换为系统默认时区的LocalDateTime
  * @receiver [Instant]
  * @return [LocalDateTime]

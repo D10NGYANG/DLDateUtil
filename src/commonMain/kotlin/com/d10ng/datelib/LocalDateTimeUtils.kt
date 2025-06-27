@@ -17,6 +17,14 @@ fun createLocalDateTime(milliseconds: Long, timeZone: TimeZone): LocalDateTime {
 }
 
 /**
+ * 创建UTC时区的本地时间
+ * @param milliseconds [Long] 毫秒
+ * @return [LocalDateTime]
+ */
+fun createUTCDateTime(milliseconds: Long): LocalDateTime =
+    createLocalDateTime(milliseconds, TimeZone.UTC)
+
+/**
  * 创建系统时区的本地时间
  * @param milliseconds [Long] 毫秒
  * @return [LocalDateTime]
@@ -37,6 +45,15 @@ fun createLocalDateTime(seconds: Int, timeZone: TimeZone): LocalDateTime {
 }
 
 /**
+ * 创建UTC时区的本地时间
+ * @param seconds [Int] 秒
+ * @return [LocalDateTime]
+ */
+@JsName("createUTCDateTimeBySeconds")
+fun createUTCDateTime(seconds: Int): LocalDateTime =
+    createLocalDateTime(seconds, TimeZone.UTC)
+
+/**
  * 创建系统时区的本地时间
  * @param seconds [Int] 秒
  * @return [LocalDateTime]
@@ -44,6 +61,15 @@ fun createLocalDateTime(seconds: Int, timeZone: TimeZone): LocalDateTime {
 @JsName("createSystemLocalDateTimeBySeconds")
 fun createSystemLocalDateTime(seconds: Int): LocalDateTime =
     createLocalDateTime(seconds, TimeZone.currentSystemDefault())
+
+/**
+ * 将LocalDateTime转换为UTC时区的Instant
+ * @receiver [LocalDateTime]
+ * @return [Instant]
+ */
+@JsName("localDateTimeToUTCInstant")
+fun LocalDateTime.toUTCInstant(): Instant =
+    toInstant(TimeZone.UTC)
 
 /**
  * 将LocalDateTime转换为系统默认时区的Instant
@@ -55,6 +81,15 @@ fun LocalDateTime.toSystemInstant(): Instant =
     toInstant(TimeZone.currentSystemDefault())
 
 /**
+ * 将LocalDateTime转换为UTC时区的时间戳，单位毫秒
+ * @receiver [LocalDateTime]
+ * @return [Int]
+ */
+@JsName("localDateTimeToUTCEpochMilliseconds")
+fun LocalDateTime.toUTCEpochMilliseconds(): Long =
+    toUTCInstant().toEpochMilliseconds()
+
+/**
  * 将LocalDateTime转换为系统默认时区的时间戳，单位毫秒
  * @receiver [LocalDateTime]
  * @return [Int]
@@ -64,13 +99,22 @@ fun LocalDateTime.toEpochMilliseconds(): Long =
     toSystemInstant().toEpochMilliseconds()
 
 /**
+ * 将LocalDateTime转换为UTC时区的时间戳，单位秒
+ * @receiver [LocalDateTime]
+ * @return [Int]
+ */
+@JsName("localDateTimeToUTCEpochSeconds")
+fun LocalDateTime.toUTCEpochSeconds(): Int =
+    toUTCInstant().epochSecondsInt()
+
+/**
  * 将LocalDateTime转换为系统默认时区的时间戳，单位秒
  * @receiver [LocalDateTime]
  * @return [Int]
  */
 @JsName("localDateTimeToEpochSeconds")
 fun LocalDateTime.toEpochSeconds(): Int =
-    toSystemInstant().epochSeconds.toInt()
+    toSystemInstant().epochSecondsInt()
 
 /**
  * 获取毫秒
