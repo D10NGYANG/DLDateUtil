@@ -4,10 +4,10 @@ val npmJsToken: String by project
 
 plugins {
     id("dev.petuska.npm.publish") version "3.5.3"
-    kotlin("multiplatform") version "2.1.10"
+    kotlin("multiplatform") version "2.2.0"
     id("com.android.library")
     id("maven-publish")
-    id("org.sonarqube") version "6.0.1.5171"
+    id("org.sonarqube") version "6.2.0.5505"
     id("com.github.ben-manes.versions") version "0.52.0"
 }
 
@@ -36,7 +36,7 @@ kotlin {
         }
     }
     js(IR) {
-        moduleName = "dl-date-util"
+        outputModuleName = "dl-date-util"
         binaries.library()
         binaries.executable()
         nodejs()
@@ -59,7 +59,7 @@ kotlin {
         commonMain {
             dependencies {
                 // 时间工具
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.2")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
             }
         }
         commonTest {

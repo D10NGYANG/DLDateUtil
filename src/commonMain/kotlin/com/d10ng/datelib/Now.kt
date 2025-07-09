@@ -1,8 +1,12 @@
 @file:JsExport
+@file:OptIn(ExperimentalTime::class)
+
 package com.d10ng.datelib
 
 import kotlinx.datetime.*
 import kotlin.js.JsExport
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 /**
  * 获取当前时间

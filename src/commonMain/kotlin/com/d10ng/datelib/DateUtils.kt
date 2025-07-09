@@ -1,4 +1,6 @@
 @file:JsExport
+@file:OptIn(ExperimentalTime::class)
+
 package com.d10ng.datelib
 
 import kotlinx.datetime.*
@@ -6,6 +8,7 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.math.abs
 import kotlin.math.floor
+import kotlin.time.ExperimentalTime
 
 /**
  * 时间工具

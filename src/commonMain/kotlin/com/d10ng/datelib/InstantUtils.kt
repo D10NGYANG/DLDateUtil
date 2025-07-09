@@ -1,4 +1,6 @@
 @file:JsExport
+@file:OptIn(ExperimentalTime::class)
+
 package com.d10ng.datelib
 
 import kotlinx.datetime.Instant
@@ -7,6 +9,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.js.JsExport
 import kotlin.js.JsName
+import kotlin.time.ExperimentalTime
 
 /**
  * 将Instant转换为UTC时区的LocalDateTime
