@@ -2,13 +2,13 @@
 
 package com.d10ng.datelib
 
-import kotlin.time.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * 将Instant转换成毫秒时间戳

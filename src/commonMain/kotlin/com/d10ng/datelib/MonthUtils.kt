@@ -2,7 +2,6 @@
 package com.d10ng.datelib
 
 import kotlinx.datetime.*
-import kotlinx.datetime.LocalDate
 import kotlin.js.JsExport
 import kotlin.js.JsName
 

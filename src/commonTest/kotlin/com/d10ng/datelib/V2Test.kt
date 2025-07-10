@@ -1,9 +1,6 @@
 package com.d10ng.datelib
 
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.atTime
-import kotlinx.datetime.minus
+import kotlinx.datetime.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
@@ -40,7 +37,8 @@ class V2Test {
     @OptIn(ExperimentalTime::class)
     @Test
     fun test3() {
-        for (i in 0..99) {
-        }
+        val date = LocalDate(2025, 1, 1)
+        println(date)
+        println(date.toISOString())
     }
 }

@@ -3,7 +3,6 @@
 
 package com.d10ng.datelib
 
-import com.d10ng.datelib.timestampPlusDays
 import kotlinx.datetime.*
 import kotlin.js.JsExport
 import kotlin.js.JsName
