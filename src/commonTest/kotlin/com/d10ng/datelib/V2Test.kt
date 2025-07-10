@@ -1,5 +1,7 @@
 package com.d10ng.datelib
 
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.atTime
 import kotlin.test.Test
 
 class V2Test {
@@ -18,5 +20,13 @@ class V2Test {
         println(timeSeconds.timeSecondsToLocalDateTime())
         println(timeSeconds.timeSecondsToUTCDateTime())
         println(timeSeconds.timeSecondsToSystemDateTime())
+    }
+
+    @Test
+    fun test2() {
+        val date = nowSystemDate()
+        val time = LocalTime(12, 30,0, 0)
+        println(time)
+        println(time.toISOString())
     }
 }

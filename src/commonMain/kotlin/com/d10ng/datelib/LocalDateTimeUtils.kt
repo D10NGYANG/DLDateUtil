@@ -121,7 +121,8 @@ fun LocalDateTime.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int =
  * @return [CalendarInfo]
  */
 @JsName("localDateTimeLunarCalendar")
-fun LocalDateTime.lunarCalendar(): CalendarInfo = date.lunarCalendar()
+fun LocalDateTime.lunarCalendar(): CalendarInfo =
+    date.lunarCalendar()
 
 /**
  * 复制日期时间

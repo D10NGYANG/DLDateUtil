@@ -1,48 +1,19 @@
 @file:JsExport
-@file:OptIn(ExperimentalTime::class)
 
 package com.d10ng.datelib
 
 import kotlinx.datetime.*
 import kotlin.js.JsExport
 import kotlin.js.JsName
-import kotlin.time.ExperimentalTime
 
 /**
- * 将LocalDate转换为LocalDateTime
+ * 将LocalDate转换为LocalDateTime，时间为00:00:00
  * @receiver [LocalDate]
  * @return [LocalDateTime]
  */
 @JsName("localDateToLocalDateTime")
 fun LocalDate.toLocalDateTime(): LocalDateTime =
-    LocalDateTime(this, LocalTime(0, 0))
-
-/**
- * 将LocalDate转换为系统默认时区的时间戳
- * @receiver [LocalDate]
- * @return [Instant]
- */
-@JsName("localDateToSystemInstant")
-fun LocalDate.toSystemInstant(): Instant =
-    toLocalDateTime().toSystemInstant()
-
-/**
- * 将LocalDate转换为系统默认时区的时间戳，单位毫秒
- * @receiver [LocalDate]
- * @return [Long]
- */
-@JsName("localDateToEpochMilliseconds")
-fun LocalDate.toEpochMilliseconds(): Long =
-    toSystemInstant().toEpochMilliseconds()
-
-/**
- * 将LocalDate转换为系统默认时区的时间戳，单位秒
- * @receiver [LocalDate]
- * @return [Int]
- */
-@JsName("localDateToEpochSeconds")
-fun LocalDate.toEpochSeconds(): Int =
-    toSystemInstant().epochSeconds.toInt()
+    atTime(LocalTime(0, 0))
 
 /**
  * 获取日期是当年的第几周
@@ -73,18 +44,18 @@ fun LocalDate.weekOfYear(): Int {
  */
 @JsName("localDateWeekOfMonth")
 fun LocalDate.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
-    val start = LocalDate(year, monthNumber, 1)
+    val start = LocalDate(year, month.number, 1)
     val startWeekOfDay = start.dayOfWeek.isoDayNumber
     if (isFirstMondayAsFirstWeek) {
         var firstMonday = start
         if (startWeekOfDay != 1) {
             firstMonday = start + DatePeriod(days = 8 - startWeekOfDay)
         }
-        return (dayOfMonth - firstMonday.dayOfMonth) / 7 + 1
+        return (day - firstMonday.day) / 7 + 1
     } else {
         val firstWeekOffset = 8 - startWeekOfDay
-        if (dayOfMonth <= firstWeekOffset) return 1
-        return (dayOfMonth - firstWeekOffset) / 7 + 2
+        if (day <= firstWeekOffset) return 1
+        return (day - firstWeekOffset) / 7 + 2
     }
 }
 
@@ -95,7 +66,7 @@ fun LocalDate.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
  */
 @JsName("localDateLunarCalendar")
 fun LocalDate.lunarCalendar(): CalendarInfo =
-    LunarDateUtil.solar2lunar(year, monthNumber, dayOfMonth)!!
+    LunarDateUtil.solar2lunar(year, month.number, day)!!
 
 /**
  * 复制日期
@@ -108,8 +79,8 @@ fun LocalDate.lunarCalendar(): CalendarInfo =
 @JsName("copyLocalDate")
 fun LocalDate.copy(
     year: Int = this.year,
-    month: Int = this.monthNumber,
-    day: Int = this.dayOfMonth
+    month: Int = this.month.number,
+    day: Int = this.day
 ): LocalDate {
     val y = year.coerceIn(1970, 9999)
     val m = month.coerceIn(1, 12)
