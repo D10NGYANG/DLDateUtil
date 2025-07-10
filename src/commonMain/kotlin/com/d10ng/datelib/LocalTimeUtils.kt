@@ -29,10 +29,10 @@ fun LocalTime.copy(
 )
 
 /**
- * 将LocalTime转换为ISO字符串
+ * 获取ISO格式的时间字符串
  * @receiver [LocalTime]
  * @return [String]
  */
-@JsName("localTimeToISOString")
-fun LocalTime.toISOString(): String =
+@JsName("localTimeFormatISO")
+fun LocalTime.formatISO(): String =
     format(LocalTime.Formats.ISO)

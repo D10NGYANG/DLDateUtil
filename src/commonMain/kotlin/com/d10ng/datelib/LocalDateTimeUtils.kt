@@ -2,10 +2,9 @@
 
 package com.d10ng.datelib
 
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.number
-import kotlinx.datetime.toInstant
+import kotlinx.datetime.*
+import kotlinx.datetime.format.FormatStringsInDatetimeFormats
+import kotlinx.datetime.format.byUnicodePattern
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.time.ExperimentalTime
@@ -196,6 +195,37 @@ fun LocalDateTime.isTomorrow(): Boolean =
 @JsName("localDateTimeIsBeforeYesterday")
 fun LocalDateTime.isBeforeYesterday(): Boolean =
     date.isBeforeYesterday()
+
+/**
+ * 获取ISO格式的日期时间字符串
+ * @receiver [LocalDateTime]
+ * @return [String]
+ */
+@JsName("localDateTimeFormatISO")
+fun LocalDateTime.formatISO(): String =
+    format(LocalDateTime.Formats.ISO)
+
+/**
+ * 获取指定格式的日期时间字符串
+ * @receiver [LocalDateTime]
+ * @param pattern [String] 格式
+ * @return [String]
+ */
+@OptIn(FormatStringsInDatetimeFormats::class)
+@JsName("localDateTimeFormatPattern")
+fun LocalDateTime.formatPattern(pattern: String = "yyyy-MM-dd HH:mm:ss"): String =
+    format(LocalDateTime.Format { byUnicodePattern(pattern) })
+
+/**
+ * 将字符串转换为LocalDateTime
+ * @receiver [String]
+ * @param pattern [String] 格式
+ * @return [LocalDateTime]
+ */
+@OptIn(FormatStringsInDatetimeFormats::class)
+@JsName("localDateTimeParsePattern")
+fun String.toLocalDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): LocalDateTime =
+    LocalDateTime.Format { byUnicodePattern(pattern) }.parse(this)
 
 /**
  * 创建本地时间

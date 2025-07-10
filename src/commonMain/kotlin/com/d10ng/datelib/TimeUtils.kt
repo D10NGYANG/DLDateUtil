@@ -9,9 +9,9 @@ import kotlin.js.JsExport
  * @receiver Long
  * @return String
  */
-@Deprecated("请使用LocalTime.fromMillisecondOfDay(this.toInt()).toISOString()", ReplaceWith("LocalTime.fromMillisecondOfDay(this.toInt()).toISOString()"), DeprecationLevel.WARNING)
+@Deprecated("请使用LocalTime.fromMillisecondOfDay(this.toInt()).formatISO()", ReplaceWith("LocalTime.fromMillisecondOfDay(this.toInt()).formatISO()"))
 fun Long.time2String(): String {
-    return LocalTime.fromMillisecondOfDay(this.toInt()).toISOString()
+    return LocalTime.fromMillisecondOfDay(this.toInt()).formatISO()
 }
 
 /**
@@ -19,7 +19,7 @@ fun Long.time2String(): String {
  * @receiver Int
  * @return String
  */
-@Deprecated("请使用LocalTime.fromSecondOfDay(this).toISOString()", ReplaceWith("LocalTime.fromSecondOfDay(this).toISOString()"), DeprecationLevel.WARNING)
+@Deprecated("请使用LocalTime.fromSecondOfDay(this).formatISO()", ReplaceWith("LocalTime.fromSecondOfDay(this).formatISO()"))
 fun Int.timeSecond2String(): String {
-    return LocalTime.fromSecondOfDay(this).toISOString()
+    return LocalTime.fromSecondOfDay(this).formatISO()
 }

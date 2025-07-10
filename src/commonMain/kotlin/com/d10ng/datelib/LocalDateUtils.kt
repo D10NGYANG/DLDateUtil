@@ -123,3 +123,12 @@ fun LocalDate.isTomorrow(): Boolean =
 @JsName("localDateIsBeforeYesterday")
 fun LocalDate.isBeforeYesterday(): Boolean =
     minus(nowSystemDate()).days == 2
+
+/**
+ * 获取ISO格式的日期字符串
+ * @receiver [LocalDate]
+ * @return [String]
+ */
+@JsName("localDateFormatISO")
+fun LocalDate.formatISO(): String =
+    format(LocalDate.Formats.ISO)

@@ -1,8 +1,8 @@
 package com.d10ng.datelib
 
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.format
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
 
 class V2Test {
@@ -26,19 +26,16 @@ class V2Test {
     @Test
     fun test2() {
         for (i in 0..99) {
-            val timestamp = 1663149621238L // 2022-09-14 18:00:21.238
-            val newTimestamp = timestamp.timestampToSystemDateTime().copy(
-                year = 2025
-            ).toSystemTimestamp()
-            assertEquals(newTimestamp, 1757844021238L)
+            val text = "2025-06-17 15:20:32"
+            println(text.toLocalDateTime().toSystemTimestamp())
         }
     }
 
     @OptIn(ExperimentalTime::class)
     @Test
     fun test3() {
-        val date = LocalDate(2025, 1, 1)
-        println(date)
-        println(date.toISOString())
+        for (i in 0..99) {
+            println(LocalDateTime(2025,1,1,0,0, 1, 990000000).format(LocalDateTime.Formats.ISO))
+        }
     }
 }
