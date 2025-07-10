@@ -307,8 +307,9 @@ object LunarDateUtil {
             i--
         }
 
-        val isToday = objDate.isToday()
-        val nWeek = objDate.timestampToSystemDateTime().dayOfWeek.isoDayNumber
+        val objDatetime = objDate.timestampToSystemDateTime()
+        val isToday = objDatetime.isToday()
+        val nWeek = objDatetime.dayOfWeek.isoDayNumber
         val cWeek = nStr1[if (nWeek == 7) 0 else nWeek]
 
         val year = i
