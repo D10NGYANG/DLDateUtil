@@ -3,7 +3,6 @@
 
 package com.d10ng.datelib
 
-import com.d10ng.datelib.toSystemTimestamp
 import kotlinx.datetime.*
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -515,7 +514,7 @@ fun getDateBy(
     month: Int,
     day: Int
 ): Long {
-    return LocalDate(year, month, day).toEpochMilliseconds()
+    return LocalDate(year, month, day).toLocalDateTime().toSystemTimestamp()
 }
 
 /**

@@ -1,8 +1,11 @@
+@file:JsExport
 package com.d10ng.datelib
 
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.js.JsExport
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -90,3 +93,13 @@ fun Int.timeSecondsToUTCDateTime(): LocalDateTime =
  */
 fun Int.timeSecondsToSystemDateTime(): LocalDateTime =
     timeSecondsToTimestamp().timestampToSystemDateTime()
+
+fun timestamp(
+    year: Int = curYear,
+    month: Int = curMonth,
+    day: Int = curDay,
+    hour: Int = curHour,
+    minute: Int = curMinute,
+    second: Int = curSecond,
+    millisecond: Int = curMillisecond
+): Long = LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toTimestamp()
