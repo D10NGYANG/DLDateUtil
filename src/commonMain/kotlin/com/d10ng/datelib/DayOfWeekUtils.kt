@@ -7,14 +7,23 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 
 /**
+ * 获取星期的文本，如：星期一
+ * @receiver [DayOfWeek]
+ * @param type [WeekTextType] 文本类型
+ * @return [String]
+ */
+@JsName("dayOfWeekName")
+fun DayOfWeek.name(type: WeekTextType): String =
+    type.list[isoDayNumber - 1]
+
+/**
  * 获取星期的中文名，如：星期一
  * @receiver [DayOfWeek]
  * @return [String]
  */
 @JsName("dayOfWeekChineseName")
-fun DayOfWeek.chineseName(): String {
-    return WeekTextType.CN.list[isoDayNumber - 1]
-}
+fun DayOfWeek.chineseName(): String =
+    name(WeekTextType.CN)
 
 /**
  * 获取星期的中文名，如：周一
@@ -22,9 +31,8 @@ fun DayOfWeek.chineseName(): String {
  * @return [String]
  */
 @JsName("dayOfWeekChineseShortName")
-fun DayOfWeek.chineseShortName(): String {
-    return WeekTextType.CN_SHORT.list[isoDayNumber - 1]
-}
+fun DayOfWeek.chineseShortName(): String =
+    name(WeekTextType.CN_SHORT)
 
 /**
  * 获取星期的中文名，如：一
@@ -32,9 +40,8 @@ fun DayOfWeek.chineseShortName(): String {
  * @return [String]
  */
 @JsName("dayOfWeekChineseMiniName")
-fun DayOfWeek.chineseMiniName(): String {
-    return WeekTextType.CN_MINI.list[isoDayNumber - 1]
-}
+fun DayOfWeek.chineseMiniName(): String =
+    name(WeekTextType.CN_MINI)
 
 /**
  * 获取星期的英文名，如：MONDAY
@@ -42,9 +49,8 @@ fun DayOfWeek.chineseMiniName(): String {
  * @return [String]
  */
 @JsName("dayOfWeekEnglishName")
-fun DayOfWeek.englishName(): String {
-    return WeekTextType.EN.list[isoDayNumber - 1]
-}
+fun DayOfWeek.englishName(): String =
+    name(WeekTextType.EN)
 
 /**
  * 获取星期的英文名，如：MON
@@ -52,6 +58,5 @@ fun DayOfWeek.englishName(): String {
  * @return [String]
  */
 @JsName("dayOfWeekEnglishShortName")
-fun DayOfWeek.englishShortName(): String {
-    return WeekTextType.EN_SHORT.list[isoDayNumber - 1]
-}
+fun DayOfWeek.englishShortName(): String =
+    name(WeekTextType.EN_SHORT)

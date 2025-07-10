@@ -260,8 +260,9 @@ fun Long.getDateDayOfWeek(): Int =
  * @param type [WeekTextType] 星期几文本类型
  * @return [String] 文本，如"星期一"，"周一"，"一"，"MONDAY"，"MON"
  */
+@Deprecated("请使用timestampToSystemDateTime().dayOfWeek.name(type)", ReplaceWith("timestampToSystemDateTime().dayOfWeek.name(type)"))
 fun Long.getDateDayOfWeekText(type: WeekTextType): String =
-    type.list[timestampToSystemDateTime().dayOfWeek.isoDayNumber - 1]
+    timestampToSystemDateTime().dayOfWeek.name(type)
 
 /**
  * 获取时间戳中的月份的文本
@@ -269,8 +270,9 @@ fun Long.getDateDayOfWeekText(type: WeekTextType): String =
  * @param type [MonthTextType] 月份文本类型
  * @return [String] 文本，如"一月"，"JANUARY"，"JAN"
  */
+@Deprecated("请使用timestampToSystemDateTime().month.name(type)", ReplaceWith("timestampToSystemDateTime().month.name(type)"))
 fun Long.getDateMonthText(type: MonthTextType): String =
-    type.list[timestampToSystemDateTime().month.number -1]
+    timestampToSystemDateTime().month.name(type)
 
 /**
  * 获取时间戳的农历信息

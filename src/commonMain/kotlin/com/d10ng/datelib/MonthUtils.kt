@@ -7,14 +7,23 @@ import kotlin.js.JsExport
 import kotlin.js.JsName
 
 /**
+ * 获取月份的文本
+ * @receiver [Month]
+ * @param type [MonthTextType] 文本类型
+ * @return [String]
+ */
+@JsName("monthName")
+fun Month.name(type: MonthTextType): String =
+    type.list[ordinal]
+
+/**
  * 获取月份的中文名，如：一月
  * @receiver [Month]
  * @return [String]
  */
 @JsName("monthChineseName")
-fun Month.chineseName(): String {
-    return MonthTextType.CN.list[ordinal]
-}
+fun Month.chineseName(): String =
+    name(MonthTextType.CN)
 
 /**
  * 获取月份的英文名，如：JANUARY
@@ -22,9 +31,8 @@ fun Month.chineseName(): String {
  * @return [String]
  */
 @JsName("monthEnglishName")
-fun Month.englishName(): String {
-    return MonthTextType.EN.list[ordinal]
-}
+fun Month.englishName(): String =
+    name(MonthTextType.EN)
 
 /**
  * 获取月份的英文名，如：JAN
@@ -32,9 +40,8 @@ fun Month.englishName(): String {
  * @return [String]
  */
 @JsName("monthEnglishShortName")
-fun Month.englishShortName(): String {
-    return MonthTextType.EN_SHORT.list[ordinal]
-}
+fun Month.englishShortName(): String =
+    name(MonthTextType.EN_SHORT)
 
 /**
  * 获取指定月份的天数
