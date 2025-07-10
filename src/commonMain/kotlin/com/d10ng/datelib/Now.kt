@@ -55,13 +55,6 @@ fun nowSystemDateTime(): LocalDateTime =
     nowLocalDateTime(TimeZone.currentSystemDefault())
 
 /**
- * 获取当前系统时间
- * @return [LocalDateTime]
- */
-@Deprecated("Replace with nowSystemDateTime()", ReplaceWith("nowSystemDateTime()"))
-fun nowSystemLocalDateTime(): LocalDateTime = nowSystemDateTime()
-
-/**
  * 获取当前时间
  * @param timeZone [TimeZone] 时区
  * @return [LocalDate]
@@ -84,13 +77,6 @@ fun nowSystemDate(): LocalDate =
     nowLocalDate(TimeZone.currentSystemDefault())
 
 /**
- * 获取当前系统时间
- * @return [LocalDate]
- */
-@Deprecated("Replace with nowSystemDate()", ReplaceWith("nowSystemDate()"))
-fun nowSystemLocalDate(): LocalDate = nowSystemDate()
-
-/**
  * 获取当前时间
  * @param timeZone [TimeZone] 时区
  * @return [LocalTime]
@@ -111,6 +97,20 @@ fun nowUTCTime(): LocalTime =
  */
 fun nowSystemTime(): LocalTime =
     nowLocalTime(TimeZone.currentSystemDefault())
+
+/**
+ * 获取当前系统时间
+ * @return [LocalDateTime]
+ */
+@Deprecated("Replace with nowSystemDateTime()", ReplaceWith("nowSystemDateTime()"))
+fun nowSystemLocalDateTime(): LocalDateTime = nowSystemDateTime()
+
+/**
+ * 获取当前系统时间
+ * @return [LocalDate]
+ */
+@Deprecated("Replace with nowSystemDate()", ReplaceWith("nowSystemDate()"))
+fun nowSystemLocalDate(): LocalDate = nowSystemDate()
 
 /**
  * 获取当前系统时间
