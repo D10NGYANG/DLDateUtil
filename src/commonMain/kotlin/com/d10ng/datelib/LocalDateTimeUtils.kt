@@ -107,6 +107,15 @@ fun LocalDateTime.weekOfYear(): Int =
     date.weekOfYear()
 
 /**
+ * 获取年中的周数，ISO标准
+ * @receiver [LocalDateTime]
+ * @return [Int]
+ */
+@JsName("localDateTimeIsoWeekOfYear")
+fun LocalDateTime.isoWeekOfYear(): Int =
+    date.isoWeekOfYear()
+
+/**
  * 获取月中的周数
  * @receiver [LocalDateTime]
  * @param isFirstMondayAsFirstWeek [Boolean] true: 取月中的第一个周一开始算周数；false: 取月的1号作为第一周

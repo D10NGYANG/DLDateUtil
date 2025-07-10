@@ -17,23 +17,35 @@ fun LocalDate.atZeroTime(): LocalDateTime =
 
 /**
  * 获取日期是当年的第几周
+ * > 自该年第一周（以1月1日为基准）起，每周从星期一开始算周数。
  * @receiver [LocalDate]
  * @return [Int]
  */
 @JsName("localDateWeekOfYear")
 fun LocalDate.weekOfYear(): Int {
-    // 获取对应年份的第一天是星期几
-    val startDayOfWeek = LocalDate(year, 1, 1).dayOfWeek.isoDayNumber
-    // 获取当前时间是当年的第几天
-    val endDayOfYear = dayOfYear
-    // 计算偏移天数和偏移周数
-    val (offsetDay, offsetWeek) = if (startDayOfWeek == 1) {
-        0 to 0
-    } else {
-        (8 - startDayOfWeek) to 1
+    val jan1st = LocalDate(this.year, 1, 1)
+    val jan1WeekStart = jan1st.minus((jan1st.dayOfWeek.ordinal), DateTimeUnit.DAY)
+    val daysBetween = jan1WeekStart.daysUntil(this)
+    return (daysBetween / 7) + 1
+}
+
+/**
+ * 获取日期是当年的第几周，使用ISO标准
+ * > 自该年第一周（以1月4日为基准）起，每周从星期一开始算周数。
+ * @receiver [LocalDate]
+ * @return [Int]
+ */
+@JsName("localDateIsoWeekOfYear")
+fun LocalDate.isoWeekOfYear(): Int {
+    val firstWeekInYearStart: (Int) -> LocalDate = { year ->
+        val jan1st = LocalDate(year, 1, 1)
+        val previousMonday = jan1st.minus(jan1st.dayOfWeek.ordinal, DateTimeUnit.DAY)
+        if (jan1st.dayOfWeek <= DayOfWeek.THURSDAY) previousMonday else previousMonday.plus(1, DateTimeUnit.WEEK)
     }
-    return if (endDayOfYear <= offsetDay) 1
-    else (endDayOfYear - offsetDay) / 7 + 1 + offsetWeek
+    if (firstWeekInYearStart(year + 1) < this) return 1
+    val currentYearStart = firstWeekInYearStart(year)
+    val start = if (this < currentYearStart) firstWeekInYearStart(year - 1) else currentYearStart
+    return (start.until(this, DateTimeUnit.WEEK) + 1).toInt()
 }
 
 /**
@@ -51,11 +63,14 @@ fun LocalDate.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
         if (startWeekOfDay != 1) {
             firstMonday = start + DatePeriod(days = 8 - startWeekOfDay)
         }
-        return (day - firstMonday.day) / 7 + 1
+        val less = day - firstMonday.day
+        return if (less < 0) 0
+        else less / 7 + 1
     } else {
         val firstWeekOffset = 8 - startWeekOfDay
-        if (day <= firstWeekOffset) return 1
-        return (day - firstWeekOffset) / 7 + 2
+        return if (day <= firstWeekOffset) 1
+        else if (day <= firstWeekOffset + 7) 2
+        else (day - firstWeekOffset) / 7 + 2
     }
 }
 
