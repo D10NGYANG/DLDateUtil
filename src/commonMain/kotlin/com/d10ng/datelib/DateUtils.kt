@@ -9,6 +9,7 @@ import kotlin.js.JsName
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * 时间工具
@@ -34,7 +35,7 @@ val curYear: Int
 val curMonth: Int
     get() = nowSystemDateTime().month.number
 /** 获取当前日 */
-@Deprecated("请使用nowSystemDateTime().dayOfMonth", ReplaceWith("nowSystemDateTime().dayOfMonth"))
+@Deprecated("请使用nowSystemDateTime().day", ReplaceWith("nowSystemDateTime().day"))
 val curDay: Int
     get() = nowSystemDateTime().day
 /** 获取当前小时 */
@@ -300,73 +301,74 @@ fun Long.getDateDayLunar(): CalendarInfo? =
  * @return [String] 时间字符串，如2022-09-14 16:16:55
  */
 fun Long.toDateStr(pattern: String = DEFAULT_PATTERN): String {
+    val datetime = timestampToSystemDateTime()
     var string = pattern
     // 将 y、Y 转换成年份
     var reg = "[yY]+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateYear().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.year.toString().padStartForce(item.value.length, '0'))
     }
     // 将 M 转换成月份
     reg = "M+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateMonth().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.month.number.toString().padStartForce(item.value.length, '0'))
     }
     // 将 d 转换成日期
     reg = "d+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateDay().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.day.toString().padStartForce(item.value.length, '0'))
     }
     // 将 H 转换成小时 24小时制
     reg = "H+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateHour().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.hour.toString().padStartForce(item.value.length, '0'))
     }
     // 将 h 转换成小时 12小时制
     reg = "h+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, (if (getDateHour() > 12) getDateHour() - 12 else getDateHour()).toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, (if (datetime.hour > 12) datetime.hour - 12 else datetime.hour).toString().padStartForce(item.value.length, '0'))
     }
     // 将 m 转换成分钟
     reg = "m+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateMinute().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.minute.toString().padStartForce(item.value.length, '0'))
     }
     // 将 s 转换成秒钟
     reg = "s+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateSecond().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.second.toString().padStartForce(item.value.length, '0'))
     }
     // 将 S 转换成毫秒
     reg = "S+".toRegex().findAll(string).toList()
     for (item in reg) {
         string = string.replaceRange(item.range,
-            getDateMillisecond().toString().padStart(3, '0').substring(0, item.value.length)
+            datetime.millisecond().toString().padStart(3, '0').substring(0, item.value.length)
         )
     }
     // 将 w 转换成年中的周数
     reg = "w+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateWeekOfYear().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.weekOfYear().toString().padStartForce(item.value.length, '0'))
     }
     // 将 W 转换成月中的周数
     reg = "W+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateWeekOfMonth().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.weekOfMonth().toString().padStartForce(item.value.length, '0'))
     }
     // 将 D 转换成年中的天数
     reg = "D+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateDayOfYear().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.dayOfYear.toString().padStartForce(item.value.length, '0'))
     }
     // 将 E 转换成星期几
     reg = "E+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, getDateDayOfWeek().toString().padStartForce(item.value.length, '0'))
+        string = string.replaceRange(item.range, datetime.dayOfWeek.isoDayNumber.toString().padStartForce(item.value.length, '0'))
     }
     // 将 a 转换成 AM/PM
     reg = "a+".toRegex().findAll(string).toList()
     for (item in reg) {
-        string = string.replaceRange(item.range, if (getDateHour() > 12) "PM" else "AM")
+        string = string.replaceRange(item.range, if (datetime.hour > 12) "PM" else "AM")
     }
     return string
 }
@@ -392,6 +394,7 @@ fun Long.toDateStr(pattern: String = DEFAULT_PATTERN): String {
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 fun String.toDateLong(pattern: String = DEFAULT_PATTERN): Long {
+    val cur = nowSystemDateTime()
     var string = pattern
     var reg = "a+".toRegex().findAll(string).toList()
     for (item in reg) {
@@ -400,37 +403,37 @@ fun String.toDateLong(pattern: String = DEFAULT_PATTERN): Long {
     }
     // 将 y、Y 转换成年份
     reg = "[yY]+".toRegex().findAll(string).toList()
-    val year = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curYear else curYear
+    val year = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.year else cur.year
     // 将 M 转换成月份
     reg = "M+".toRegex().findAll(string).toList()
-    val month = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curMonth else curMonth
+    val month = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.month.number else cur.month.number
     // 将 d 转换成日期
     reg = "d+".toRegex().findAll(string).toList()
-    val day = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curDay else curDay
+    val day = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.day else cur.day
     // 将 H 转换成小时 24小时制
     reg = "H+".toRegex().findAll(string).toList()
     var isH = false
     var hour = if (reg.isNotEmpty()) {
         isH = true
-        this.substring(reg[0].range).toIntOrNull()?: curHour
+        this.substring(reg[0].range).toIntOrNull()?: cur.hour
     } else {
         // 将 h 转换成小时 12小时制
         val regh = "h+".toRegex().findAll(string).toList()
-        if (regh.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curHour else 0
+        if (regh.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.hour else 0
     }
     reg = "a+".toRegex().findAll(string).toList()
     val isAM = reg.isEmpty() || this.substring(reg[0].range).contains("AM")
     if (!isAM && !isH) hour = (hour + 12).coerceAtMost(23)
     // 将 m 转换成分钟
     reg = "m+".toRegex().findAll(string).toList()
-    val minute = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curMinute else 0
+    val minute = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.minute else 0
     // 将 s 转换成秒钟
     reg = "s+".toRegex().findAll(string).toList()
-    val second  = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: curSecond else 0
+    val second  = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.second else 0
     // 将 S 转换成毫秒
     reg = "S+".toRegex().findAll(string).toList()
-    val millisecond  = if (reg.isNotEmpty()) this.substring(reg[0].range).padEnd(3, '0').toIntOrNull()?: curMillisecond else 0
-    return getDateBy(year, month, day, hour, minute, second, millisecond)
+    val millisecond  = if (reg.isNotEmpty()) this.substring(reg[0].range).padEnd(3, '0').toIntOrNull()?: cur.millisecond() else 0
+    return timestampSystem(year, month, day, hour, minute, second, millisecond)
 }
 
 /**
@@ -595,7 +598,7 @@ fun Long.getNextDay(offset: Int = 1): Long {
  * @return [Int] 天数
  */
 @Deprecated("请使用daysOfMonth(year, month)", ReplaceWith("daysOfMonth(year, month)"))
-fun getDaysOfMonth(year: Int = curYear, month: Int = curMonth): Int {
+fun getDaysOfMonth(year: Int = nowSystemDateTime().year, month: Int = nowSystemDateTime().month.number): Int {
     val ldt = LocalDateTime(year, month, 1, 0, 0, 0)
     val start = ldt.toInstant(TimeZone.currentSystemDefault())
     val end = start.plus(1, DateTimeUnit.MONTH, TimeZone.currentSystemDefault())
@@ -623,13 +626,8 @@ fun Long.isYesterday(): Boolean = isNextDay(-1)
  * @return [Boolean]
  */
 fun Long.isNextDay(offset: Int = 1): Boolean {
-    val today = LocalDateTime(curYear, curMonth, curDay, 0, 0, 0, 0)
-        .toInstant(TimeZone.currentSystemDefault())
-    val endTime = this.setDateHour(0)
-        .setDateMinute(0)
-        .setDateSecond(0)
-        .setDateMillisecond(0)
-    val end = kotlin.time.Instant.fromEpochMilliseconds(endTime)
+    val today = nowSystemDate().atZeroTime().toSystemInstant()
+    val end = timestampToSystemDateTime().date.atZeroTime().toSystemInstant()
     val temp = today.plus(offset, DateTimeUnit.DAY, TimeZone.currentSystemDefault())
     return temp.daysUntil(end, TimeZone.currentSystemDefault()) == 0
 }
@@ -662,7 +660,7 @@ fun Long.toLocalDate(): Long {
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 fun Long.toCustomDate(timeZoneInt: Int): Long {
-    val instant = kotlin.time.Instant.fromEpochMilliseconds(this)
+    val instant = Instant.fromEpochMilliseconds(this)
     val end = instant.plus(timeZoneInt, DateTimeUnit.HOUR)
     return end.toEpochMilliseconds()
 }
