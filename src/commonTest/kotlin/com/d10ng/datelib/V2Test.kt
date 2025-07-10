@@ -1,8 +1,12 @@
 package com.d10ng.datelib
 
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.atTime
+import kotlinx.datetime.minus
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.time.ExperimentalTime
 
 class V2Test {
 
@@ -25,29 +29,18 @@ class V2Test {
     @Test
     fun test2() {
         for (i in 0..99) {
-            val datetime = nowSystemDateTime()
-            val year = datetime.year
-            val month = datetime.month
-            val day = datetime.day
-            val hour = datetime.hour
-            val minute = datetime.minute
-            val second = datetime.second
-            val nanosecond = datetime.nanosecond
-            println("year: $year, month: $month, day: $day, hour: $hour, minute: $minute, second: $second, nanosecond: $nanosecond")
+            val timestamp = 1663149621238L // 2022-09-14 18:00:21.238
+            val newTimestamp = timestamp.timestampToSystemDateTime().copy(
+                year = 2025
+            ).toSystemTimestamp()
+            assertEquals(newTimestamp, 1757844021238L)
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     @Test
     fun test3() {
         for (i in 0..99) {
-            val year = nowSystemDateTime().year
-            val month = nowSystemDateTime().month
-            val day = nowSystemDateTime().day
-            val hour = nowSystemDateTime().hour
-            val minute = nowSystemDateTime().minute
-            val second = nowSystemDateTime().second
-            val nanosecond = nowSystemDateTime().nanosecond
-            println("year: $year, month: $month, day: $day, hour: $hour, minute: $minute, second: $second, nanosecond: $nanosecond")
         }
     }
 }

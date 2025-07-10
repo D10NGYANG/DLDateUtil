@@ -1,7 +1,6 @@
 @file:JsExport
 package com.d10ng.datelib
 
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime

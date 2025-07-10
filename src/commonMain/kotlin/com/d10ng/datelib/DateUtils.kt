@@ -22,75 +22,66 @@ private const val DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss"
 
 /** 获取当前系统时间戳，单位毫秒 */
 @Suppress("NON_EXPORTABLE_TYPE")
-@Deprecated("请使用nowTimestamp()", ReplaceWith("nowTimestamp()"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowTimestamp()", ReplaceWith("nowTimestamp()"))
 val curTime: Long
     get() = nowTimestamp()
 /** 获取当前年份 */
-@Deprecated("请使用nowSystemDateTime().year", ReplaceWith("nowSystemDateTime().year"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().year", ReplaceWith("nowSystemDateTime().year"))
 val curYear: Int
     get() = nowSystemDateTime().year
 /** 获取当前月份 */
-@Deprecated("请使用nowSystemDateTime().monthNumber", ReplaceWith("nowSystemDateTime().monthNumber"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().month.number", ReplaceWith("nowSystemDateTime().month.number"))
 val curMonth: Int
-    get() = nowSystemDateTime().monthNumber
+    get() = nowSystemDateTime().month.number
 /** 获取当前日 */
-@Deprecated("请使用nowSystemDateTime().dayOfMonth", ReplaceWith("nowSystemDateTime().dayOfMonth"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().dayOfMonth", ReplaceWith("nowSystemDateTime().dayOfMonth"))
 val curDay: Int
-    get() = nowSystemDateTime().dayOfMonth
+    get() = nowSystemDateTime().day
 /** 获取当前小时 */
-@Deprecated("请使用nowSystemDateTime().hour", ReplaceWith("nowSystemDateTime().hour"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().hour", ReplaceWith("nowSystemDateTime().hour"))
 val curHour: Int
     get() = nowSystemDateTime().hour
 /** 获取当前分钟 */
-@Deprecated("请使用nowSystemDateTime().minute", ReplaceWith("nowSystemDateTime().minute"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().minute", ReplaceWith("nowSystemDateTime().minute"))
 val curMinute: Int
     get() = nowSystemDateTime().minute
 /** 获取当前秒钟 */
-@Deprecated("请使用nowSystemDateTime().second", ReplaceWith("nowSystemDateTime().second"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().second", ReplaceWith("nowSystemDateTime().second"))
 val curSecond: Int
     get() = nowSystemDateTime().second
 /** 获取当前毫秒 */
-@Deprecated("请使用nowSystemDateTime().millisecond()", ReplaceWith("nowSystemDateTime().millisecond()"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().millisecond()", ReplaceWith("nowSystemDateTime().millisecond()"))
 val curMillisecond: Int
     get() = nowSystemDateTime().millisecond()
 /** 获取当前年中的周数 */
-@Deprecated("请使用nowSystemDateTime().weekOfYear()", ReplaceWith("nowSystemDateTime().weekOfYear()"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().weekOfYear()", ReplaceWith("nowSystemDateTime().weekOfYear()"))
 val curWeekOfYear: Int
     get() = nowSystemDateTime().weekOfYear()
 /** 获取当前月中的周数 */
-@Deprecated("请使用nowSystemDateTime().weekOfMonth()", ReplaceWith("nowSystemDateTime().weekOfMonth()"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().weekOfMonth()", ReplaceWith("nowSystemDateTime().weekOfMonth()"))
 val curWeekOfMonth: Int
     get() = nowSystemDateTime().weekOfMonth()
 /** 获取当前年中的天数 */
-@Deprecated("请使用nowSystemDateTime().dayOfYear", ReplaceWith("nowSystemDateTime().dayOfYear"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().dayOfYear", ReplaceWith("nowSystemDateTime().dayOfYear"))
 val curDayOfYear: Int
     get() = nowSystemDateTime().dayOfYear
 /** 获取当前星期几 */
-@Deprecated("请使用nowSystemDateTime().dayOfWeek.isoDayNumber", ReplaceWith("nowSystemDateTime().dayOfWeek.isoDayNumber"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().dayOfWeek.isoDayNumber", ReplaceWith("nowSystemDateTime().dayOfWeek.isoDayNumber"))
 val curDayOfWeek: Int
     get() = nowSystemDateTime().dayOfWeek.isoDayNumber
 /** 今天的农历信息 */
-@Deprecated("请使用nowSystemDateTime().lunarCalendar()", ReplaceWith("nowSystemDateTime().lunarCalendar()"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().lunarCalendar()", ReplaceWith("nowSystemDateTime().lunarCalendar()"))
 val curDayLunar: CalendarInfo
     get() = nowSystemDateTime().lunarCalendar()
 
-/**
- * 将毫秒时间戳转换成 LocalDateTime
- * @receiver [Long] 毫秒时间戳
- * @param timeZone [TimeZone] 时区
- * @return LocalDateTime
- */
-private fun Long.atZeroTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime {
-    val instant = Instant.fromEpochMilliseconds(this)
-    return instant.toLocalDateTime(timeZone)
-}
 /**
  * 获取时间戳中的年份
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 年份
  */
-@Deprecated("请使用createSystemLocalDateTime(this).year", ReplaceWith("createSystemLocalDateTime(this).year"), DeprecationLevel.WARNING)
-fun Long.getDateYear(): Int = createSystemLocalDateTime(this).year
+@Deprecated("请使用timestampToSystemDateTime().year", ReplaceWith("timestampToSystemDateTime().year"))
+fun Long.getDateYear(): Int =
+    timestampToSystemDateTime().year
 
 /**
  * 修改时间戳中的年份
@@ -100,16 +91,18 @@ fun Long.getDateYear(): Int = createSystemLocalDateTime(this).year
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
+@Deprecated("请使用timestampToSystemDateTime().copy(year = value).toSystemTimestamp()", ReplaceWith("timestampToSystemDateTime().copy(year = value).toSystemTimestamp()"))
 fun Long.setDateYear(value: Int): Long =
-    getDateBy(value.coerceAtLeast(0).coerceAtMost(9999), getDateMonth(), getDateDay().coerceAtMost(getDaysOfMonth(value, getDateMonth())), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
+    timestampToSystemDateTime().copy(year = value).toSystemTimestamp()
 
 /**
  * 获取时间戳中的月份
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 月份
  */
-@Deprecated("请使用createSystemLocalDateTime(this).monthNumber", ReplaceWith("createSystemLocalDateTime(this).monthNumber"), DeprecationLevel.WARNING)
-fun Long.getDateMonth(): Int = createSystemLocalDateTime(this).monthNumber
+@Deprecated("请使用timestampToSystemDateTime().month.number", ReplaceWith("timestampToSystemDateTime().month.number"))
+fun Long.getDateMonth(): Int =
+    timestampToSystemDateTime().month.number
 
 /**
  * 修改时间戳中的月份
@@ -119,16 +112,18 @@ fun Long.getDateMonth(): Int = createSystemLocalDateTime(this).monthNumber
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
+@Deprecated("请使用timestampToSystemDateTime().copy(month = value).toSystemTimestamp()", ReplaceWith("timestampToSystemDateTime().copy(month = value).toSystemTimestamp()"))
 fun Long.setDateMonth(value: Int): Long =
-    getDateBy(getDateYear(), value.coerceAtLeast(1).coerceAtMost(12), getDateDay().coerceAtMost(getDaysOfMonth(getDateYear(), value)), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
+    timestampToSystemDateTime().copy(month = value).toSystemTimestamp()
 
 /**
  * 获取时间戳中的日
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 日
  */
-@Deprecated("请使用createSystemLocalDateTime(this).dayOfMonth", ReplaceWith("createSystemLocalDateTime(this).dayOfMonth"), DeprecationLevel.WARNING)
-fun Long.getDateDay(): Int = createSystemLocalDateTime(this).dayOfMonth
+@Deprecated("请使用timestampToSystemDateTime().day", ReplaceWith("timestampToSystemDateTime().day"))
+fun Long.getDateDay(): Int =
+    timestampToSystemDateTime().day
 
 /**
  * 修改时间戳中的日
@@ -137,16 +132,18 @@ fun Long.getDateDay(): Int = createSystemLocalDateTime(this).dayOfMonth
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
+@Deprecated("请使用timestampToSystemDateTime().copy(day = value).toSystemTimestamp()", ReplaceWith("timestampToSystemDateTime().copy(day = value).toSystemTimestamp()"))
 fun Long.setDateDay(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), value.coerceAtLeast(1).coerceAtMost(getDaysOfMonth(getDateYear(), getDateMonth())), getDateHour(), getDateMinute(), getDateSecond(), getDateMillisecond())
+    timestampToSystemDateTime().copy(day = value).toSystemTimestamp()
 
 /**
  * 获取时间戳中的小时 24小时
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 小时
  */
-@Deprecated("请使用createSystemLocalDateTime(this).hour", ReplaceWith("createSystemLocalDateTime(this).hour"), DeprecationLevel.WARNING)
-fun Long.getDateHour(): Int = createSystemLocalDateTime(this).hour
+@Deprecated("请使用timestampToSystemDateTime().hour", ReplaceWith("timestampToSystemDateTime().hour"))
+fun Long.getDateHour(): Int =
+    timestampToSystemDateTime().hour
 
 /**
  * 修改时间戳中的小时 24小时
@@ -155,16 +152,18 @@ fun Long.getDateHour(): Int = createSystemLocalDateTime(this).hour
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
+@Deprecated("请使用timestampToSystemDateTime().copy(hour = value).toSystemTimestamp()", ReplaceWith("timestampToSystemDateTime().copy(hour = value).toSystemTimestamp()"))
 fun Long.setDateHour(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), getDateDay(), value.coerceAtLeast(0).coerceAtMost(23), getDateMinute(), getDateSecond(), getDateMillisecond())
+    timestampToSystemDateTime().copy(hour = value).toSystemTimestamp()
 
 /**
  * 获取时间戳中的分钟
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 分钟
  */
-@Deprecated("请使用createSystemLocalDateTime(this).minute", ReplaceWith("createSystemLocalDateTime(this).minute"), DeprecationLevel.WARNING)
-fun Long.getDateMinute(): Int = createSystemLocalDateTime(this).minute
+@Deprecated("请使用timestampToSystemDateTime().minute", ReplaceWith("timestampToSystemDateTime().minute"))
+fun Long.getDateMinute(): Int =
+    timestampToSystemDateTime().minute
 
 /**
  * 修改时间戳中的分钟
@@ -173,16 +172,18 @@ fun Long.getDateMinute(): Int = createSystemLocalDateTime(this).minute
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
+@Deprecated("请使用timestampToSystemDateTime().copy(minute = value).toSystemTimestamp()", ReplaceWith("timestampToSystemDateTime().copy(minute = value).toSystemTimestamp()"))
 fun Long.setDateMinute(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), value.coerceAtLeast(0).coerceAtMost(59), getDateSecond(), getDateMillisecond())
+    timestampToSystemDateTime().copy(minute = value).toSystemTimestamp()
 
 /**
  * 获取时间戳中的秒钟
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 秒钟
  */
-@Deprecated("请使用createSystemLocalDateTime(this).second", ReplaceWith("createSystemLocalDateTime(this).second"), DeprecationLevel.WARNING)
-fun Long.getDateSecond(): Int = createSystemLocalDateTime(this).second
+@Deprecated("请使用timestampToSystemDateTime().second", ReplaceWith("timestampToSystemDateTime().second"))
+fun Long.getDateSecond(): Int =
+    timestampToSystemDateTime().second
 
 /**
  * 修改时间戳的中秒钟
@@ -191,16 +192,18 @@ fun Long.getDateSecond(): Int = createSystemLocalDateTime(this).second
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
+@Deprecated("请使用timestampToSystemDateTime().copy(second = value).toSystemTimestamp()", ReplaceWith("timestampToSystemDateTime().copy(second = value).toSystemTimestamp()"))
 fun Long.setDateSecond(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), value.coerceAtLeast(0).coerceAtMost(59), getDateMillisecond())
+    timestampToSystemDateTime().copy(second = value).toSystemTimestamp()
 
 /**
  * 获取时间戳中的毫秒
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 毫秒
  */
-@Deprecated("请使用createSystemLocalDateTime(this).millisecond()", ReplaceWith("createSystemLocalDateTime(this).millisecond()"), DeprecationLevel.WARNING)
-fun Long.getDateMillisecond(): Int = createSystemLocalDateTime(this).millisecond()
+@Deprecated("请使用timestampToSystemDateTime().millisecond()", ReplaceWith("timestampToSystemDateTime().millisecond()"))
+fun Long.getDateMillisecond(): Int =
+    timestampToSystemDateTime().millisecond()
 
 /**
  * 修改时间戳中的毫秒
@@ -209,18 +212,18 @@ fun Long.getDateMillisecond(): Int = createSystemLocalDateTime(this).millisecond
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
+@Deprecated("请使用timestampToSystemDateTime().copy(nanosecond = value * 1000000).toSystemTimestamp()", ReplaceWith("timestampToSystemDateTime().copy(nanosecond = value * 1000000).toSystemTimestamp()"))
 fun Long.setDateMillisecond(value: Int): Long =
-    getDateBy(getDateYear(), getDateMonth(), getDateDay(), getDateHour(), getDateMinute(), getDateSecond(), value.coerceAtLeast(0).coerceAtMost(999))
+    timestampToSystemDateTime().copy(nanosecond = value * 1000000).toSystemTimestamp()
 
 /**
  * 获取时间戳中的年中的周数
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 年中的周数
  */
-@Deprecated("请使用createSystemLocalDateTime(this).weekOfYear()", ReplaceWith("createSystemLocalDateTime(this).weekOfYear()"), DeprecationLevel.WARNING)
-fun Long.getDateWeekOfYear(): Int {
-    return createSystemLocalDateTime(this).weekOfYear()
-}
+@Deprecated("请使用timestampToSystemDateTime().weekOfYear()", ReplaceWith("timestampToSystemDateTime().weekOfYear()"))
+fun Long.getDateWeekOfYear(): Int =
+    timestampToSystemDateTime().weekOfYear()
 
 /**
  * 获取时间戳中的月中的周数
@@ -228,26 +231,27 @@ fun Long.getDateWeekOfYear(): Int {
  * @param isFirstMondayAsFirstWeek [Boolean] true: 取月中的第一个周一开始算周数，false: 取月的1号作为第一周
  * @return [Int] 月中的周数
  */
-@Deprecated("请使用createSystemLocalDateTime(this).weekOfMonth(isFirstMondayAsFirstWeek)", ReplaceWith("createSystemLocalDateTime(this).weekOfMonth(isFirstMondayAsFirstWeek)"), DeprecationLevel.WARNING)
-fun Long.getDateWeekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
-    return createSystemLocalDateTime(this).weekOfMonth(isFirstMondayAsFirstWeek)
-}
+@Deprecated("请使用timestampToSystemDateTime().weekOfMonth(isFirstMondayAsFirstWeek)", ReplaceWith("timestampToSystemDateTime().weekOfMonth(isFirstMondayAsFirstWeek)"))
+fun Long.getDateWeekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int =
+    timestampToSystemDateTime().weekOfMonth(isFirstMondayAsFirstWeek)
 
 /**
  * 获取时间戳中的年中的天数
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 日
  */
-@Deprecated("请使用createSystemLocalDateTime(this).dayOfYear", ReplaceWith("createSystemLocalDateTime(this).dayOfYear"), DeprecationLevel.WARNING)
-fun Long.getDateDayOfYear(): Int = createSystemLocalDateTime(this).dayOfYear
+@Deprecated("请使用timestampToSystemDateTime().dayOfYear", ReplaceWith("timestampToSystemDateTime().dayOfYear"))
+fun Long.getDateDayOfYear(): Int =
+    timestampToSystemDateTime().dayOfYear
 
 /**
  * 获取时间戳中的星期几
  * @receiver [Long] 毫秒时间戳
  * @return [Int] 星期几，1～7
  */
-@Deprecated("请使用createSystemLocalDateTime(this).dayOfWeek.isoDayNumber", ReplaceWith("createSystemLocalDateTime(this).dayOfWeek.isoDayNumber"), DeprecationLevel.WARNING)
-fun Long.getDateDayOfWeek(): Int = createSystemLocalDateTime(this).dayOfWeek.isoDayNumber
+@Deprecated("请使用timestampToSystemDateTime().dayOfWeek.isoDayNumber", ReplaceWith("timestampToSystemDateTime().dayOfWeek.isoDayNumber"))
+fun Long.getDateDayOfWeek(): Int =
+    timestampToSystemDateTime().dayOfWeek.isoDayNumber
 
 /**
  * 获取时间戳中的星期几的文本
@@ -256,7 +260,7 @@ fun Long.getDateDayOfWeek(): Int = createSystemLocalDateTime(this).dayOfWeek.iso
  * @return [String] 文本，如"星期一"，"周一"，"一"，"MONDAY"，"MON"
  */
 fun Long.getDateDayOfWeekText(type: WeekTextType): String =
-    type.list[getDateDayOfWeek() - 1]
+    type.list[timestampToSystemDateTime().dayOfWeek.isoDayNumber - 1]
 
 /**
  * 获取时间戳中的月份的文本
@@ -265,15 +269,16 @@ fun Long.getDateDayOfWeekText(type: WeekTextType): String =
  * @return [String] 文本，如"一月"，"JANUARY"，"JAN"
  */
 fun Long.getDateMonthText(type: MonthTextType): String =
-    type.list[getDateMonth() -1]
+    type.list[timestampToSystemDateTime().month.number -1]
 
 /**
  * 获取时间戳的农历信息
  * @receiver [Long] 毫秒时间戳
  * @return [CalendarInfo] 农历信息
  */
-@Deprecated("请使用createSystemLocalDateTime(this).lunarCalendar()", ReplaceWith("createSystemLocalDateTime(this).lunarCalendar()"), DeprecationLevel.WARNING)
-fun Long.getDateDayLunar(): CalendarInfo? = createSystemLocalDateTime(this).lunarCalendar()
+@Deprecated("请使用timestampToSystemDateTime().lunarCalendar()", ReplaceWith("timestampToSystemDateTime().lunarCalendar()"))
+fun Long.getDateDayLunar(): CalendarInfo? =
+    timestampToSystemDateTime().lunarCalendar()
 
 /**
  * 时间戳转换成字符窜
@@ -508,14 +513,12 @@ fun String.isDatetimeString(pattern: String = DEFAULT_PATTERN): Boolean {
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 @JsName("getDateByYMD")
-@Deprecated("请使用LocalDate(year, month, day).toEpochMilliseconds()", ReplaceWith("LocalDate(year, month, day).toEpochMilliseconds()"), DeprecationLevel.WARNING)
+@Deprecated("请使用timestampSystem(year, month, day)", ReplaceWith("timestampSystem(year, month, day)"))
 fun getDateBy(
     year: Int,
     month: Int,
     day: Int
-): Long {
-    return LocalDate(year, month, day).atZeroTime().toSystemTimestamp()
-}
+): Long = timestampSystem(year, month, day)
 
 /**
  * 根据年月日时分秒获取时间戳
@@ -529,7 +532,7 @@ fun getDateBy(
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 @JsName("getDateByYMDHms")
-@Deprecated("请使用LocalDateTime(year, month, day, hour, minute, second).toEpochMilliseconds()", ReplaceWith("LocalDateTime(year, month, day, hour, minute, second).toEpochMilliseconds()"), DeprecationLevel.WARNING)
+@Deprecated("请使用timestampSystem(year, month, day, hour, minute, second)", ReplaceWith("timestampSystem(year, month, day, hour, minute, second)"))
 fun getDateBy(
     year: Int,
     month: Int,
@@ -537,9 +540,7 @@ fun getDateBy(
     hour: Int,
     minute: Int,
     second: Int
-): Long {
-    return LocalDateTime(year, month, day, hour, minute, second).toSystemTimestamp()
-}
+): Long = timestampSystem(year, month, day, hour, minute, second)
 
 /**
  * 根据参数获取时间戳
@@ -553,18 +554,16 @@ fun getDateBy(
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
-@Deprecated("请使用LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toEpochMilliseconds()", ReplaceWith("LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toEpochMilliseconds()"), DeprecationLevel.WARNING)
+@Deprecated("请使用timestampSystem(year, month, day, hour, minute, second, millisecond)", ReplaceWith("timestampSystem(year, month, day, hour, minute, second, millisecond)"))
 fun getDateBy(
-    year: Int = curYear,
-    month: Int = curMonth,
-    day: Int = curDay,
-    hour: Int = curHour,
-    minute: Int = curMinute,
-    second: Int = curSecond,
-    millisecond: Int = curMillisecond
-): Long {
-    return LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toSystemTimestamp()
-}
+    year: Int = nowSystemDateTime().year,
+    month: Int = nowSystemDateTime().month.number,
+    day: Int = nowSystemDateTime().day,
+    hour: Int = nowSystemDateTime().hour,
+    minute: Int = nowSystemDateTime().minute,
+    second: Int = nowSystemDateTime().second,
+    millisecond: Int = nowSystemDateTime().millisecond()
+): Long = timestampSystem(year, month, day, hour, minute, second, millisecond)
 
 /**
  * 获取距离当前第n天的时间戳
@@ -573,7 +572,7 @@ fun getDateBy(
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 fun getNextDate(offset: Int = 1): Long {
-    return curTime.getNextDay(offset)
+    return nowTimestamp().getNextDay(offset)
 }
 
 /**
@@ -595,7 +594,7 @@ fun Long.getNextDay(offset: Int = 1): Long {
  * @param month [Int] 月
  * @return [Int] 天数
  */
-@Deprecated("请使用daysOfMonth(year, month)", ReplaceWith("daysOfMonth(year, month)"), DeprecationLevel.WARNING)
+@Deprecated("请使用daysOfMonth(year, month)", ReplaceWith("daysOfMonth(year, month)"))
 fun getDaysOfMonth(year: Int = curYear, month: Int = curMonth): Int {
     val ldt = LocalDateTime(year, month, 1, 0, 0, 0)
     val start = ldt.toInstant(TimeZone.currentSystemDefault())
@@ -630,7 +629,7 @@ fun Long.isNextDay(offset: Int = 1): Boolean {
         .setDateMinute(0)
         .setDateSecond(0)
         .setDateMillisecond(0)
-    val end = Instant.fromEpochMilliseconds(endTime)
+    val end = kotlin.time.Instant.fromEpochMilliseconds(endTime)
     val temp = today.plus(offset, DateTimeUnit.DAY, TimeZone.currentSystemDefault())
     return temp.daysUntil(end, TimeZone.currentSystemDefault()) == 0
 }
@@ -642,7 +641,7 @@ fun Long.isNextDay(offset: Int = 1): Boolean {
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 fun Long.toUTCDate(): Long {
-    return atZeroTime(TimeZone.UTC).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+    return timestampToUTCDateTime().toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
 }
 
 /**
@@ -652,7 +651,7 @@ fun Long.toUTCDate(): Long {
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 fun Long.toLocalDate(): Long {
-    return atZeroTime(TimeZone.currentSystemDefault()).toInstant(TimeZone.UTC).toEpochMilliseconds()
+    return timestampToSystemDateTime().toInstant(TimeZone.UTC).toEpochMilliseconds()
 }
 
 /**
@@ -663,7 +662,7 @@ fun Long.toLocalDate(): Long {
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 fun Long.toCustomDate(timeZoneInt: Int): Long {
-    val instant = Instant.fromEpochMilliseconds(this)
+    val instant = kotlin.time.Instant.fromEpochMilliseconds(this)
     val end = instant.plus(timeZoneInt, DateTimeUnit.HOUR)
     return end.toEpochMilliseconds()
 }
