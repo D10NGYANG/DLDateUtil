@@ -1,5 +1,7 @@
 package com.d10ng.datelib
 
+import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.number
 import kotlin.math.floor
 
 /**
@@ -290,8 +292,8 @@ object LunarDateUtil {
         if (y == 1900 && m == 1 && d < 31) {
             return null
         }
-        val minCalendar = getDateBy(1900, 1, 31)
-        val objDate = getDateBy(y, m, d)
+        val minCalendar = timestampSystem(1900, 1, 31)
+        val objDate = timestampSystem(y, m, d)
         var i = 1900
         var temp = 0
         var offset = (objDate - minCalendar) / 86400000
@@ -306,7 +308,7 @@ object LunarDateUtil {
         }
 
         val isToday = objDate.isToday()
-        val nWeek = objDate.getDateDayOfWeek()
+        val nWeek = objDate.timestampToSystemDateTime().dayOfWeek.isoDayNumber
         val cWeek = nStr1[if (nWeek == 7) 0 else nWeek]
 
         val year = i
@@ -363,7 +365,7 @@ object LunarDateUtil {
             isTerm = true
             term = solarTerm[m * 2 - 1]
         }
-        val ca = getDateBy(y, m, 1)
+        val ca = timestampSystem(y, m, 1)
         val dayCyclical = ca / 86400000 + 25567 + 10
         val gzD = toGanZhi((dayCyclical + d).toInt())
         return CalendarInfo(year,
@@ -417,11 +419,11 @@ object LunarDateUtil {
         if (isLeapMonth) {
             offset += day
         }
-        val stmap = getDateBy(1900, 2, 28, 0, 0, 0)
-        val calendar = (offset + d - 28) * 86400000L + stmap
-        val cY = calendar.getDateYear()
-        val cM = calendar.getDateMonth()
-        val cD = calendar.getDateDay()
+        val stmap = timestampSystem(1900, 2, 28, 0, 0, 0)
+        val calendar = ((offset + d - 28) * 86400000L + stmap).timestampToSystemDateTime()
+        val cY = calendar.year
+        val cM = calendar.month.number
+        val cD = calendar.day
         return solar2lunar(cY, cM, cD)
     }
 }

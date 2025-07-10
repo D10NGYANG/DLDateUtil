@@ -12,7 +12,7 @@ import kotlin.js.JsName
  * @return [LocalDateTime]
  */
 @JsName("localDateToLocalDateTime")
-fun LocalDate.toLocalDateTime(): LocalDateTime =
+fun LocalDate.atZeroTime(): LocalDateTime =
     atTime(LocalTime(0, 0))
 
 /**

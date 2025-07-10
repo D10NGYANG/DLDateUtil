@@ -80,7 +80,7 @@ val curDayLunar: CalendarInfo
  * @param timeZone [TimeZone] 时区
  * @return LocalDateTime
  */
-private fun Long.toLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime {
+private fun Long.atZeroTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime {
     val instant = Instant.fromEpochMilliseconds(this)
     return instant.toLocalDateTime(timeZone)
 }
@@ -514,7 +514,7 @@ fun getDateBy(
     month: Int,
     day: Int
 ): Long {
-    return LocalDate(year, month, day).toLocalDateTime().toSystemTimestamp()
+    return LocalDate(year, month, day).atZeroTime().toSystemTimestamp()
 }
 
 /**
@@ -642,7 +642,7 @@ fun Long.isNextDay(offset: Int = 1): Boolean {
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 fun Long.toUTCDate(): Long {
-    return toLocalDateTime(TimeZone.UTC).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+    return atZeroTime(TimeZone.UTC).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
 }
 
 /**
@@ -652,7 +652,7 @@ fun Long.toUTCDate(): Long {
  */
 @Suppress("NON_EXPORTABLE_TYPE")
 fun Long.toLocalDate(): Long {
-    return toLocalDateTime(TimeZone.currentSystemDefault()).toInstant(TimeZone.UTC).toEpochMilliseconds()
+    return atZeroTime(TimeZone.currentSystemDefault()).toInstant(TimeZone.UTC).toEpochMilliseconds()
 }
 
 /**

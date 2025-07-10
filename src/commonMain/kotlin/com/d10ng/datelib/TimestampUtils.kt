@@ -94,12 +94,160 @@ fun Int.timeSecondsToUTCDateTime(): LocalDateTime =
 fun Int.timeSecondsToSystemDateTime(): LocalDateTime =
     timeSecondsToTimestamp().timestampToSystemDateTime()
 
+/**
+ * 构建毫秒级时间戳
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @param hour [Int] 时
+ * @param minute [Int] 分
+ * @param second [Int] 秒
+ * @param millisecond [Int] 毫秒
+ * @param timeZone [TimeZone] 时区
+ */
 fun timestamp(
-    year: Int = curYear,
-    month: Int = curMonth,
-    day: Int = curDay,
-    hour: Int = curHour,
-    minute: Int = curMinute,
-    second: Int = curSecond,
-    millisecond: Int = curMillisecond
-): Long = LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toTimestamp()
+    year: Int,
+    month: Int,
+    day: Int,
+    hour: Int,
+    minute: Int,
+    second: Int,
+    millisecond: Int,
+    timeZone: TimeZone
+): Long =
+    LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000)
+        .toTimestamp(timeZone)
+
+/**
+ * 构建毫秒级时间戳
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @param hour [Int] 时
+ * @param minute [Int] 分
+ * @param second [Int] 秒
+ * @param timeZone [TimeZone] 时区
+ */
+fun timestamp(
+    year: Int,
+    month: Int,
+    day: Int,
+    hour: Int,
+    minute: Int,
+    second: Int,
+    timeZone: TimeZone
+): Long = timestamp(year, month, day, hour, minute, second, 0, timeZone)
+
+/**
+ * 构建毫秒级时间戳
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @param timeZone [TimeZone] 时区
+ */
+fun timestamp(
+    year: Int,
+    month: Int,
+    day: Int,
+    timeZone: TimeZone
+): Long = timestamp(year, month, day, 0, 0, 0, timeZone)
+
+/**
+ * 构建毫秒级时间戳，UTC时区
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @param hour [Int] 时
+ * @param minute [Int] 分
+ * @param second [Int] 秒
+ * @param millisecond [Int] 毫秒
+ */
+fun timestampUTC(
+    year: Int,
+    month: Int,
+    day: Int,
+    hour: Int,
+    minute: Int,
+    second: Int,
+    millisecond: Int
+): Long = timestamp(year, month, day, hour, minute, second, millisecond, TimeZone.UTC)
+
+/**
+ * 构建毫秒级时间戳，UTC时区
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @param hour [Int] 时
+ * @param minute [Int] 分
+ * @param second [Int] 秒
+ */
+fun timestampUTC(
+    year: Int,
+    month: Int,
+    day: Int,
+    hour: Int,
+    minute: Int,
+    second: Int
+): Long = timestamp(year, month, day, hour, minute, second, TimeZone.UTC)
+
+/**
+ * 构建毫秒级时间戳，UTC时区
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ */
+fun timestampUTC(
+    year: Int,
+    month: Int,
+    day: Int
+): Long = timestamp(year, month, day, TimeZone.UTC)
+
+/**
+ * 构建毫秒级时间戳，系统时区
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @param hour [Int] 时
+ * @param minute [Int] 分
+ * @param second [Int] 秒
+ * @param millisecond [Int] 毫秒
+ */
+fun timestampSystem(
+    year: Int,
+    month: Int,
+    day: Int,
+    hour: Int,
+    minute: Int,
+    second: Int,
+    millisecond: Int
+): Long = timestamp(year, month, day, hour, minute, second, millisecond, TimeZone.currentSystemDefault())
+
+/**
+ * 构建毫秒级时间戳，系统时区
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ * @param hour [Int] 时
+ * @param minute [Int] 分
+ * @param second [Int] 秒
+ */
+fun timestampSystem(
+    year: Int,
+    month: Int,
+    day: Int,
+    hour: Int,
+    minute: Int,
+    second: Int
+): Long = timestamp(year, month, day, hour, minute, second, TimeZone.currentSystemDefault())
+
+/**
+ * 构建毫秒级时间戳，系统时区
+ * @param year [Int] 年
+ * @param month [Int] 月
+ * @param day [Int] 日
+ */
+fun timestampSystem(
+    year: Int,
+    month: Int,
+    day: Int
+): Long = timestamp(year, month, day, TimeZone.currentSystemDefault())
