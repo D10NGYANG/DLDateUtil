@@ -3,6 +3,7 @@
 
 package com.d10ng.datelib
 
+import com.d10ng.datelib.timestampPlusDays
 import kotlinx.datetime.*
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -576,9 +577,9 @@ fun getDateBy(
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
-fun getNextDate(offset: Int = 1): Long {
-    return nowTimestamp().getNextDay(offset)
-}
+@Deprecated("请使用nowTimestamp().timestampPlusDays(offset)", ReplaceWith("nowTimestamp().timestampPlusDays(offset)"))
+fun getNextDate(offset: Int = 1): Long =
+    nowTimestamp().timestampPlusDays(offset)
 
 /**
  * 获取某个日子为标点的附近的日子时间戳
@@ -587,11 +588,9 @@ fun getNextDate(offset: Int = 1): Long {
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
-fun Long.getNextDay(offset: Int = 1): Long {
-    val instant = Instant.fromEpochMilliseconds(this)
-    val offsetInstant = instant.plus(offset, DateTimeUnit.DAY, TimeZone.currentSystemDefault())
-    return offsetInstant.toEpochMilliseconds()
-}
+@Deprecated("请使用timestampPlusDays(offset)", ReplaceWith("timestampPlusDays(offset)"))
+fun Long.getNextDay(offset: Int = 1): Long =
+    timestampPlusDays(offset)
 
 /**
  * 获取指定月份的天数
@@ -612,14 +611,18 @@ fun getDaysOfMonth(year: Int = nowSystemDateTime().year, month: Int = nowSystemD
  * @receiver [Long] 毫秒时间戳
  * @return [Boolean]
  */
-fun Long.isToday(): Boolean = isNextDay(0)
+@Deprecated("请使用timestampToSystemDateTime().isToday()", ReplaceWith("timestampToSystemDateTime().isToday()"))
+fun Long.isToday(): Boolean =
+    timestampToSystemDateTime().isToday()
 
 /**
  * 时间戳是否为昨天的
  * @receiver [Long] 毫秒时间戳
  * @return [Boolean]
  */
-fun Long.isYesterday(): Boolean = isNextDay(-1)
+@Deprecated("请使用timestampToSystemDateTime().isYesterday()", ReplaceWith("timestampToSystemDateTime().isYesterday()"))
+fun Long.isYesterday(): Boolean =
+    timestampToSystemDateTime().isYesterday()
 
 /**
  * 时间戳是否为今天的某n天偏移

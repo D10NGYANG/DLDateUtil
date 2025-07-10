@@ -1,8 +1,10 @@
 @file:JsExport
 package com.d10ng.datelib
 
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.js.JsExport
 import kotlin.time.ExperimentalTime
@@ -250,3 +252,14 @@ fun timestampSystem(
     month: Int,
     day: Int
 ): Long = timestamp(year, month, day, TimeZone.currentSystemDefault())
+
+/**
+ * 从给定的毫秒级时间戳计算偏移制定天数的另一个时间戳
+ * @receiver [Long] 时间戳，单位毫秒
+ * @param offset [Int] 偏移天数
+ * @param timeZone [TimeZone] 时区
+ * @return [Long] 偏移后的时间戳，单位毫秒
+ */
+@OptIn(ExperimentalTime::class)
+fun Long.timestampPlusDays(offset: Int, timeZone: TimeZone = TimeZone.currentSystemDefault()): Long =
+    timestampToInstant().plus(offset, DateTimeUnit.DAY, timeZone).toTimestamp()
