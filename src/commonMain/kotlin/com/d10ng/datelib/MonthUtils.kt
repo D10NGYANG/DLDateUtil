@@ -1,6 +1,7 @@
 @file:JsExport
 package com.d10ng.datelib
 
+import com.d10ng.datelib.nowSystemDate
 import kotlinx.datetime.*
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -52,6 +53,6 @@ fun daysOfMonth(year: Int, month: Int): Int {
  * @return [Int] 天数
  */
 fun currentMonthDays(): Int {
-    val now = nowSystemLocalDate()
+    val now = nowSystemDate()
     return daysOfMonth(now.year, now.monthNumber)
 }

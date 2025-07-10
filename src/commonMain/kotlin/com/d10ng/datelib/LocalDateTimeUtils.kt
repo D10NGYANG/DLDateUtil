@@ -1,75 +1,20 @@
 @file:JsExport
-@file:OptIn(ExperimentalTime::class)
 
 package com.d10ng.datelib
 
 import kotlinx.datetime.*
+import kotlinx.datetime.LocalDateTime
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.time.ExperimentalTime
-
-/**
- * 创建本地时间
- * @param milliseconds [Long] 毫秒
- * @param timeZone [TimeZone] 时区
- * @return [LocalDateTime]
- */
-fun createLocalDateTime(milliseconds: Long, timeZone: TimeZone): LocalDateTime {
-    val instant = Instant.fromEpochMilliseconds(milliseconds)
-    return instant.toLocalDateTime(timeZone)
-}
-
-/**
- * 创建UTC时区的本地时间
- * @param milliseconds [Long] 毫秒
- * @return [LocalDateTime]
- */
-fun createUTCDateTime(milliseconds: Long): LocalDateTime =
-    createLocalDateTime(milliseconds, TimeZone.UTC)
-
-/**
- * 创建系统时区的本地时间
- * @param milliseconds [Long] 毫秒
- * @return [LocalDateTime]
- */
-fun createSystemLocalDateTime(milliseconds: Long): LocalDateTime =
-    createLocalDateTime(milliseconds, TimeZone.currentSystemDefault())
-
-/**
- * 创建本地时间
- * @param seconds [Int] 秒
- * @param timeZone [TimeZone] 时区
- * @return [LocalDateTime]
- */
-@JsName("createLocalDateTimeBySeconds")
-fun createLocalDateTime(seconds: Int, timeZone: TimeZone): LocalDateTime {
-    val instant = Instant.fromEpochSeconds(seconds.toLong())
-    return instant.toLocalDateTime(timeZone)
-}
-
-/**
- * 创建UTC时区的本地时间
- * @param seconds [Int] 秒
- * @return [LocalDateTime]
- */
-@JsName("createUTCDateTimeBySeconds")
-fun createUTCDateTime(seconds: Int): LocalDateTime =
-    createLocalDateTime(seconds, TimeZone.UTC)
-
-/**
- * 创建系统时区的本地时间
- * @param seconds [Int] 秒
- * @return [LocalDateTime]
- */
-@JsName("createSystemLocalDateTimeBySeconds")
-fun createSystemLocalDateTime(seconds: Int): LocalDateTime =
-    createLocalDateTime(seconds, TimeZone.currentSystemDefault())
+import kotlin.time.Instant
 
 /**
  * 将LocalDateTime转换为UTC时区的Instant
  * @receiver [LocalDateTime]
  * @return [Instant]
  */
+@OptIn(ExperimentalTime::class)
 @JsName("localDateTimeToUTCInstant")
 fun LocalDateTime.toUTCInstant(): Instant =
     toInstant(TimeZone.UTC)
@@ -79,45 +24,68 @@ fun LocalDateTime.toUTCInstant(): Instant =
  * @receiver [LocalDateTime]
  * @return [Instant]
  */
+@OptIn(ExperimentalTime::class)
 @JsName("localDateTimeToSystemInstant")
 fun LocalDateTime.toSystemInstant(): Instant =
     toInstant(TimeZone.currentSystemDefault())
 
 /**
+ * 将LocalDateTime转换为指定时区的毫秒时间戳
+ * @receiver [LocalDateTime]
+ * @param timeZone [TimeZone] 时区
+ * @return [Long]
+ */
+@OptIn(ExperimentalTime::class)
+@JsName("localDateTimeToTimestamp")
+fun LocalDateTime.toTimestamp(timeZone: TimeZone = TimeZone.currentSystemDefault()): Long =
+    toInstant(timeZone).toTimestamp()
+
+/**
  * 将LocalDateTime转换为UTC时区的时间戳，单位毫秒
  * @receiver [LocalDateTime]
- * @return [Int]
+ * @return [Long]
  */
-@JsName("localDateTimeToUTCEpochMilliseconds")
-fun LocalDateTime.toUTCEpochMilliseconds(): Long =
-    toUTCInstant().toEpochMilliseconds()
+@JsName("localDateTimeToUTCTimestamp")
+fun LocalDateTime.toUTCTimestamp(): Long =
+    toTimestamp(TimeZone.UTC)
 
 /**
  * 将LocalDateTime转换为系统默认时区的时间戳，单位毫秒
  * @receiver [LocalDateTime]
+ * @return [Long]
+ */
+@JsName("localDateTimeToSystemTimestamp")
+fun LocalDateTime.toSystemTimestamp(): Long =
+    toTimestamp(TimeZone.currentSystemDefault())
+
+/**
+ * 将LocalDateTime转换为指定时区的时间戳，单位秒
+ * @receiver [LocalDateTime]
+ * @param timeZone [TimeZone] 时区
  * @return [Int]
  */
-@JsName("localDateTimeToEpochMilliseconds")
-fun LocalDateTime.toEpochMilliseconds(): Long =
-    toSystemInstant().toEpochMilliseconds()
+@OptIn(ExperimentalTime::class)
+@JsName("localDateTimeToTimeSeconds")
+fun LocalDateTime.toTimeSeconds(timeZone: TimeZone = TimeZone.currentSystemDefault()): Int =
+    toInstant(timeZone).toTimeSeconds()
 
 /**
  * 将LocalDateTime转换为UTC时区的时间戳，单位秒
  * @receiver [LocalDateTime]
  * @return [Int]
  */
-@JsName("localDateTimeToUTCEpochSeconds")
-fun LocalDateTime.toUTCEpochSeconds(): Int =
-    toUTCInstant().epochSecondsInt()
+@JsName("localDateTimeToUTCTimeSeconds")
+fun LocalDateTime.toUTCTimeSeconds(): Int =
+    toTimeSeconds(TimeZone.UTC)
 
 /**
  * 将LocalDateTime转换为系统默认时区的时间戳，单位秒
  * @receiver [LocalDateTime]
  * @return [Int]
  */
-@JsName("localDateTimeToEpochSeconds")
-fun LocalDateTime.toEpochSeconds(): Int =
-    toSystemInstant().epochSecondsInt()
+@JsName("localDateTimeToSystemTimeSeconds")
+fun LocalDateTime.toSystemTimeSeconds(): Int =
+    toTimeSeconds(TimeZone.currentSystemDefault())
 
 /**
  * 获取毫秒
@@ -170,8 +138,8 @@ fun LocalDateTime.lunarCalendar(): CalendarInfo = date.lunarCalendar()
 @JsName("copyLocalDateTime")
 fun LocalDateTime.copy(
     year: Int = this.year,
-    month: Int = this.monthNumber,
-    day: Int = this.dayOfMonth,
+    month: Int = this.month.number,
+    day: Int = this.day,
     hour: Int = this.hour,
     minute: Int = this.minute,
     second: Int = this.second,
@@ -181,8 +149,8 @@ fun LocalDateTime.copy(
     val m = month.coerceIn(1, 12)
     return LocalDateTime(
         year = y,
-        monthNumber = m,
-        dayOfMonth = day.coerceIn(1, daysOfMonth(y, m)),
+        month = m,
+        day = day.coerceIn(1, daysOfMonth(y, m)),
         hour = hour.coerceIn(0, 23),
         minute = minute.coerceIn(0, 59),
         second = second.coerceIn(0, 59),
@@ -225,3 +193,132 @@ fun LocalDateTime.isTomorrow(): Boolean =
 @JsName("localDateTimeIsBeforeYesterday")
 fun LocalDateTime.isBeforeYesterday(): Boolean =
     date.isBeforeYesterday()
+
+/**
+ * 创建本地时间
+ * @param milliseconds [Long] 毫秒
+ * @param timeZone [TimeZone] 时区
+ * @return [LocalDateTime]
+ */
+@Deprecated(
+    message = "Use timestampToLocalDateTime instead",
+    replaceWith = ReplaceWith("milliseconds.timestampToLocalDateTime(timeZone)")
+)
+fun createLocalDateTime(milliseconds: Long, timeZone: TimeZone): LocalDateTime =
+    milliseconds.timestampToLocalDateTime(timeZone)
+
+/**
+ * 创建UTC时区的本地时间
+ * @param milliseconds [Long] 毫秒
+ * @return [LocalDateTime]
+ */
+@Deprecated(
+    message = "Use timestampToUTCDateTime instead",
+    replaceWith = ReplaceWith("milliseconds.timestampToUTCDateTime()")
+)
+fun createUTCDateTime(milliseconds: Long): LocalDateTime =
+    milliseconds.timestampToUTCDateTime()
+
+/**
+ * 创建系统时区的本地时间
+ * @param milliseconds [Long] 毫秒
+ * @return [LocalDateTime]
+ */
+@Deprecated(
+    message = "Use timestampToSystemDateTime instead",
+    replaceWith = ReplaceWith("milliseconds.timestampToSystemDateTime()")
+)
+fun createSystemLocalDateTime(milliseconds: Long): LocalDateTime =
+    milliseconds.timestampToSystemDateTime()
+
+/**
+ * 创建本地时间
+ * @param seconds [Int] 秒
+ * @param timeZone [TimeZone] 时区
+ * @return [LocalDateTime]
+ */
+@JsName("createLocalDateTimeBySeconds")
+@Deprecated(
+    message = "Use timeSecondsToLocalDateTime instead",
+    replaceWith = ReplaceWith("seconds.timeSecondsToLocalDateTime(timeZone)")
+)
+fun createLocalDateTime(seconds: Int, timeZone: TimeZone): LocalDateTime =
+    seconds.timeSecondsToLocalDateTime(timeZone)
+
+/**
+ * 创建UTC时区的本地时间
+ * @param seconds [Int] 秒
+ * @return [LocalDateTime]
+ */
+@JsName("createUTCDateTimeBySeconds")
+@Deprecated(
+    message = "Use timeSecondsToUTCDateTime instead",
+    replaceWith = ReplaceWith("seconds.timeSecondsToUTCDateTime()")
+)
+fun createUTCDateTime(seconds: Int): LocalDateTime =
+    seconds.timeSecondsToUTCDateTime()
+
+/**
+ * 创建系统时区的本地时间
+ * @param seconds [Int] 秒
+ * @return [LocalDateTime]
+ */
+@JsName("createSystemLocalDateTimeBySeconds")
+@Deprecated(
+    message = "Use timeSecondsToSystemDateTime instead",
+    replaceWith = ReplaceWith("seconds.timeSecondsToSystemDateTime()")
+)
+fun createSystemLocalDateTime(seconds: Int): LocalDateTime =
+    seconds.timeSecondsToLocalDateTime(TimeZone.currentSystemDefault())
+
+/**
+ * 将LocalDateTime转换为UTC时区的时间戳，单位毫秒
+ * @receiver [LocalDateTime]
+ * @return [Long]
+ */
+@JsName("localDateTimeToUTCEpochMilliseconds")
+@Deprecated(
+    message = "Use toUTCTimestamp instead",
+    replaceWith = ReplaceWith("toUTCTimestamp()")
+)
+fun LocalDateTime.toUTCEpochMilliseconds(): Long =
+    toUTCTimestamp()
+
+/**
+ * 将LocalDateTime转换为系统默认时区的时间戳，单位毫秒
+ * @receiver [LocalDateTime]
+ * @return [Int]
+ */
+@JsName("localDateTimeToEpochMilliseconds")
+@Deprecated(
+    message = "Use toSystemTimestamp instead",
+    replaceWith = ReplaceWith("toSystemTimestamp()")
+)
+fun LocalDateTime.toEpochMilliseconds(): Long =
+    toSystemTimestamp()
+
+/**
+ * 将LocalDateTime转换为UTC时区的时间戳，单位秒
+ * @receiver [LocalDateTime]
+ * @return [Int]
+ */
+@JsName("localDateTimeToUTCEpochSeconds")
+@Deprecated(
+    message = "Use toUTCTimeSeconds instead",
+    replaceWith = ReplaceWith("toUTCTimeSeconds()")
+)
+fun LocalDateTime.toUTCEpochSeconds(): Int =
+    toUTCTimeSeconds()
+
+/**
+ * 将LocalDateTime转换为系统默认时区的时间戳，单位秒
+ * @receiver [LocalDateTime]
+ * @return [Int]
+ */
+@JsName("localDateTimeToEpochSeconds")
+@Deprecated(
+    message = "Use toSystemTimeSeconds instead",
+    replaceWith = ReplaceWith("toSystemTimeSeconds()")
+)
+fun LocalDateTime.toEpochSeconds(): Int =
+    toSystemTimeSeconds()

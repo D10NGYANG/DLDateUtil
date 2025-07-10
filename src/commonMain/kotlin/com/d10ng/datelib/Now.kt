@@ -1,5 +1,4 @@
 @file:JsExport
-@file:OptIn(ExperimentalTime::class)
 
 package com.d10ng.datelib
 
@@ -7,11 +6,13 @@ import kotlinx.datetime.*
 import kotlin.js.JsExport
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * 获取当前时间
  * @return [Instant]
  */
+@OptIn(ExperimentalTime::class)
 fun now(): Instant =
     Clock.System.now()
 
@@ -19,21 +20,23 @@ fun now(): Instant =
  * 获取当前时间戳，单位毫秒
  * @return [Long]
  */
+@OptIn(ExperimentalTime::class)
 fun nowTimestamp(): Long =
-    now().toEpochMilliseconds()
+    now().toTimestamp()
 
 /**
  * 获取当前时间戳，单位秒
  * @return [Int]
  */
 fun nowTimeSeconds(): Int =
-    now().epochSeconds.toInt()
+    (nowTimestamp() / 1000).toInt()
 
 /**
  * 获取当前时间
  * @param timeZone [TimeZone] 时区
  * @return [LocalDateTime]
  */
+@OptIn(ExperimentalTime::class)
 fun nowLocalDateTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDateTime =
     now().toLocalDateTime(timeZone)
 
@@ -48,8 +51,15 @@ fun nowUTCDateTime(): LocalDateTime =
  * 获取当前系统时间
  * @return [LocalDateTime]
  */
-fun nowSystemLocalDateTime(): LocalDateTime =
+fun nowSystemDateTime(): LocalDateTime =
     nowLocalDateTime(TimeZone.currentSystemDefault())
+
+/**
+ * 获取当前系统时间
+ * @return [LocalDateTime]
+ */
+@Deprecated("Replace with nowSystemDateTime()", ReplaceWith("nowSystemDateTime()"))
+fun nowSystemLocalDateTime(): LocalDateTime = nowSystemDateTime()
 
 /**
  * 获取当前时间
@@ -70,8 +80,15 @@ fun nowUTCDate(): LocalDate =
  * 获取当前系统时间
  * @return [LocalDate]
  */
-fun nowSystemLocalDate(): LocalDate =
+fun nowSystemDate(): LocalDate =
     nowLocalDate(TimeZone.currentSystemDefault())
+
+/**
+ * 获取当前系统时间
+ * @return [LocalDate]
+ */
+@Deprecated("Replace with nowSystemDate()", ReplaceWith("nowSystemDate()"))
+fun nowSystemLocalDate(): LocalDate = nowSystemDate()
 
 /**
  * 获取当前时间
@@ -92,5 +109,12 @@ fun nowUTCTime(): LocalTime =
  * 获取当前系统时间
  * @return [LocalTime]
  */
-fun nowSystemLocalTime(): LocalTime =
+fun nowSystemTime(): LocalTime =
     nowLocalTime(TimeZone.currentSystemDefault())
+
+/**
+ * 获取当前系统时间
+ * @return [LocalTime]
+ */
+@Deprecated("Replace with nowSystemTime()", ReplaceWith("nowSystemTime()"))
+fun nowSystemLocalTime(): LocalTime = nowSystemTime()

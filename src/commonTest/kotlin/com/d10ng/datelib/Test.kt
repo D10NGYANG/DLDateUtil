@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.d10ng.datelib
 
+import com.d10ng.datelib.toSystemDateTime
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -10,6 +13,7 @@ import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.number
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import kotlin.time.ExperimentalTime
 
 // 普通时间戳 2022-09-14 18:00:21
 const val timestamp = 1663149621238
@@ -152,7 +156,7 @@ class Test {
         // 获取当前时间戳（毫秒）1741248954881
         println("获取当前时间戳（秒） ${now.epochSeconds}")
         // 获取当前时间戳（秒） 1741248954
-        val dateTime = now.toSystemLocalDateTime()
+        val dateTime = now.toSystemDateTime()
         println("获取当前年份 ${dateTime.year}")
         // 获取当前年份 2022
         println("获取当前月份 ${dateTime.month} ${dateTime.month.number}")
@@ -191,7 +195,7 @@ class Test {
         println(now.toEpochMilliseconds())
         println(LocalDateTime.Format {
             year(); char('-'); monthNumber(); char('-'); dayOfMonth(); char(' '); hour(); char(':'); minute(); char(':'); second(); char('.'); secondFraction(3)
-        }.format(now.toSystemLocalDateTime()))
+        }.format(now.toSystemDateTime()))
         val time = 21 * 3600000 + 5 * 60000 + 1 * 1000
         println(LocalTime.fromMillisecondOfDay(time).format(LocalTime.Formats.ISO))
     }

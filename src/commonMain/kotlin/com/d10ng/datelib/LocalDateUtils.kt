@@ -124,7 +124,7 @@ fun LocalDate.copy(
  */
 @JsName("localDateIsToday")
 fun LocalDate.isToday(): Boolean =
-    minus(nowSystemLocalDate()).days == 0
+    minus(nowSystemDate()).days == 0
 
 /**
  * 判断日期是否为昨天
@@ -133,7 +133,7 @@ fun LocalDate.isToday(): Boolean =
  */
 @JsName("localDateIsYesterday")
 fun LocalDate.isYesterday(): Boolean =
-    minus(nowSystemLocalDate()).days == 1
+    minus(nowSystemDate()).days == 1
 
 /**
  * 判断日期是否为明天
@@ -142,7 +142,7 @@ fun LocalDate.isYesterday(): Boolean =
  */
 @JsName("localDateIsTomorrow")
 fun LocalDate.isTomorrow(): Boolean =
-    minus(nowSystemLocalDate()).days == -1
+    minus(nowSystemDate()).days == -1
 
 /**
  * 判断日期是否为前天
@@ -151,4 +151,4 @@ fun LocalDate.isTomorrow(): Boolean =
  */
 @JsName("localDateIsBeforeYesterday")
 fun LocalDate.isBeforeYesterday(): Boolean =
-    minus(nowSystemLocalDate()).days == 2
+    minus(nowSystemDate()).days == 2

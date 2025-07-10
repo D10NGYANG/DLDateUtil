@@ -3,6 +3,7 @@
 
 package com.d10ng.datelib
 
+import com.d10ng.datelib.toSystemTimestamp
 import kotlinx.datetime.*
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -26,53 +27,53 @@ private const val DEFAULT_PATTERN = "yyyy-MM-dd HH:mm:ss"
 val curTime: Long
     get() = nowTimestamp()
 /** 获取当前年份 */
-@Deprecated("请使用nowSystemLocalDateTime().year", ReplaceWith("nowSystemLocalDateTime().year"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().year", ReplaceWith("nowSystemDateTime().year"), DeprecationLevel.WARNING)
 val curYear: Int
-    get() = nowSystemLocalDateTime().year
+    get() = nowSystemDateTime().year
 /** 获取当前月份 */
-@Deprecated("请使用nowSystemLocalDateTime().monthNumber", ReplaceWith("nowSystemLocalDateTime().monthNumber"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().monthNumber", ReplaceWith("nowSystemDateTime().monthNumber"), DeprecationLevel.WARNING)
 val curMonth: Int
-    get() = nowSystemLocalDateTime().monthNumber
+    get() = nowSystemDateTime().monthNumber
 /** 获取当前日 */
-@Deprecated("请使用nowSystemLocalDateTime().dayOfMonth", ReplaceWith("nowSystemLocalDateTime().dayOfMonth"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().dayOfMonth", ReplaceWith("nowSystemDateTime().dayOfMonth"), DeprecationLevel.WARNING)
 val curDay: Int
-    get() = nowSystemLocalDateTime().dayOfMonth
+    get() = nowSystemDateTime().dayOfMonth
 /** 获取当前小时 */
-@Deprecated("请使用nowSystemLocalDateTime().hour", ReplaceWith("nowSystemLocalDateTime().hour"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().hour", ReplaceWith("nowSystemDateTime().hour"), DeprecationLevel.WARNING)
 val curHour: Int
-    get() = nowSystemLocalDateTime().hour
+    get() = nowSystemDateTime().hour
 /** 获取当前分钟 */
-@Deprecated("请使用nowSystemLocalDateTime().minute", ReplaceWith("nowSystemLocalDateTime().minute"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().minute", ReplaceWith("nowSystemDateTime().minute"), DeprecationLevel.WARNING)
 val curMinute: Int
-    get() = nowSystemLocalDateTime().minute
+    get() = nowSystemDateTime().minute
 /** 获取当前秒钟 */
-@Deprecated("请使用nowSystemLocalDateTime().second", ReplaceWith("nowSystemLocalDateTime().second"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().second", ReplaceWith("nowSystemDateTime().second"), DeprecationLevel.WARNING)
 val curSecond: Int
-    get() = nowSystemLocalDateTime().second
+    get() = nowSystemDateTime().second
 /** 获取当前毫秒 */
-@Deprecated("请使用nowSystemLocalDateTime().millisecond()", ReplaceWith("nowSystemLocalDateTime().millisecond()"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().millisecond()", ReplaceWith("nowSystemDateTime().millisecond()"), DeprecationLevel.WARNING)
 val curMillisecond: Int
-    get() = nowSystemLocalDateTime().millisecond()
+    get() = nowSystemDateTime().millisecond()
 /** 获取当前年中的周数 */
-@Deprecated("请使用nowSystemLocalDateTime().weekOfYear()", ReplaceWith("nowSystemLocalDateTime().weekOfYear()"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().weekOfYear()", ReplaceWith("nowSystemDateTime().weekOfYear()"), DeprecationLevel.WARNING)
 val curWeekOfYear: Int
-    get() = nowSystemLocalDateTime().weekOfYear()
+    get() = nowSystemDateTime().weekOfYear()
 /** 获取当前月中的周数 */
-@Deprecated("请使用nowSystemLocalDateTime().weekOfMonth()", ReplaceWith("nowSystemLocalDateTime().weekOfMonth()"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().weekOfMonth()", ReplaceWith("nowSystemDateTime().weekOfMonth()"), DeprecationLevel.WARNING)
 val curWeekOfMonth: Int
-    get() = nowSystemLocalDateTime().weekOfMonth()
+    get() = nowSystemDateTime().weekOfMonth()
 /** 获取当前年中的天数 */
-@Deprecated("请使用nowSystemLocalDateTime().dayOfYear", ReplaceWith("nowSystemLocalDateTime().dayOfYear"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().dayOfYear", ReplaceWith("nowSystemDateTime().dayOfYear"), DeprecationLevel.WARNING)
 val curDayOfYear: Int
-    get() = nowSystemLocalDateTime().dayOfYear
+    get() = nowSystemDateTime().dayOfYear
 /** 获取当前星期几 */
-@Deprecated("请使用nowSystemLocalDateTime().dayOfWeek.isoDayNumber", ReplaceWith("nowSystemLocalDateTime().dayOfWeek.isoDayNumber"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().dayOfWeek.isoDayNumber", ReplaceWith("nowSystemDateTime().dayOfWeek.isoDayNumber"), DeprecationLevel.WARNING)
 val curDayOfWeek: Int
-    get() = nowSystemLocalDateTime().dayOfWeek.isoDayNumber
+    get() = nowSystemDateTime().dayOfWeek.isoDayNumber
 /** 今天的农历信息 */
-@Deprecated("请使用nowSystemLocalDateTime().lunarCalendar()", ReplaceWith("nowSystemLocalDateTime().lunarCalendar()"), DeprecationLevel.WARNING)
+@Deprecated("请使用nowSystemDateTime().lunarCalendar()", ReplaceWith("nowSystemDateTime().lunarCalendar()"), DeprecationLevel.WARNING)
 val curDayLunar: CalendarInfo
-    get() = nowSystemLocalDateTime().lunarCalendar()
+    get() = nowSystemDateTime().lunarCalendar()
 
 /**
  * 将毫秒时间戳转换成 LocalDateTime
@@ -538,7 +539,7 @@ fun getDateBy(
     minute: Int,
     second: Int
 ): Long {
-    return LocalDateTime(year, month, day, hour, minute, second).toEpochMilliseconds()
+    return LocalDateTime(year, month, day, hour, minute, second).toSystemTimestamp()
 }
 
 /**
@@ -563,7 +564,7 @@ fun getDateBy(
     second: Int = curSecond,
     millisecond: Int = curMillisecond
 ): Long {
-    return LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toEpochMilliseconds()
+    return LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000).toSystemTimestamp()
 }
 
 /**

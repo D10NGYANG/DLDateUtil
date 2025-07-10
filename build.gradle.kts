@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "2.1.3"
+version = "2.2.0"
 
 repositories {
     google {
@@ -38,7 +38,7 @@ kotlin {
     js(IR) {
         outputModuleName = "dl-date-util"
         binaries.library()
-        binaries.executable()
+        //binaries.executable()
         nodejs()
         generateTypeScriptDefinitions()
     }
@@ -134,7 +134,8 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
     }
 }
 
+/*
 tasks.named<Copy>("jsNodeProductionLibraryDistribution") {
     // 显式声明依赖，确保先执行 jsProductionExecutableCompileSync 任务
     dependsOn("jsProductionExecutableCompileSync")
-}
+}*/

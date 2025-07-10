@@ -1,5 +1,9 @@
 package com.d10ng.datelib
 
+import com.d10ng.datelib.timeSecondsToSystemDateTime
+import com.d10ng.datelib.timeSecondsToUTCDateTime
+import com.d10ng.datelib.toSystemTimestamp
+import com.d10ng.datelib.toUTCTimestamp
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -8,14 +12,14 @@ class LocalDateTimeTest {
     @Test
     fun test() {
         val timestamp = 1748832079780L
-        assertEquals(createUTCDateTime(timestamp).toString(), "2025-06-02T02:41:19.780")
-        assertEquals(createSystemLocalDateTime(timestamp).toString(), "2025-06-02T10:41:19.780")
+        assertEquals(timestamp.timestampToUTCDateTime().toString(), "2025-06-02T02:41:19.780")
+        assertEquals(timestamp.timestampToSystemDateTime().toString(), "2025-06-02T10:41:19.780")
         val seconds = (timestamp / 1000).toInt()
-        assertEquals(createUTCDateTime(seconds).toString(), "2025-06-02T02:41:19")
-        assertEquals(createSystemLocalDateTime(seconds).toString(), "2025-06-02T10:41:19")
-        assertEquals(createUTCDateTime(timestamp).toUTCEpochMilliseconds(), timestamp)
-        assertEquals(createSystemLocalDateTime(timestamp).toUTCEpochMilliseconds(), timestamp + 8 * 60 * 60 * 1000)
-        assertEquals(createUTCDateTime(timestamp).toEpochMilliseconds(), timestamp - 8 * 60 * 60 * 1000)
-        assertEquals(createSystemLocalDateTime(timestamp).toEpochMilliseconds(), timestamp)
+        assertEquals(seconds.timeSecondsToUTCDateTime().toString(), "2025-06-02T02:41:19")
+        assertEquals(seconds.timeSecondsToSystemDateTime().toString(), "2025-06-02T10:41:19")
+        assertEquals(timestamp.timestampToUTCDateTime().toUTCTimestamp(), timestamp)
+        assertEquals(timestamp.timestampToSystemDateTime().toUTCTimestamp(), timestamp + 8 * 60 * 60 * 1000)
+        assertEquals(timestamp.timestampToUTCDateTime().toSystemTimestamp(), timestamp - 8 * 60 * 60 * 1000)
+        assertEquals(timestamp.timestampToSystemDateTime().toSystemTimestamp(), timestamp)
     }
 }
