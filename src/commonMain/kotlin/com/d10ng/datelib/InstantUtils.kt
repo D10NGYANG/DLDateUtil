@@ -46,7 +46,7 @@ fun Instant.toUTCDateTime(): LocalDateTime =
  * @return [LocalDateTime]
  */
 @OptIn(ExperimentalTime::class)
-@JsName("instantToSystemLocalDateTime")
+@JsName("instantToSystemDateTime")
 fun Instant.toSystemDateTime(): LocalDateTime =
     toLocalDateTime(TimeZone.currentSystemDefault())
 

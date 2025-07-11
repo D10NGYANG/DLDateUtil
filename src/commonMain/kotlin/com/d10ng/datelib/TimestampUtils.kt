@@ -5,6 +5,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.js.JsExport
+import kotlin.js.JsName
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -104,6 +105,7 @@ fun Int.timeSecondsToSystemDateTime(): LocalDateTime =
  * @param millisecond [Int] 毫秒
  * @param timeZone [TimeZone] 时区
  */
+@JsName("timestamp")
 fun timestamp(
     year: Int,
     month: Int,
@@ -127,6 +129,7 @@ fun timestamp(
  * @param second [Int] 秒
  * @param timeZone [TimeZone] 时区
  */
+@JsName("timestampByYMDHMS")
 fun timestamp(
     year: Int,
     month: Int,
@@ -144,6 +147,7 @@ fun timestamp(
  * @param day [Int] 日
  * @param timeZone [TimeZone] 时区
  */
+@JsName("timestampByYMD")
 fun timestamp(
     year: Int,
     month: Int,
@@ -161,6 +165,7 @@ fun timestamp(
  * @param second [Int] 秒
  * @param millisecond [Int] 毫秒
  */
+@JsName("timestampUTC")
 fun timestampUTC(
     year: Int,
     month: Int,
@@ -180,6 +185,7 @@ fun timestampUTC(
  * @param minute [Int] 分
  * @param second [Int] 秒
  */
+@JsName("timestampUTCByYMDHMS")
 fun timestampUTC(
     year: Int,
     month: Int,
@@ -195,6 +201,7 @@ fun timestampUTC(
  * @param month [Int] 月
  * @param day [Int] 日
  */
+@JsName("timestampUTCByYMD")
 fun timestampUTC(
     year: Int,
     month: Int,
@@ -211,6 +218,7 @@ fun timestampUTC(
  * @param second [Int] 秒
  * @param millisecond [Int] 毫秒
  */
+@JsName("timestampSystem")
 fun timestampSystem(
     year: Int,
     month: Int,
@@ -230,6 +238,7 @@ fun timestampSystem(
  * @param minute [Int] 分
  * @param second [Int] 秒
  */
+@JsName("timestampSystemByYMDHMS")
 fun timestampSystem(
     year: Int,
     month: Int,
@@ -245,6 +254,7 @@ fun timestampSystem(
  * @param month [Int] 月
  * @param day [Int] 日
  */
+@JsName("timestampSystemByYMD")
 fun timestampSystem(
     year: Int,
     month: Int,
