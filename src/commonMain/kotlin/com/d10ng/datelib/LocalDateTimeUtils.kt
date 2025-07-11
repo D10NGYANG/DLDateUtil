@@ -3,8 +3,6 @@
 package com.d10ng.datelib
 
 import kotlinx.datetime.*
-import kotlinx.datetime.format.FormatStringsInDatetimeFormats
-import kotlinx.datetime.format.byUnicodePattern
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.time.ExperimentalTime
@@ -220,10 +218,9 @@ fun LocalDateTime.formatISO(): String =
  * @param pattern [String] 格式
  * @return [String]
  */
-@OptIn(FormatStringsInDatetimeFormats::class)
 @JsName("localDateTimeFormatPattern")
 fun LocalDateTime.formatPattern(pattern: String = "yyyy-MM-dd HH:mm:ss"): String =
-    format(LocalDateTime.Format { byUnicodePattern(pattern) })
+    format(buildDateTimeFormat(pattern))
 
 /**
  * 将字符串转换为LocalDateTime
@@ -231,10 +228,9 @@ fun LocalDateTime.formatPattern(pattern: String = "yyyy-MM-dd HH:mm:ss"): String
  * @param pattern [String] 格式
  * @return [LocalDateTime]
  */
-@OptIn(FormatStringsInDatetimeFormats::class)
 @JsName("localDateTimeParsePattern")
 fun String.toLocalDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): LocalDateTime =
-    LocalDateTime.Format { byUnicodePattern(pattern) }.parse(this)
+    buildDateTimeFormat(pattern).parse(this)
 
 /**
  * 创建本地时间
