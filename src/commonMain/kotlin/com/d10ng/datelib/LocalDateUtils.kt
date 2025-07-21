@@ -147,3 +147,23 @@ fun LocalDate.isBeforeYesterday(): Boolean =
 @JsName("localDateFormatISO")
 fun LocalDate.formatISO(): String =
     format(LocalDate.Formats.ISO)
+
+/**
+ * 获取指定格式的日期字符串
+ * @receiver [LocalDate]
+ * @param pattern [String] 格式
+ * @return [String]
+ */
+@JsName("localDateFormatPattern")
+fun LocalDate.formatPattern(pattern: String = "yyyy-MM-dd"): String =
+    format(buildDateFormat(pattern))
+
+/**
+ * 将字符串转换为LocalDate
+ * @receiver [String]
+ * @param pattern [String] 格式
+ * @return [LocalDate]
+ */
+@JsName("stringToLocalDate")
+fun String.toLocalDate(pattern: String = "yyyy-MM-dd"): LocalDate =
+    buildDateFormat(pattern).parse(this)

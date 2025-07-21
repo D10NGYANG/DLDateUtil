@@ -36,3 +36,23 @@ fun LocalTime.copy(
 @JsName("localTimeFormatISO")
 fun LocalTime.formatISO(): String =
     format(LocalTime.Formats.ISO)
+
+/**
+ * 获取指定格式的时间字符串
+ * @receiver [LocalTime]
+ * @param pattern [String] 格式
+ * @return [String]
+ */
+@JsName("localTimeFormatPattern")
+fun LocalTime.formatPattern(pattern: String): String =
+    format(buildTimeFormat(pattern))
+
+/**
+ * 将字符串转换为LocalTime
+ * @receiver [String]
+ * @param pattern [String] 格式
+ * @return [LocalTime]
+ */
+@JsName("stringToLocalTime")
+fun String.toLocalTime(pattern: String): LocalTime =
+    buildTimeFormat(pattern).parse(this)

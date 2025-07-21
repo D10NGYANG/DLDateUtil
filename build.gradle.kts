@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.github.D10NGYANG"
-version = "2.3.0-alpha01"
+version = "2.3.0"
 
 repositories {
     google {

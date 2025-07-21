@@ -228,7 +228,7 @@ fun LocalDateTime.formatPattern(pattern: String = "yyyy-MM-dd HH:mm:ss"): String
  * @param pattern [String] 格式
  * @return [LocalDateTime]
  */
-@JsName("localDateTimeParsePattern")
+@JsName("stringToLocalDateTime")
 fun String.toLocalDateTime(pattern: String = "yyyy-MM-dd HH:mm:ss"): LocalDateTime =
     buildDateTimeFormat(pattern).parse(this)
 
