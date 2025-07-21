@@ -1,8 +1,9 @@
 # DLDateUtil 📅
 
-[![最新版本](https://img.shields.io/badge/版本-2.1.3-blue.svg)](https://github.com/D10NGYANG/DLDateUtil/releases)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.10-purple.svg)](https://kotlinlang.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](License)
+[![最新版本](https://img.shields.io/badge/版本-2.3.0-blue.svg)](https://github.com/D10NGYANG/DLDateUtil/releases)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-purple.svg)](https://kotlinlang.org)
+[![Kotlinx-datetime](https://img.shields.io/badge/Kotlinx--datetime-0.7.1-green.svg)](https://github.com/Kotlin/kotlinx-datetime)
+[![License](https://img.shields.io/badge/License-MIT-lightgray.svg)](License)
 
 ## 📱 平台支持
 
@@ -15,6 +16,8 @@
 > 📢 版本1.2开始，本库已经改造成kotlin跨平台项目，目前支持Android、JVM、JS、iOS和Native平台。
 >
 > 📢 版本1.7.0开始取消 jitpack 仓库的支持
+> 
+> 📢 版本2.3.0开始使用kotlin:2.2.0、kotlinx-datetime:0.7.1环境，其中部分官方API弃用，从kotlinx.datetime移到了kotlin.time中，需要参考[Deprecation of Instant](https://github.com/Kotlin/kotlinx-datetime)进行迁移；
 
 ## 📖 项目简介
 
@@ -78,22 +81,12 @@ kotlinx-datetime 是 Kotlin 官方提供的跨平台日期时间处理库，它�
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.github.D10NGYANG:DLDateUtil:2.1.3")
+    implementation("com.github.D10NGYANG:DLDateUtil:2.3.0")
 }
 ```
 
 ## 📝 示例
 
 ```kotlin
-// 获取当前时间
-val now = now()
-val timestamp = nowTimestamp()
-val localDate = nowLocalDate()
-
-// 日期时间转换
-val instant = localDate.toSystemInstant()
-val dateTime = instant.toSystemLocalDateTime()
-
-// 格式化日期
-val dateStr = localDate.format("yyyy-MM-dd")
+TODO
 ```
