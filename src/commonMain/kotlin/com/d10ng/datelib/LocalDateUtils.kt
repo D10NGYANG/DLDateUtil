@@ -109,8 +109,7 @@ fun LocalDate.copy(
  * @return [Boolean]
  */
 @JsName("localDateIsToday")
-fun LocalDate.isToday(): Boolean =
-    minus(nowSystemDate()).days == 0
+fun LocalDate.isToday(): Boolean = this == nowSystemDate()
 
 /**
  * 判断日期是否为昨天
@@ -119,7 +118,7 @@ fun LocalDate.isToday(): Boolean =
  */
 @JsName("localDateIsYesterday")
 fun LocalDate.isYesterday(): Boolean =
-    minus(nowSystemDate()).days == 1
+    daysUntil(nowSystemDate()) == 1
 
 /**
  * 判断日期是否为明天
@@ -128,7 +127,7 @@ fun LocalDate.isYesterday(): Boolean =
  */
 @JsName("localDateIsTomorrow")
 fun LocalDate.isTomorrow(): Boolean =
-    minus(nowSystemDate()).days == -1
+    nowSystemDate().daysUntil(this) == 1
 
 /**
  * 判断日期是否为前天
@@ -137,7 +136,7 @@ fun LocalDate.isTomorrow(): Boolean =
  */
 @JsName("localDateIsBeforeYesterday")
 fun LocalDate.isBeforeYesterday(): Boolean =
-    minus(nowSystemDate()).days == 2
+    daysUntil(nowSystemDate()) == 2
 
 /**
  * 获取ISO格式的日期字符串

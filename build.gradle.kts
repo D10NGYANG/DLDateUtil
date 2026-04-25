@@ -7,12 +7,12 @@ plugins {
     kotlin("multiplatform") version "2.2.0"
     id("com.android.library")
     id("maven-publish")
-    id("org.sonarqube") version "6.2.0.5505"
-    id("com.github.ben-manes.versions") version "0.53.0"
+    id("org.sonarqube") version "7.2.3.7755"
+    id("com.github.ben-manes.versions") version "0.54.0"
 }
 
 group = "com.github.D10NGYANG"
-version = "2.3.0"
+version = "2.3.1"
 
 repositories {
     google {
@@ -133,9 +133,3 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
         isNonStable(candidate.version)
     }
 }
-
-/*
-tasks.named<Copy>("jsNodeProductionLibraryDistribution") {
-    // 显式声明依赖，确保先执行 jsProductionExecutableCompileSync 任务
-    dependsOn("jsProductionExecutableCompileSync")
-}*/
