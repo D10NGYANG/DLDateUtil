@@ -213,9 +213,9 @@ fun Long.getDateMillisecond(): Int =
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
-@Deprecated("请使用timestampToSystemDateTime().copy(nanosecond = value * 1000000).toSystemTimestamp()", ReplaceWith("timestampToSystemDateTime().copy(nanosecond = value * 1000000).toSystemTimestamp()"))
+@Deprecated("请使用timestampToSystemDateTime().copy(nanosecond = value.coerceIn(0, 999) * 1000000).toSystemTimestamp()", ReplaceWith("timestampToSystemDateTime().copy(nanosecond = value.coerceIn(0, 999) * 1000000).toSystemTimestamp()"))
 fun Long.setDateMillisecond(value: Int): Long =
-    timestampToSystemDateTime().copy(nanosecond = value * 1000000).toSystemTimestamp()
+    timestampToSystemDateTime().copy(nanosecond = value.coerceIn(0, 999) * 1000000).toSystemTimestamp()
 
 /**
  * 获取时间戳中的年中的周数
@@ -279,9 +279,9 @@ fun Long.getDateMonthText(type: MonthTextType): String =
  * @receiver [Long] 毫秒时间戳
  * @return [CalendarInfo] 农历信息
  */
-@Deprecated("请使用timestampToSystemDateTime().lunarCalendar()", ReplaceWith("timestampToSystemDateTime().lunarCalendar()"))
+@Deprecated("请使用LunarDateUtil.solar2lunar", ReplaceWith("timestampToSystemDateTime().let { LunarDateUtil.solar2lunar(it.year, it.month.number, it.day) }", "kotlinx.datetime.number"))
 fun Long.getDateDayLunar(): CalendarInfo? =
-    timestampToSystemDateTime().lunarCalendar()
+    timestampToSystemDateTime().let { LunarDateUtil.solar2lunar(it.year, it.month.number, it.day) }
 
 /**
  * 时间戳转换成字符窜
@@ -303,80 +303,97 @@ fun Long.getDateDayLunar(): CalendarInfo? =
  * @return [String] 时间字符串，如2022-09-14 16:16:55
  */
 fun Long.toDateStr(pattern: String = DEFAULT_PATTERN): String {
-    val datetime = timestampToSystemDateTime()
-    var string = pattern
-    // 将 y、Y 转换成年份
-    var reg = "[yY]+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.year.toString().padStartForce(item.value.length, '0'))
+    val date = timestampToSystemDateTime()
+    return legacyDateTokens.replace(pattern) { match ->
+        val token = match.value
+        val width = token.length
+        val value = when (token[0]) {
+            'y', 'Y' -> if (width == 2) date.year.mod(100) else date.year
+            'M' -> date.month.number
+            'd' -> date.day
+            'H' -> date.hour
+            'h' -> (date.hour + 11) % 12 + 1
+            'm' -> date.minute
+            's' -> date.second
+            'w' -> date.weekOfYear()
+            'W' -> date.weekOfMonth()
+            'D' -> date.dayOfYear
+            'E' -> date.dayOfWeek.isoDayNumber
+            'a' -> return@replace if (date.hour >= 12) "PM" else "AM"
+            'S' -> {
+                require(width in 1..3) { "Millisecond pattern supports S, SS or SSS" }
+                return@replace date.millisecond().toString().padStart(3, '0').take(width)
+            }
+            else -> error("Unsupported date token: $token")
+        }
+        if (value < 0) "-" + (-value).toString().padStart(width, '0')
+        else value.toString().padStart(width, '0')
     }
-    // 将 M 转换成月份
-    reg = "M+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.month.number.toString().padStartForce(item.value.length, '0'))
+}
+
+private val legacyDateTokens = Regex("[yY]+|M+|d+|H+|h+|m+|s+|S+|w+|W+|D+|E+|a+")
+
+private fun parseLegacyDateTime(text: String, pattern: String, ignoreWhitespace: Boolean = false): LocalDateTime {
+    val tokens = legacyDateTokens.findAll(pattern).toList()
+    require(tokens.isNotEmpty()) { "Date pattern must contain a date or time field" }
+    val expression = buildString {
+        var end = 0
+        for (token in tokens) {
+            append(Regex.escape(pattern.substring(end, token.range.first)))
+            val width = token.value.length
+            val field = token.value[0]
+            val digits = when {
+                field == 'a' -> "AM|PM"
+                field == 'S' -> {
+                    require(width in 1..3) { "Millisecond pattern supports S, SS or SSS" }
+                    "[0-9]{$width}"
+                }
+                field == 'y' || field == 'Y' -> if (width == 2) "[+-]?[0-9]{2}" else "[+-]?[0-9]{$width,${maxOf(width, 9)}}"
+                field in "wWDE" -> "[0-9]{$width,}"
+                width == 1 -> "[0-9]{1,2}"
+                else -> "[0-9]{$width}"
+            }
+            append("($digits)")
+            end = token.range.last + 1
+        }
+        append(Regex.escape(pattern.substring(end)))
     }
-    // 将 d 转换成日期
-    reg = "d+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.day.toString().padStartForce(item.value.length, '0'))
+    val input = if (ignoreWhitespace) text.filterNot { it.isWhitespace() } else text
+    val regex = if (ignoreWhitespace) expression.filterNot { it.isWhitespace() } else expression
+    val match = requireNotNull(Regex(regex).matchEntire(input)) { "Date does not match pattern: $pattern" }
+    val fields = mutableMapOf<Char, Int>()
+    for ((index, token) in tokens.withIndex()) {
+        val field = if (token.value[0] == 'Y') 'y' else token.value[0]
+        if (field in "wWDE") continue // 旧 API 的派生日期字段只匹配，不参与日期构造。
+        val value = match.groupValues[index + 1].let {
+            when (field) {
+                'a' -> if (it == "PM") 1 else 0
+                'S' -> it.padEnd(3, '0').toInt()
+                else -> it.toInt()
+            }
+        }
+        val previous = fields.put(field, value)
+        require(previous == null || previous == value) { "Conflicting date field: $field" }
     }
-    // 将 H 转换成小时 24小时制
-    reg = "H+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.hour.toString().padStartForce(item.value.length, '0'))
-    }
-    // 将 h 转换成小时 12小时制
-    reg = "h+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, (if (datetime.hour > 12) datetime.hour - 12 else datetime.hour).toString().padStartForce(item.value.length, '0'))
-    }
-    // 将 m 转换成分钟
-    reg = "m+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.minute.toString().padStartForce(item.value.length, '0'))
-    }
-    // 将 s 转换成秒钟
-    reg = "s+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.second.toString().padStartForce(item.value.length, '0'))
-    }
-    // 将 S 转换成毫秒
-    reg = "S+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range,
-            datetime.millisecond().toString().padStart(3, '0').substring(0, item.value.length)
-        )
-    }
-    // 将 w 转换成年中的周数
-    reg = "w+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.weekOfYear().toString().padStartForce(item.value.length, '0'))
-    }
-    // 将 W 转换成月中的周数
-    reg = "W+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.weekOfMonth().toString().padStartForce(item.value.length, '0'))
-    }
-    // 将 D 转换成年中的天数
-    reg = "D+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.dayOfYear.toString().padStartForce(item.value.length, '0'))
-    }
-    // 将 E 转换成星期几
-    reg = "E+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, datetime.dayOfWeek.isoDayNumber.toString().padStartForce(item.value.length, '0'))
-    }
-    // 将 a 转换成 AM/PM
-    reg = "a+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, if (datetime.hour > 12) "PM" else "AM")
-    }
-    return string
+    val current = nowSystemDate()
+    val hour12 = fields['h']
+    val period = fields['a'] ?: 0
+    if (hour12 != null) require(hour12 in 1..12) { "12-hour value must be in 1..12" }
+    val convertedHour = hour12?.let { it % 12 + period * 12 }
+    val hour = fields['H'] ?: convertedHour ?: 0
+    require(convertedHour == null || convertedHour == hour) { "Conflicting hour fields" }
+    require(fields['a'] == null || hour / 12 == period) { "Conflicting AM/PM field" }
+    return LocalDateTime(
+        fields['y'] ?: current.year,
+        fields['M'] ?: current.month.number,
+        fields['d'] ?: current.day,
+        hour, fields['m'] ?: 0, fields['s'] ?: 0,
+        (fields['S'] ?: 0) * 1000000
+    )
 }
 
 /**
- * 将字符串转为时间戳
+ * 将字符串转为时间戳；模式中缺省的年月日取当前日期，非法字段抛出 IllegalArgumentException
  * @receiver [String] 时间字符串
  * @param pattern [String] 时间样式 yyyy-MM-dd HH:mm:ss
  * * y\Y：表示年份
@@ -395,48 +412,8 @@ fun Long.toDateStr(pattern: String = DEFAULT_PATTERN): String {
  * @return [Long] 毫秒时间戳
  */
 @Suppress("NON_EXPORTABLE_TYPE")
-fun String.toDateLong(pattern: String = DEFAULT_PATTERN): Long {
-    val cur = nowSystemDateTime()
-    var string = pattern
-    var reg = "a+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        if (item.value.length == 2) continue
-        string = string.replace(item.value, "aa")
-    }
-    // 将 y、Y 转换成年份
-    reg = "[yY]+".toRegex().findAll(string).toList()
-    val year = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.year else cur.year
-    // 将 M 转换成月份
-    reg = "M+".toRegex().findAll(string).toList()
-    val month = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.month.number else cur.month.number
-    // 将 d 转换成日期
-    reg = "d+".toRegex().findAll(string).toList()
-    val day = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.day else cur.day
-    // 将 H 转换成小时 24小时制
-    reg = "H+".toRegex().findAll(string).toList()
-    var isH = false
-    var hour = if (reg.isNotEmpty()) {
-        isH = true
-        this.substring(reg[0].range).toIntOrNull()?: cur.hour
-    } else {
-        // 将 h 转换成小时 12小时制
-        val regh = "h+".toRegex().findAll(string).toList()
-        if (regh.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.hour else 0
-    }
-    reg = "a+".toRegex().findAll(string).toList()
-    val isAM = reg.isEmpty() || this.substring(reg[0].range).contains("AM")
-    if (!isAM && !isH) hour = (hour + 12).coerceAtMost(23)
-    // 将 m 转换成分钟
-    reg = "m+".toRegex().findAll(string).toList()
-    val minute = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.minute else 0
-    // 将 s 转换成秒钟
-    reg = "s+".toRegex().findAll(string).toList()
-    val second  = if (reg.isNotEmpty()) this.substring(reg[0].range).toIntOrNull()?: cur.second else 0
-    // 将 S 转换成毫秒
-    reg = "S+".toRegex().findAll(string).toList()
-    val millisecond  = if (reg.isNotEmpty()) this.substring(reg[0].range).padEnd(3, '0').toIntOrNull()?: cur.millisecond() else 0
-    return timestampSystem(year, month, day, hour, minute, second, millisecond)
-}
+fun String.toDateLong(pattern: String = DEFAULT_PATTERN): Long =
+    parseLegacyDateTime(this, pattern).toSystemTimestamp()
 
 /**
  * 判断字符串是否为时间字符串
@@ -457,57 +434,13 @@ fun String.toDateLong(pattern: String = DEFAULT_PATTERN): Long {
  * * a: AM/PM（上午、下午）
  * @return [Boolean] 是否为时间格式字符串
  */
-fun String.isDatetimeString(pattern: String = DEFAULT_PATTERN): Boolean {
-    var string = pattern.replace("\\s".toRegex(), "")
-    // 将 d 转换成(?:0[1-9]|[1-2]\d|30|31)
-    var reg = "d+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, "(?:0[1-9]|[1-2]\\d|30|31)")
+fun String.isDatetimeString(pattern: String = DEFAULT_PATTERN): Boolean =
+    try {
+        parseLegacyDateTime(this, pattern, ignoreWhitespace = true)
+        true
+    } catch (_: IllegalArgumentException) {
+        false
     }
-    // 将 y、Y 转换成\d{length}
-    reg = "[yY]+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, "\\d{${item.value.length}}")
-    }
-    // 将 M 转换成(?:1[0-2]|0[1-9])
-    reg = "M+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, "(?:1[0-2]|0[1-9])")
-    }
-    // 将 H 转换成(?:[01]\d|2[0-3])
-    reg = "H+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, "(?:[01]\\d|2[0-3])")
-    }
-    // 将 h 转换成(?:1[0-2]|0[1-9])
-    reg = "h+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, "(?:1[0-2]|0[1-9])")
-    }
-    // 将 m 转换成[0-5]\d
-    reg = "m+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, "[0-5]\\d")
-    }
-    // 将 s 转换成[0-5]\d
-    reg = "s+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, "[0-5]\\d")
-    }
-    // 将 S 转换成\d{3}
-    reg = "S+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, "\\d{3}")
-    }
-    // 将 a 转换成(?:AM|PM)
-    reg = "a+".toRegex().findAll(string).toList()
-    for (item in reg) {
-        string = string.replaceRange(item.range, "(?:AM|PM)")
-    }
-    string = "^(${string})$"
-    val thisStr = this.replace("\\s".toRegex(), "")
-    return string.toRegex().matches(thisStr)
-}
 
 /**
  * 根据年月日获取时间戳

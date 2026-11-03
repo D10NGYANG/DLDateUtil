@@ -22,13 +22,18 @@ fun Instant.toTimestamp(): Long =
 
 /**
  * 将Instant转换成秒时间戳
+ * @throws IllegalArgumentException 秒数超出 Int 范围；完整范围使用 Instant.epochSeconds
  * @receiver [Instant]
  * @return [Int]
  */
 @OptIn(ExperimentalTime::class)
 @JsName("instantToTimeSeconds")
-fun Instant.toTimeSeconds(): Int =
-    (toTimestamp() / 1000).toInt()
+fun Instant.toTimeSeconds(): Int {
+    require(epochSeconds in Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()) {
+        "Epoch seconds exceed Int range; use Instant.epochSeconds for Long seconds"
+    }
+    return epochSeconds.toInt()
+}
 
 /**
  * 将Instant转换为UTC时区的LocalDateTime
@@ -76,4 +81,4 @@ fun Instant.toSystemLocalDateTime(): LocalDateTime = toSystemDateTime()
     ReplaceWith("toTimeSeconds()"),
     DeprecationLevel.WARNING
 )
-fun Instant.epochSecondsInt(): Int = epochSeconds.toInt()
+fun Instant.epochSecondsInt(): Int = toTimeSeconds()

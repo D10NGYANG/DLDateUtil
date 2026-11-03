@@ -43,7 +43,7 @@ class WeekOfMonthTest {
     fun `test edge cases`() {
         // 测试边界情况
         val date1 = LocalDate(2023, Month.DECEMBER, 31)  // 年末
-        assertEquals(6, date1.weekOfMonth(false))
+        assertEquals(5, date1.weekOfMonth(false))
 
         val date2 = LocalDate(2023, Month.MARCH, 1)  // 周三（测试非周一开始的月份）
         assertEquals(0, date2.weekOfMonth(true))

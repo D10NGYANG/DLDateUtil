@@ -125,6 +125,7 @@ fun LocalDateTime.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int =
 
 /**
  * 获取当前日期的农历信息
+ * @throws IllegalArgumentException 日期不在 1900-01-31..2100-12-31 内
  * @receiver [LocalDateTime]
  * @return [CalendarInfo]
  */
@@ -154,12 +155,11 @@ fun LocalDateTime.copy(
     second: Int = this.second,
     nanosecond: Int = this.nanosecond
 ): LocalDateTime {
-    val y = year.coerceIn(1970, 9999)
     val m = month.coerceIn(1, 12)
     return LocalDateTime(
-        year = y,
+        year = year,
         month = m,
-        day = day.coerceIn(1, daysOfMonth(y, m)),
+        day = day.coerceIn(1, daysOfMonth(year, m)),
         hour = hour.coerceIn(0, 23),
         minute = minute.coerceIn(0, 59),
         second = second.coerceIn(0, 59),

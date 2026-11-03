@@ -10,12 +10,14 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 /**
- * 将毫秒级时间戳转换为秒级
+ * 将毫秒级时间戳转换为秒级（向下取整）
+ * @throws IllegalArgumentException 秒数超出 Int 范围；完整范围使用 timestampToInstant().epochSeconds
  * @receiver [Long]
  * @return [Int]
  */
+@OptIn(ExperimentalTime::class)
 fun Long.timestampToTimeSeconds(): Int =
-    (this / 1000).toInt()
+    timestampToInstant().toTimeSeconds()
 
 /**
  * 将秒级时间戳转换为毫秒级
@@ -115,9 +117,11 @@ fun timestamp(
     second: Int,
     millisecond: Int,
     timeZone: TimeZone
-): Long =
-    LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000)
+): Long {
+    require(millisecond in 0..999) { "Millisecond must be in 0..999" }
+    return LocalDateTime(year, month, day, hour, minute, second, millisecond * 1000000)
         .toTimestamp(timeZone)
+}
 
 /**
  * 构建毫秒级时间戳

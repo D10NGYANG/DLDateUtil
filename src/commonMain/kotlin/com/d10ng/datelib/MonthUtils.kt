@@ -50,6 +50,7 @@ fun Month.englishShortName(): String =
  */
 fun daysOfMonth(year: Int, month: Int): Int {
     val start = LocalDate(year, month, 1)
+    if (month == 12) return 31
     val end = start + DatePeriod(months = 1)
     return start.daysUntil(end)
 }

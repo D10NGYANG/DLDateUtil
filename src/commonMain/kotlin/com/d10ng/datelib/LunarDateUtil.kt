@@ -1,7 +1,6 @@
 package com.d10ng.datelib
 
-import kotlinx.datetime.isoDayNumber
-import kotlinx.datetime.number
+import kotlinx.datetime.*
 import kotlin.math.floor
 
 /**
@@ -225,14 +224,14 @@ object LunarDateUtil {
             table.substring(25, 30).toInt(16).toString()
         )
         val calday = arrayListOf(
-            info[0].substring(0, 1), info[0].substring(1, 2), info[0].substring(3, 4),
-            info[0].substring(4, 6), info[1].substring(0, 1), info[1].substring(1, 2),
+            info[0].substring(0, 1), info[0].substring(1, 3), info[0].substring(3, 4),
+            info[0].substring(4, 6), info[1].substring(0, 1), info[1].substring(1, 3),
             info[1].substring(3, 4), info[1].substring(4, 6), info[2].substring(0, 1),
-            info[2].substring(1, 2), info[2].substring(3, 4), info[2].substring(4, 6),
-            info[3].substring(0, 1), info[3].substring(1, 2), info[3].substring(3, 4),
-            info[3].substring(4, 6), info[4].substring(0, 1), info[4].substring(1, 2),
+            info[2].substring(1, 3), info[2].substring(3, 4), info[2].substring(4, 6),
+            info[3].substring(0, 1), info[3].substring(1, 3), info[3].substring(3, 4),
+            info[3].substring(4, 6), info[4].substring(0, 1), info[4].substring(1, 3),
             info[4].substring(3, 4), info[4].substring(4, 6), info[5].substring(0, 1),
-            info[5].substring(1, 2), info[5].substring(3, 4), info[5].substring(4, 6)
+            info[5].substring(1, 3), info[5].substring(3, 4), info[5].substring(4, 6)
         )
         return calday[n - 1].toInt()
     }
@@ -279,24 +278,24 @@ object LunarDateUtil {
     }
 
     /**
-     * 公历转农历
+     * 公历转农历；无效输入或超出 1900-01-31..2100-12-31 返回 null
      * @param y full year : 2021
      * @param m month : 2
      * @param d day : 26
      * @return [CalendarInfo]
      */
     fun solar2lunar(y: Int, m: Int, d: Int): CalendarInfo? {
-        if (y < 1900 || y > 2100) {
+        if (y !in 1900..2100 || m !in 1..12 || d !in 1..solarDays(y, m)) {
             return null
         }
         if (y == 1900 && m == 1 && d < 31) {
             return null
         }
-        val minCalendar = timestampSystem(1900, 1, 31)
-        val objDate = timestampSystem(y, m, d)
+        val minCalendar = LocalDate(1900, 1, 31)
+        val objDate = LocalDate(y, m, d)
         var i = 1900
         var temp = 0
-        var offset = (objDate - minCalendar) / 86400000
+        var offset = minCalendar.daysUntil(objDate)
         while (i < 2101 && offset > 0) {
             temp = lYearDays(i)
             offset -= temp
@@ -307,7 +306,7 @@ object LunarDateUtil {
             i--
         }
 
-        val objDatetime = objDate.timestampToSystemDateTime()
+        val objDatetime = objDate
         val isToday = objDatetime.isToday()
         val nWeek = objDatetime.dayOfWeek.isoDayNumber
         val cWeek = nStr1[if (nWeek == 7) 0 else nWeek]
@@ -330,7 +329,7 @@ object LunarDateUtil {
             offset -= temp
             i++
         }
-        if (offset == 0L && leap > 0 && i == leap + 1)
+        if (offset == 0 && leap > 0 && i == leap + 1)
             if (isLeap) {
                 isLeap = false
             } else {
@@ -343,13 +342,9 @@ object LunarDateUtil {
         }
         val month = i
         val day = offset + 1
-        val sm = m - 1
-        val term3 = getTerm(year, 3)
-        val gzY = if (sm < 2 && d < term3) {
-            toGanZhi(year - 5)
-        } else {
-            toGanZhi(year - 4)
-        }
+        // 干支年以立春换年，生肖仍以农历年计算。
+        val term3 = getTerm(y, 3)
+        val gzY = toGanZhi(y - if (m < 2 || (m == 2 && d < term3)) 5 else 4)
         val firstNode = getTerm(y, (m * 2 - 1))
         val secondNode = getTerm(y, (m * 2))
         var gzM = toGanZhi((y - 1900) * 12 + m + 11)
@@ -366,9 +361,8 @@ object LunarDateUtil {
             isTerm = true
             term = solarTerm[m * 2 - 1]
         }
-        val ca = timestampSystem(y, m, 1)
-        val dayCyclical = ca / 86400000 + 25567 + 10
-        val gzD = toGanZhi((dayCyclical + d).toInt())
+        // 2000-01-07 为甲子日，日干支只取决于公历日期。
+        val gzD = toGanZhi(LocalDate(2000, 1, 7).daysUntil(objDate).mod(60))
         return CalendarInfo(year,
             month,
             day.toInt(),
@@ -382,7 +376,7 @@ object LunarDateUtil {
     }
 
     /**
-     * 农历转公历
+     * 农历转公历；无效输入或结果超出 1900-01-31..2100-12-31 返回 null
      * @param y full year : 2021
      * @param m month : 1
      * @param d day : 15
@@ -390,41 +384,21 @@ object LunarDateUtil {
      * @return [CalendarInfo]
      */
     fun lunar2solar(y: Int, m: Int, d: Int, isLeapMonth: Boolean = false): CalendarInfo? {
-        val leapMonth = leapMonth(y)
-        if (isLeapMonth && (leapMonth != m)) {
-            return null
-        }
-        if (y == 2100 && m == 12 && d > 1 || y == 1900 && m == 1 && d < 31) {
-            return null
-        }
-        val day = monthDays(y, m)
-        if (y < 1900 || y > 2100 || d > day) {
-            return null
-        }
+        if (y !in 1900..2100 || m !in 1..12) return null
+        val leap = leapMonth(y)
+        if (isLeapMonth && leap != m) return null
+        val dayCount = if (isLeapMonth) leapDays(y) else monthDays(y, m)
+        if (d !in 1..dayCount) return null
         var offset = 0
         for (i in 1900 until y) {
             offset += lYearDays(i)
         }
-        var leap: Int
-        var isAdd = false
         for (i in 1 until m) {
-            leap = leapMonth(y)
-            if (!isAdd) {
-                if (leap in 1..i) {
-                    offset += leapDays(y)
-                    isAdd = true
-                }
-            }
             offset += monthDays(y, i)
+            if (i == leap) offset += leapDays(y)
         }
-        if (isLeapMonth) {
-            offset += day
-        }
-        val stmap = timestampSystem(1900, 2, 28, 0, 0, 0)
-        val calendar = ((offset + d - 28) * 86400000L + stmap).timestampToSystemDateTime()
-        val cY = calendar.year
-        val cM = calendar.month.number
-        val cD = calendar.day
-        return solar2lunar(cY, cM, cD)
+        if (isLeapMonth) offset += monthDays(y, m)
+        val calendar = LocalDate(1900, 1, 31).plus(offset + d - 1, DateTimeUnit.DAY)
+        return solar2lunar(calendar.year, calendar.month.number, calendar.day)
     }
 }

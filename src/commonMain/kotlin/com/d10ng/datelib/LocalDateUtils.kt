@@ -42,7 +42,7 @@ fun LocalDate.isoWeekOfYear(): Int {
         val previousMonday = jan1st.minus(jan1st.dayOfWeek.ordinal, DateTimeUnit.DAY)
         if (jan1st.dayOfWeek <= DayOfWeek.THURSDAY) previousMonday else previousMonday.plus(1, DateTimeUnit.WEEK)
     }
-    if (firstWeekInYearStart(year + 1) < this) return 1
+    if (firstWeekInYearStart(year + 1) <= this) return 1
     val currentYearStart = firstWeekInYearStart(year)
     val start = if (this < currentYearStart) firstWeekInYearStart(year - 1) else currentYearStart
     return (start.until(this, DateTimeUnit.WEEK) + 1).toInt()
@@ -67,21 +67,21 @@ fun LocalDate.weekOfMonth(isFirstMondayAsFirstWeek: Boolean = true): Int {
         return if (less < 0) 0
         else less / 7 + 1
     } else {
-        val firstWeekOffset = 8 - startWeekOfDay
-        return if (day <= firstWeekOffset) 1
-        else if (day <= firstWeekOffset + 7) 2
-        else (day - firstWeekOffset) / 7 + 2
+        return (day + startWeekOfDay - 2) / 7 + 1
     }
 }
 
 /**
  * 获取当前日期的农历信息
+ * @throws IllegalArgumentException 日期不在 1900-01-31..2100-12-31 内
  * @receiver [LocalDate]
  * @return [CalendarInfo]
  */
 @JsName("localDateLunarCalendar")
 fun LocalDate.lunarCalendar(): CalendarInfo =
-    LunarDateUtil.solar2lunar(year, month.number, day)!!
+    requireNotNull(LunarDateUtil.solar2lunar(year, month.number, day)) {
+        "Lunar calendar supports 1900-01-31 through 2100-12-31"
+    }
 
 /**
  * 复制日期
@@ -97,10 +97,9 @@ fun LocalDate.copy(
     month: Int = this.month.number,
     day: Int = this.day
 ): LocalDate {
-    val y = year.coerceIn(1970, 9999)
     val m = month.coerceIn(1, 12)
-    val d = day.coerceIn(1, daysOfMonth(y, m))
-    return LocalDate(y, m, d)
+    val d = day.coerceIn(1, daysOfMonth(year, m))
+    return LocalDate(year, m, d)
 }
 
 /**

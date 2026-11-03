@@ -29,7 +29,7 @@ fun nowTimestamp(): Long =
  * @return [Int]
  */
 fun nowTimeSeconds(): Int =
-    (nowTimestamp() / 1000).toInt()
+    nowTimestamp().timestampToTimeSeconds()
 
 /**
  * 获取当前时间
