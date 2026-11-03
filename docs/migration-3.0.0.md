@@ -5,10 +5,18 @@
 ## 更新依赖
 
 ```kotlin
-implementation("com.github.D10NGYANG:DLDateUtil:3.0.0")
+repositories {
+    maven("https://raw.githubusercontent.com/D10NGYANG/maven-repo/main/repository") {
+        content { includeGroup("com.github.D10NGYANG") }
+    }
+    mavenCentral()
+}
+dependencies {
+    implementation("com.github.D10NGYANG:DLDateUtil:3.0.0")
+}
 ```
 
-Maven 仓库为 `https://nexus.bds100.com/repository/maven-releases/`，访问方式见项目 README。库使用 Kotlin 2.2.21 编译，并通过 `api` 暴露 kotlinx-datetime 0.8.0；请检查项目中的强制版本约束是否仍锁在 0.7.1 或更早版本。
+Maven 制品通过公开的 [GitHub maven-repo](https://github.com/D10NGYANG/maven-repo) 提供，无需访问凭据。统一仓库管理的项目将仓库配置放在 `settings.gradle.kts` 的 `dependencyResolutionManagement.repositories`，KMP 项目将依赖放入所需 source set。库使用 Kotlin 2.2.21 编译，并通过 `api` 暴露 kotlinx-datetime 0.8.0；请检查项目中的强制版本约束是否仍锁在 0.7.1 或更早版本。
 
 ```sh
 npm install dl-date-util@3.0.0

@@ -29,7 +29,7 @@
 - JVM 40 项，JS、Android 单元测试、macOS Arm64 各 37 项通过；包含 73,384 天农历往返、40 年周数参考比对和多时区测试。
 - 增加纯 JS 导出检查，验证独立 Kotlin、npm 和 TypeScript 消费者。
 
-升级步骤见 [2.3.1 → 3.0.0](https://github.com/D10NGYANG/DLDateUtil/blob/3.0.0/docs/migration-3.0.0.md)。
+升级步骤见 [2.3.1 → 3.0.0](https://github.com/D10NGYANG/DLDateUtil/blob/master/docs/migration-3.0.0.md)。
 
 ## 2.3.1
 

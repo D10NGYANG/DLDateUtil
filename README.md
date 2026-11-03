@@ -21,7 +21,7 @@
 
 ## 3.0.0 升级提示
 
-3.0.0 包含破坏性变更：npm 的毫秒时间戳改为 `bigint`，非法日期输入和越界秒数会明确报错。升级前请阅读 [2.3.1 → 3.0.0 升级指南](https://github.com/D10NGYANG/DLDateUtil/blob/3.0.0/docs/migration-3.0.0.md)；完整变化见 [CHANGELOG](https://github.com/D10NGYANG/DLDateUtil/blob/3.0.0/CHANGELOG.md)。
+3.0.0 包含破坏性变更：npm 的毫秒时间戳改为 `bigint`，非法日期输入和越界秒数会明确报错。升级前请阅读 [2.3.1 → 3.0.0 升级指南](https://github.com/D10NGYANG/DLDateUtil/blob/master/docs/migration-3.0.0.md)；完整变化见 [CHANGELOG](https://github.com/D10NGYANG/DLDateUtil/blob/master/CHANGELOG.md)。
 
 ## 📖 项目简介
 
@@ -85,11 +85,8 @@ kotlinx-datetime 是 Kotlin 官方提供的跨平台日期时间处理库，它�
 ```kotlin
 // build.gradle.kts
 repositories {
-    maven("https://nexus.bds100.com/repository/maven-releases/") {
-        credentials {
-            username = providers.gradleProperty("bds100MavenUsername").orNull
-            password = providers.gradleProperty("bds100MavenPassword").orNull
-        }
+    maven("https://raw.githubusercontent.com/D10NGYANG/maven-repo/main/repository") {
+        content { includeGroup("com.github.D10NGYANG") }
     }
     mavenCentral()
 }
@@ -104,7 +101,7 @@ npm：
 npm install dl-date-util@3.0.0
 ```
 
-Maven 仓库需要访问凭据，请放在本机 Gradle 属性或 CI 密钥中；npm 包为公开包。
+公开 Maven 仓库由 [GitHub maven-repo](https://github.com/D10NGYANG/maven-repo) 提供，无需用户名、密码或令牌。若项目在 `settings.gradle.kts` 中统一管理仓库，请把上述 `repositories` 配置放入 `dependencyResolutionManagement`；依赖声明保留在对应模块或 KMP source set 中。npm 包同样公开。
 
 ## 📝 示例
 
